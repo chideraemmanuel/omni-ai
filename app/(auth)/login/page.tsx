@@ -1,7 +1,7 @@
 'use client';
 
 import FormInput from '@/components/ui/FormInput/FormInput';
-import { FC } from 'react';
+import { FC, FormEvent } from 'react';
 import {
   LoginForm,
   LoginFormBreak,
@@ -20,6 +20,7 @@ import {
   setLoginEmail,
   setLoginPassword,
 } from '@/redux/slices/formInputSlice';
+import { useLogin } from '@/lib/hooks/useLogin';
 
 interface Props {}
 
@@ -28,54 +29,68 @@ const LoginPage: FC<Props> = () => {
     (store: StoreTypes) => store.formInputs.login
   );
 
+  const { mutate: login, isLoading: isLoggingIn } = useLogin();
+
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    login({
+      email: email.value,
+      password: password.value,
+    });
+  };
+
   return (
-    <LoginPageContainer>
-      <LoginPageFormContainer>
-        <LoginFormHeader>
-          <h2>Login to use OmniAI</h2>
-          <p>
-            Don't have an account? <Link href={'/register'}>Register</Link>
-          </p>
-        </LoginFormHeader>
+    <>
+      {/* {isLoggingIn && <FullScreenLoader />} */}
+      <LoginPageContainer>
+        <LoginPageFormContainer>
+          <LoginFormHeader>
+            <h2>Login to use OmniAI</h2>
+            <p>
+              Don't have an account? <Link href={'/register'}>Register</Link>
+            </p>
+          </LoginFormHeader>
 
-        <LoginForm>
-          <form>
-            <FormInput
-              type="email"
-              placeholder="Enter your email"
-              label="Email"
-              value={email.value}
-              setValue={setLoginEmail}
-              error={email.error}
-              // error={'this is an error'}
-              clearError={clearLoginEmailError}
-            />
-            <FormInput
-              type="password"
-              placeholder="Pick a password"
-              label="Password"
-              value={password.value}
-              setValue={setLoginPassword}
-              error={password.error}
-              // error={'this is an error'}
-              clearError={clearLoginPasswordError}
-            />
-            <Button tagType="button">Create Account</Button>
-          </form>
+          <LoginForm>
+            <form onSubmit={(e) => handleSubmit(e)}>
+              <FormInput
+                type="email"
+                placeholder="Enter your email"
+                label="Email"
+                value={email.value}
+                setValue={setLoginEmail}
+                error={email.error}
+                // error={'this is an error'}
+                clearError={clearLoginEmailError}
+              />
+              <FormInput
+                type="password"
+                placeholder="Pick a password"
+                label="Password"
+                value={password.value}
+                setValue={setLoginPassword}
+                error={password.error}
+                // error={'this is an error'}
+                clearError={clearLoginPasswordError}
+              />
+              <Button tagType="button">Create Account</Button>
+            </form>
 
-          <LoginFormBreak>
-            <div></div>
-            <span>or</span>
-            <div></div>
-          </LoginFormBreak>
+            <LoginFormBreak>
+              <div></div>
+              <span>or</span>
+              <div></div>
+            </LoginFormBreak>
 
-          <Button width="100%" variant="google">
-            <FaGoogle />
-            <span>Continue with google</span>
-          </Button>
-        </LoginForm>
-      </LoginPageFormContainer>
-    </LoginPageContainer>
+            <Button width="100%" variant="google">
+              <FaGoogle />
+              <span>Continue with google</span>
+            </Button>
+          </LoginForm>
+        </LoginPageFormContainer>
+      </LoginPageContainer>
+    </>
   );
 };
 
