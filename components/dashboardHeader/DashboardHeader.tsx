@@ -28,7 +28,7 @@ const DashboardHeader: FC<Props> = () => {
       </DashboardHeaderMobileToggle>
 
       <DashboardHeaderLogo>
-        <Logo />
+        <Logo variant="dark" />
       </DashboardHeaderLogo>
       {/* <UserButtonOverlay /> */}
       <DashboardHeaderUserButton>

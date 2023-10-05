@@ -96,7 +96,7 @@ export const MobileMenuLinks = styled.div`
 
     > span {
       font-size: ${({ theme }) => theme.font['xs-font']};
-      color: ${({ theme }) => theme.colors.light['gray-400']};
+      color: ${({ theme }) => theme.colors.light['gray-800']};
     }
 
     > ul {
@@ -111,7 +111,7 @@ export const MobileMenuLinks = styled.div`
         padding: ${({ theme }) =>
           `${theme.space['fluid-block-space-3']} ${theme.space['fluid-inline-space-3']}`};
         border-radius: 0.5rem;
-        color: ${({ theme }) => theme.colors.light['gray-700']};
+        color: ${({ theme }) => theme.colors.light['gray-500']};
         transition: 0.2s ease;
 
         &:hover {

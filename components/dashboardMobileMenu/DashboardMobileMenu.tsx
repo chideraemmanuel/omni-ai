@@ -33,7 +33,7 @@ const DashboardMobileMenu: FC<Props> = () => {
       )}
       <DashboardMobileMenuContainer menuActive={dashboardMobileMenuActive}>
         <DashboardMobileMenuHeader>
-          <Logo />
+          <Logo variant="light" />
 
           <button onClick={() => dispatch(closeDashboardMobileMenu())}>
             <FiX />

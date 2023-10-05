@@ -13,12 +13,15 @@ export const DashboardNavigationLinks = [
     links: [
       {
         label: 'Chat Bot',
-        href: '/chat',
+        href: '/dashboard/chat',
       },
       {
         label: 'Image Generation',
-        href: '/generate-image',
+        href: '/dashboard/generate-image',
       },
     ],
   },
 ];
+
+// TODO: install openai sdk, take screenshots of all openai tools implementation, make route handlers for all tools
+// try login and register functionalities.

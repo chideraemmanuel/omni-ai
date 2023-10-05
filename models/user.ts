@@ -18,4 +18,25 @@ const userSchema = new mongoose.Schema({
 
 const User = models.User || model('User', userSchema);
 
+// userSchema.statics.getMessages()
+userSchema.statics.updateMessages = function (
+  id: string,
+  prompt: string,
+  response: string
+) {
+  return this.updateOne(
+    { _id: id },
+    {
+      $push: {
+        messages: {
+          $each: [
+            { role: 'user', content: prompt },
+            { role: 'assistant', content: response },
+          ],
+        },
+      },
+    }
+  );
+};
+
 export default User;

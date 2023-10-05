@@ -3,9 +3,13 @@ import { StyledLogo } from './Logo.styled';
 import Image from 'next/image';
 import logo from '../../../public/react.svg';
 
-const Logo: FC = () => {
+interface Props {
+  variant?: 'dark' | 'light';
+}
+
+const Logo: FC<Props> = ({ variant }) => {
   return (
-    <StyledLogo>
+    <StyledLogo variant={variant}>
       <Image src={logo} alt="Logo" />
       <span>OmniAI</span>
     </StyledLogo>

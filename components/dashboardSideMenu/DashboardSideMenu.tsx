@@ -17,7 +17,7 @@ const DashboardSideMenu: FC<Props> = () => {
   return (
     <DashboardSideMenuContainer>
       <SideMenuLogo>
-        <Logo />
+        <Logo variant="light" />
       </SideMenuLogo>
 
       <SideMenuLinks>

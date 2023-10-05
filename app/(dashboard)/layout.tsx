@@ -18,7 +18,8 @@ const DashboardLayout: FC<Props> = ({ children }) => {
       <DashboardNavigation />
       <DashboardLayoutContent>
         <DashboardHeader />
-        {children}
+
+        <section>{children}</section>
       </DashboardLayoutContent>
     </DashboardLayoutContainer>
   );

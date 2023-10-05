@@ -97,6 +97,7 @@ export const DashboardHeaderMobileToggle = styled.button`
   background: transparent;
   border: none;
   font-size: ${({ theme }) => theme.font['lg-font']};
+  color: ${({ theme }) => theme.colors.light['gray-700']};
   display: none;
 
   @media screen and (max-width: 820px) {
