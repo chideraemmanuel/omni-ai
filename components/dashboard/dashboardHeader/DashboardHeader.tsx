@@ -9,7 +9,7 @@ import {
 import Image from 'next/image';
 import image from '@/assets/profile.jpg';
 import Link from 'next/link';
-import Logo from '../ui/logo/Logo';
+import Logo from '../../ui/logo/Logo';
 import { FiMenu } from 'react-icons/fi';
 import { useDispatch } from 'react-redux';
 import { openDashboardMobileMenu } from '@/redux/slices/navigationSlice';

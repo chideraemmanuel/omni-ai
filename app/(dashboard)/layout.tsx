@@ -1,12 +1,12 @@
 'use client';
 
-import DashboardNavigation from '@/components/dashboardNavigation/DashboardNavigation';
+import DashboardNavigation from '@/components/dashboard/dashboardNavigation/DashboardNavigation';
 import { FC } from 'react';
 import {
   DashboardLayoutContent,
   DashboardLayoutContainer,
 } from './layout.styled';
-import DashboardHeader from '@/components/dashboardHeader/DashboardHeader';
+import DashboardHeader from '@/components/dashboard/dashboardHeader/DashboardHeader';
 
 interface Props {
   children: React.ReactNode;

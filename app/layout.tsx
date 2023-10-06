@@ -6,6 +6,7 @@ import { ThemeProvider } from 'styled-components';
 import { GlobalStyles } from './global.styled';
 import theme from './theme';
 import ReduxProvider from '@/redux/ReduxProvider';
+import StyledComponentsRegistry from '@/registry';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -24,7 +25,9 @@ export default function RootLayout({
       <ReduxProvider>
         <GlobalStyles />
         <html lang="en">
-          <body className={inter.className}>{children}</body>
+          <body className={inter.className}>
+            <StyledComponentsRegistry>{children}</StyledComponentsRegistry>
+          </body>
         </html>
       </ReduxProvider>
     </ThemeProvider>

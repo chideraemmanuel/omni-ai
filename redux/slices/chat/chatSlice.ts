@@ -7,6 +7,7 @@ interface Messagetypes {
 }
 
 export interface ChatStateTypes {
+  userInput: string;
   messages: Messagetypes[] | [];
   isResponding: boolean;
   isSuccess: boolean;
@@ -15,6 +16,7 @@ export interface ChatStateTypes {
 }
 
 const initialState: ChatStateTypes = {
+  userInput: '',
   messages: [],
   isResponding: false,
   isSuccess: false,
@@ -26,11 +28,12 @@ const chatSlice = createSlice({
   name: 'chat',
   initialState,
   reducers: {
-    addUserMessage: (
-      state: ChatStateTypes,
-      action: { payload: { role: 'user'; content: string } }
-    ) => {
-      state.messages.push(action.payload);
+    addUserMessage: (state: ChatStateTypes, action: { payload: string }) => {
+      // state.messages.push(action.payload);
+      state.messages.push({ role: 'user', content: action.payload });
+    },
+    setUserInput: (state: ChatStateTypes, action: { payload: string }) => {
+      state.userInput = action.payload;
     },
   },
   extraReducers: (builder) => {
@@ -49,11 +52,15 @@ const chatSlice = createSlice({
           state.isResponding = false;
           state.isError = true;
           state.error = action.payload;
+          // state.messages.push({
+          //   role: 'assistant',
+          //   content: 'An error occured!',
+          // });
         }
       );
   },
 });
 
-export const {} = chatSlice.actions;
+export const { addUserMessage, setUserInput } = chatSlice.actions;
 
 export default chatSlice.reducer;

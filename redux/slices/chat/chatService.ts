@@ -1,9 +1,14 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 
+interface Messagetypes {
+  role: 'user' | 'assistant';
+  content: string;
+}
+
 export const sendMessage = createAsyncThunk(
   'chat/send-message',
-  async (messages: any, thunkAPI) => {
+  async (messages: Messagetypes[] | [], thunkAPI) => {
     try {
       const response = await axios.post('/api/chat', messages);
       return response.data;

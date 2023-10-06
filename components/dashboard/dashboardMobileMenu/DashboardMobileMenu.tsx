@@ -8,7 +8,7 @@ import {
 import { DashboardNavigationLinks } from '@/constants';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import Logo from '../ui/logo/Logo';
+import Logo from '../../ui/logo/Logo';
 import { FiX } from 'react-icons/fi';
 import { useDispatch, useSelector } from 'react-redux';
 import { StoreTypes } from '@/redux/store';

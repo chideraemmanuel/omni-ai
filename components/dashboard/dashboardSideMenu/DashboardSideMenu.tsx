@@ -7,7 +7,7 @@ import {
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { DashboardNavigationLinks } from '@/constants';
-import Logo from '../ui/logo/Logo';
+import Logo from '../../ui/logo/Logo';
 
 interface Props {}
 

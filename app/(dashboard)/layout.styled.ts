@@ -19,8 +19,8 @@ export const DashboardLayoutContent = styled.main`
 
   section {
     /* background-color: green; */
-    padding: ${({ theme }) =>
-      `${theme.space['fluid-block-space-5']} ${theme.space['fluid-inline-space-5']}`};
+    /* padding: ${({ theme }) =>
+      `${theme.space['fluid-block-space-5']} ${theme.space['fluid-inline-space-5']}`}; */
     max-width: 1200px;
     margin: 0 auto;
     display: flex;
@@ -30,10 +30,11 @@ export const DashboardLayoutContent = styled.main`
     height: calc(100% - ${({ theme }) => theme.space['fluid-block-space-17']});
 
     > * {
+      background-color: ${({ theme }) => theme.colors.light['gray-100']};
       /* background-color: blue; */
-      width: 100%;
-      height: 100%;
-      overflow: scroll;
+      /* width: 100%;
+      height: 100%; */
+      /* overflow: scroll;
       overflow-x: hidden;
 
       &::-webkit-scrollbar {
@@ -54,7 +55,7 @@ export const DashboardLayoutContent = styled.main`
         &::-webkit-scrollbar-thumb {
           background-color: ${({ theme }) => theme.colors.light['gray-700']};
         }
-      }
+      } */
     }
   }
 `;

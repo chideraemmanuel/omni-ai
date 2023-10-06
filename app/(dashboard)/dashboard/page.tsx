@@ -4,7 +4,7 @@ interface Props {}
 
 const DashboardPage: FC<Props> = () => {
   return (
-    <div>
+    <div style={{ width: '100%', height: '100%' }}>
       <span>Dashboard Page!</span>
       <p>
         Lorem ipsum dolor sit amet consectetur adipisicing elit. Quo ea
