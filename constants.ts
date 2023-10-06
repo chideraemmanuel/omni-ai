@@ -23,6 +23,19 @@ export const DashboardNavigationLinks = [
   },
 ];
 
+export const tools = [
+  {
+    name: 'Chat Bot',
+    description: 'Chat with our AI text generation model about anything!',
+    href: '/dashboard/chat',
+  },
+  {
+    name: 'Image Generation',
+    description: 'Turn your prompts to images with our image generation model',
+    href: '/dashboard/generate-image',
+  },
+];
+
 export const imageNumberList = [
   {
     title: '1 image',
