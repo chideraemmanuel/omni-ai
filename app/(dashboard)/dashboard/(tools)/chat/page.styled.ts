@@ -3,8 +3,9 @@ import styled from 'styled-components';
 export const ChatContainer = styled.div`
   position: relative;
   width: min(900px, 100%);
-  height: 100%;
+  height: calc(100vh - ${({ theme }) => theme.space['fluid-block-space-17']});
   /* background-color: red; */
+  background-color: ${({ theme }) => theme.colors.light['gray-100']};
 `;
 
 export const ConversationContainer = styled.div`

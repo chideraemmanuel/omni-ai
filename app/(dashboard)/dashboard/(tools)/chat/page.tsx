@@ -9,7 +9,7 @@ import {
 import ChatBubble from '@/components/ui/chatBubble/ChatBubble';
 import { useDispatch, useSelector } from 'react-redux';
 import { StoreTypes } from '@/redux/store';
-import { addUserMessage, setUserInput } from '@/redux/slices/chat/ChatSlice';
+import { addUserMessage, setUserInput } from '@/redux/slices/chat/chatSlice';
 import { sendMessage } from '@/redux/slices/chat/chatService';
 
 interface Props {}

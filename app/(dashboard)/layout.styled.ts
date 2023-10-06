@@ -12,25 +12,24 @@ export const DashboardLayoutContainer = styled.div`
 
 export const DashboardLayoutContent = styled.main`
   /* background-color: red; */
-  height: 100vh;
+  /* height: 100vh; */
 
   > *:nth-child(2) {
   }
 
-  section {
+  > section {
     /* background-color: green; */
-    /* padding: ${({ theme }) =>
-      `${theme.space['fluid-block-space-5']} ${theme.space['fluid-inline-space-5']}`}; */
     max-width: 1200px;
     margin: 0 auto;
     display: flex;
-    align-items: center;
+    /* align-items: center; */
+    align-items: flex-start;
     justify-content: center;
-    /* height: 100%; */
-    height: calc(100% - ${({ theme }) => theme.space['fluid-block-space-17']});
+    /* height: calc(
+      100% - ${({ theme }) => theme.space['fluid-block-space-17']}
+    ); // removes header's height */
 
     > * {
-      background-color: ${({ theme }) => theme.colors.light['gray-100']};
       /* background-color: blue; */
       /* width: 100%;
       height: 100%; */

@@ -24,6 +24,7 @@ export interface ComponentProps {
     border?: string;
   };
   disabled?: boolean;
+  onClick?: () => void;
 }
 
 export interface StyledButtonProps {

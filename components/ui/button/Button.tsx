@@ -21,6 +21,7 @@ const Button: React.FC<ComponentProps> = ({
   hover,
   focus,
   disabled = false,
+  onClick,
   ...props
 }) => {
   return (
@@ -40,6 +41,7 @@ const Button: React.FC<ComponentProps> = ({
         hover={hover}
         focus={focus}
         disabled={disabled}
+        onClick={onClick}
         {...props}
       >
         {/* <FaGoogle /> */}
