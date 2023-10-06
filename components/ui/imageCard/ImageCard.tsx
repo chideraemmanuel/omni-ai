@@ -9,7 +9,7 @@ import { FiDownload } from 'react-icons/fi';
 import image from '@/assets/profile.jpg';
 
 interface Props {
-  imageSrc?: any;
+  imageSrc: any;
 }
 
 const ImageCard: FC<Props> = ({ imageSrc }) => {
@@ -20,7 +20,7 @@ const ImageCard: FC<Props> = ({ imageSrc }) => {
   return (
     <ImageCardContainer>
       <CardImage>
-        <Image src={image} alt="" width={300} height={300} />
+        <Image src={imageSrc} alt="" width={300} height={300} />
       </CardImage>
 
       <Button

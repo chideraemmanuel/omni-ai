@@ -1,12 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { OpenAI } from 'openai';
 import jwt from 'jsonwebtoken';
 import { connectToDatabase } from '@/lib/utils/database';
 import User from '@/models/user';
-
-const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
-});
+import { openai } from '@/config/openai';
 
 interface Messagetypes {
   role: 'user' | 'assistant';

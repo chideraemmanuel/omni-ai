@@ -1,4 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
+import { generateImage } from './imageGenerationService';
 
 export interface ImageGenerationTypes {
   prompt: string;
@@ -10,12 +11,29 @@ export interface ImageGenerationTypes {
     title: string | null;
     value: string | null;
   } | null;
+
+  isGenerating: boolean;
+  isSuccess: boolean;
+  isError: boolean;
+  error: null | string;
+  images: any[] | [];
 }
 
 const initialState: ImageGenerationTypes = {
   prompt: '',
-  size: null,
-  amount: null,
+  size: {
+    title: '256 x 256',
+    value: '256',
+  },
+  amount: {
+    title: '1 image',
+    value: '1',
+  },
+  isGenerating: false,
+  isSuccess: false,
+  isError: false,
+  error: null,
+  images: [],
 };
 
 const imageGenerationSlice = createSlice({
@@ -38,7 +56,28 @@ const imageGenerationSlice = createSlice({
       state.amount = action.payload;
     },
   },
-  extraReducers: (builder) => {},
+  extraReducers: (builder) => {
+    builder
+      .addCase(generateImage.pending, (state: ImageGenerationTypes) => {
+        state.isGenerating = true;
+      })
+      .addCase(
+        generateImage.fulfilled,
+        (state: ImageGenerationTypes, action: { payload: any }) => {
+          state.isGenerating = false;
+          state.isSuccess = true;
+          state.images = action.payload;
+        }
+      )
+      .addCase(
+        generateImage.rejected,
+        (state: ImageGenerationTypes, action: { payload: any }) => {
+          state.isGenerating = false;
+          state.isError = true;
+          state.error = action.payload;
+        }
+      );
+  },
 });
 
 export const { setPrompt, setSize, setAmount } = imageGenerationSlice.actions;
