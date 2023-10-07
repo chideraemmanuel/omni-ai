@@ -51,7 +51,7 @@ const FormInput: FC<ComponentProps> = ({
     >
       <FormInputLabel>{label}</FormInputLabel>
 
-      <FormInputField error={error && error.length > 0 ? true : false}>
+      <FormInputField $error={error && error.length > 0 ? true : false}>
         <FormInputIcon>
           {type === 'text' ? (
             <FiUser />

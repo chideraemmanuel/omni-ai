@@ -17,10 +17,10 @@ export const StyledSelectFieldToggle = styled.div<SelectFieldToggleProps>`
         /* border: 1px solid #d6bbfb;
         box-shadow: 0px 0px 0px 4px #f4ebff,
           0px 1px 2px 0px rgba(16, 24, 40, 0.05); */
-        border: ${({ border }) => border || '1px solid #b5cff8'};
-        box-shadow: ${({ focus }) =>
+        border: ${({ $border }) => $border || '1px solid #b5cff8'};
+        box-shadow: ${({ $focus }) =>
           `0px 0px 0px 3px ${
-            focus?.boxShadowColor ? focus?.boxShadowColor : '#dee8f8'
+            $focus?.boxShadowColor ? $focus?.boxShadowColor : '#dee8f8'
           }, 0px 1px 2px 0px rgba(16, 24, 40, 0.05)`};
 
         .chevron {
@@ -43,17 +43,17 @@ export const StyledSelectFieldToggle = styled.div<SelectFieldToggleProps>`
     border: 1px solid #d0d5dd;
     cursor: pointer;
     transition: 0.2s ease;
-    border-radius: ${({ borderRadius }) => borderRadius || '0.5rem'};
-    border: ${({ border }) => border || `1px solid #d0d5dd`};
-    background: ${({ background }) => background || '#fff'};
-    box-shadow: ${({ boxShadow }) =>
-      boxShadow || '0px 1px 2px 0px rgba(16, 24, 40, 0.05)'};
+    border-radius: ${({ $borderRadius }) => $borderRadius || '0.5rem'};
+    border: ${({ $border }) => $border || `1px solid #d0d5dd`};
+    background: ${({ $background }) => $background || '#fff'};
+    box-shadow: ${({ $boxShadow }) =>
+      $boxShadow || '0px 1px 2px 0px rgba(16, 24, 40, 0.05)'};
 
     &:hover {
-      border: ${({ focus }) => focus?.border || '1px solid #b5cff8'};
-      box-shadow: ${({ focus }) =>
+      border: ${({ $focus }) => $focus?.border || '1px solid #b5cff8'};
+      box-shadow: ${({ $focus }) =>
         `0px 0px 0px 3px ${
-          focus?.boxShadowColor ? focus?.boxShadowColor : '#dee8f8'
+          $focus?.boxShadowColor ? $focus?.boxShadowColor : '#dee8f8'
         }, 0px 1px 2px 0px rgba(16, 24, 40, 0.05)`};
     }
   }
@@ -120,8 +120,8 @@ export const StyledSelectFieldList = styled.div<StyledListProps>`
   opacity: 0;
   transition: 200ms ease;
 
-  ${({ active }) =>
-    active &&
+  ${({ $active }) =>
+    $active &&
     css`
       /* margin-top: 0.5rem; */
       top: calc(100% + 0.5rem);

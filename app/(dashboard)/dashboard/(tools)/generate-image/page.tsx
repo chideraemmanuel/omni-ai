@@ -52,9 +52,9 @@ const ImageGenerationPage: FC<Props> = () => {
       alert('Please select number of images');
       return;
     }
-    // dispatch(
-    //   generateImage({ prompt, size: size?.value, amount: amount?.value })
-    // );
+    dispatch(
+      generateImage({ prompt, size: size?.value, amount: amount?.value })
+    );
   };
 
   return (

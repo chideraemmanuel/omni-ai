@@ -26,7 +26,10 @@ const ChatPage: FC<Props> = () => {
 
     dispatch(setUserInput(''));
     dispatch(addUserMessage(userInput));
-    dispatch(sendMessage(messages));
+
+    dispatch(sendMessage([...messages, { role: 'user', content: userInput }]));
+
+    console.log([...messages, { role: 'user', content: userInput }]);
   };
 
   return (

@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 interface LogoProps {
-  variant?: 'dark' | 'light';
+  $variant?: 'dark' | 'light';
 }
 
 export const StyledLogo = styled.div<LogoProps>`
@@ -15,10 +15,10 @@ export const StyledLogo = styled.div<LogoProps>`
   span {
     font-size: ${({ theme }) => theme.font['md-font']};
     font-weight: bolder;
-    color: ${({ variant }) =>
-      variant === 'dark'
+    color: ${({ $variant }) =>
+      $variant === 'dark'
         ? '#1b1b1b'
-        : variant === 'light'
+        : $variant === 'light'
         ? '#fff'
         : '#1b1b1b'};
   }

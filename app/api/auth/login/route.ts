@@ -22,9 +22,9 @@ export async function POST(request: NextRequest) {
   }
 
   //  CONNECT TO DATABASE
-  //   console.log('connecting to database...');
+  console.log('connecting to database...');
   await connectToDatabase();
-  //   console.log('connected to database!');
+  console.log('connected to database!');
 
   // CHECK IF EMAIL IS IN USE
   const userExists = await User.findOne({ email });

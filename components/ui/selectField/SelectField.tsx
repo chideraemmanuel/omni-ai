@@ -46,7 +46,7 @@ const SelectField: React.FC<ComponentProps> = ({
   return (
     <StyledSelectFieldContainer>
       {/* <StyledSelectFieldToggle {...toggleStyles}> */}
-      <StyledSelectFieldToggle {...toggleStyles} fontSize={fontSize}>
+      <StyledSelectFieldToggle {...toggleStyles} $fontSize={fontSize}>
         <input
           type="checkbox"
           name={id}
@@ -71,7 +71,7 @@ const SelectField: React.FC<ComponentProps> = ({
         </label>
       </StyledSelectFieldToggle>
 
-      <StyledSelectFieldList active={dropdownActive} fontSize={fontSize}>
+      <StyledSelectFieldList $active={dropdownActive} $fontSize={fontSize}>
         {list?.map((item, index) => (
           <StyledSelectFieldListItem
             onClick={() => setDropdownActive(false)}

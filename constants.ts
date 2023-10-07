@@ -72,3 +72,71 @@ export const sizeList = [
 
 // TODO: install openai sdk, take screenshots of all openai tools implementation, make route handlers for all tools
 // try login and register functionalities.
+
+// import Typewriter from 'typewriter-effect';
+
+// <Typewriter
+//   onInit={(typewriter) => {
+//     typewriter
+//       .typeString('Hello World!')
+//       .callFunction(() => {
+//         console.log('String typed out!');
+//       })
+//       .pauseFor(2500)
+//       .deleteAll()
+//       .callFunction(() => {
+//         console.log('All strings were deleted');
+//       })
+//       .start();
+//   }}
+// />;
+
+// import Typewriter from 'typewriter-effect';
+
+// <Typewriter
+//   options={{
+//     strings: ['Hello', 'World'],
+//     autoStart: true,
+//     loop: true,
+//   }}
+// />;
+
+//
+//
+//
+//
+//
+//
+// function formatOpenAIResponse(messages) {
+//     const codeBlocks = [];
+//     let codeBlockCounter = 1;
+
+//     for (const message of messages) {
+//         if (message.role === 'user') {
+//             // Handle user messages if needed
+//         } else if (message.role === 'assistant') {
+//             // Check if the assistant's reply contains a code block
+//             const codeBlockMatches = message.content.match(/```([\s\S]*?)```/g);
+//             if (codeBlockMatches) {
+//                 for (const codeBlock of codeBlockMatches) {
+//                     codeBlocks.push(`Code ${codeBlockCounter}:\n${codeBlock}`);
+//                     codeBlockCounter++;
+//                 }
+//             } else {
+//                 // Handle non-code block messages if needed
+//             }
+//         }
+//     }
+
+//     // Join code blocks with newlines to create a numbered list
+//     const formattedResponse = codeBlocks.join('\n');
+//     return formattedResponse;
+// }
+
+// // Example usage
+// const apiResponse = [
+//     // ... (same as before)
+// ];
+
+// const formattedResponse = formatOpenAIResponse(apiResponse);
+// console.log(formattedResponse);

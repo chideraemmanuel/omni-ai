@@ -30,6 +30,7 @@ const chatSlice = createSlice({
   reducers: {
     addUserMessage: (state: ChatStateTypes, action: { payload: string }) => {
       // state.messages.push(action.payload);
+      // @ts-ignore
       state.messages.push({ role: 'user', content: action.payload });
     },
     setUserInput: (state: ChatStateTypes, action: { payload: string }) => {
@@ -41,11 +42,18 @@ const chatSlice = createSlice({
       .addCase(sendMessage.pending, (state: ChatStateTypes) => {
         state.isResponding = true;
       })
-      .addCase(sendMessage.fulfilled, (state: ChatStateTypes, action) => {
-        state.isResponding = false;
-        state.isSuccess = true;
-        state.messages.push(action.payload);
-      })
+      .addCase(
+        sendMessage.fulfilled,
+        (state: ChatStateTypes, action: { payload: Messagetypes }) => {
+          state.isResponding = false;
+          state.isSuccess = true;
+          // @ts-ignore
+          state.messages.push({
+            role: action.payload.role,
+            content: action.payload.content,
+          });
+        }
+      )
       .addCase(
         sendMessage.rejected,
         (state: ChatStateTypes, action: { payload: any }) => {

@@ -9,7 +9,7 @@ interface Props {
 
 const Logo: FC<Props> = ({ variant }) => {
   return (
-    <StyledLogo variant={variant}>
+    <StyledLogo $variant={variant}>
       <Image src={logo} alt="Logo" />
       <span>OmniAI</span>
     </StyledLogo>

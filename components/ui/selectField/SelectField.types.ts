@@ -43,19 +43,19 @@ export interface ListTypes {
 }
 
 export interface SelectFieldToggleProps {
-  fontSize?: string;
-  borderRadius?: string;
-  border?: string;
-  background?: string;
+  $fontSize?: string;
+  $borderRadius?: string;
+  $border?: string;
+  $background?: string;
   // padding:
-  boxShadow?: string;
-  focus?: {
+  $boxShadow?: string;
+  $focus?: {
     border?: string;
     boxShadowColor?: string;
   };
 }
 
 export interface StyledListProps {
-  active?: boolean;
-  fontSize?: string;
+  $active?: boolean;
+  $fontSize?: string;
 }

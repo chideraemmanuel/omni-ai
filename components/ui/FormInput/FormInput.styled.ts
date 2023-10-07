@@ -56,8 +56,8 @@ export const FormInputField = styled.div<FormInputFieldProps>`
     //     background-color: var(--gray-300);
     //   }
 
-    ${({ error }) =>
-      error &&
+    ${({ $error }) =>
+      $error &&
       css`
         border: 1px solid #fda29b;
 

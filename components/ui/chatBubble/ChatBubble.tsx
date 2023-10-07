@@ -8,7 +8,7 @@ interface Props {
 
 const ChatBubble: FC<Props> = ({ text, role }) => {
   return (
-    <ChatBubbleContainer role={role}>
+    <ChatBubbleContainer $role={role}>
       <p>{text}</p>
     </ChatBubbleContainer>
   );

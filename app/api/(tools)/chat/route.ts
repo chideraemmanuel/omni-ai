@@ -12,49 +12,60 @@ interface Messagetypes {
 export const POST = async (request: NextRequest) => {
   const token = request.cookies.get('token')?.value;
   const body = await request.json();
-  const { messages } = body;
+  const messages = body;
 
-  if (!token) {
-    // NO TOKEN
-    return NextResponse.json('Not Authorized, no token', { status: 400 });
-  } else {
-    // TOKEN EXISTS
-    const decoded = jwt.verify(token, process.env.JWT_SECRET!);
+  const chatCompletion = await openai.chat.completions.create({
+    messages: messages,
+    model: 'gpt-3.5-turbo',
+  });
 
-    console.log('connecting to database...');
-    connectToDatabase();
-    console.log('connected to database.');
+  console.log(chatCompletion.choices);
 
-    // CHECK IF USER WITH ID FROM TOKEN EXISTS
-    // @ts-ignore
-    // const user = await User.findById(decoded.id)
-    const user = await User.exists({ id: decoded.id });
-    console.log('user', user);
+  const responseMessage = chatCompletion.choices[0].message;
 
-    if (!user) {
-      // NO USER WITH THE ID
-      return NextResponse.json('Not authorized', { status: 400 });
-    } else if (!messages) {
-      // USER EXISTS BUT NO PROMPT
-      return NextResponse.json(
-        { message: 'Please enter a prompt' },
-        { status: 400 }
-      );
-    } else {
-      // USER EXISTS, AND PROMPT EXISTS
+  return NextResponse.json(responseMessage, { status: 200 });
 
-      const chatCompletion = await openai.chat.completions.create({
-        messages: messages,
-        model: 'gpt-3.5-turbo',
-      });
+  // if (!token) {
+  //   // NO TOKEN
+  //   return NextResponse.json('Not Authorized, no token', { status: 400 });
+  // } else {
+  //   // TOKEN EXISTS
+  //   const decoded = jwt.verify(token, process.env.JWT_SECRET!);
 
-      console.log(chatCompletion.choices);
+  //   console.log('connecting to database...');
+  //   connectToDatabase();
+  //   console.log('connected to database.');
 
-      const responseMessage = chatCompletion.choices[0].message;
+  //   // CHECK IF USER WITH ID FROM TOKEN EXISTS
+  //   // @ts-ignore
+  //   // const user = await User.findById(decoded.id)
+  //   const user = await User.exists({ id: decoded.id });
+  //   console.log('user', user);
 
-      return NextResponse.json(responseMessage, { status: 200 });
-    }
-  }
+  //   if (!user) {
+  //     // NO USER WITH THE ID
+  //     return NextResponse.json('Not authorized', { status: 400 });
+  //   } else if (!messages) {
+  //     // USER EXISTS BUT NO PROMPT
+  //     return NextResponse.json(
+  //       { message: 'Please enter a prompt' },
+  //       { status: 400 }
+  //     );
+  //   } else {
+  //     // USER EXISTS, AND PROMPT EXISTS
+
+  //     const chatCompletion = await openai.chat.completions.create({
+  //       messages: messages,
+  //       model: 'gpt-3.5-turbo',
+  //     });
+
+  //     console.log(chatCompletion.choices);
+
+  //     const responseMessage = chatCompletion.choices[0].message;
+
+  //     return NextResponse.json(responseMessage, { status: 200 });
+  //   }
+  // }
 };
 
 //

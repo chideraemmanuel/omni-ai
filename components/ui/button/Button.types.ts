@@ -29,29 +29,29 @@ export interface ComponentProps {
 
 export interface StyledButtonProps {
   // base
-  size?: 'sm' | 'md' | 'lg' | 'xl' | '2xl';
+  $size?: 'sm' | 'md' | 'lg' | 'xl' | '2xl';
   //   variants
-  variant?: 'primary' | 'google';
+  $variant?: 'primary' | 'google';
   // custom styling
-  border?: string;
-  borderRadius?: string;
-  padding?: string;
-  background?: string;
-  color?: string;
-  width?: string;
-  fontSize?: string;
+  $border?: string;
+  $borderRadius?: string;
+  $padding?: string;
+  $background?: string;
+  $color?: string;
+  $width?: string;
+  $fontSize?: string;
   //
-  hover?: {
+  $hover?: {
     background?: string;
     color?: string;
     border?: string;
   };
-  focus?: {
+  $focus?: {
     background?: string;
     color?: string;
     border?: string;
   };
-  disabled?: boolean;
+  $disabled?: boolean;
 }
 
 export interface StyledIconProps {

@@ -14,7 +14,7 @@ export const DashboardMobileMenuOverlay = styled.div`
 `;
 
 interface ContainerProps {
-  menuActive: boolean;
+  $menuActive: boolean;
 }
 
 export const DashboardMobileMenuContainer = styled.div<ContainerProps>`
@@ -25,7 +25,7 @@ export const DashboardMobileMenuContainer = styled.div<ContainerProps>`
   top: 0;
   bottom: 0;
   /* left: -100%; */
-  left: ${({ menuActive }) => (menuActive ? '0' : '-100%')};
+  left: ${({ $menuActive }) => ($menuActive ? '0' : '-100%')};
   width: 50vw;
   transition: 0.3s ease;
 

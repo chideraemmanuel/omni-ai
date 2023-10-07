@@ -31,7 +31,7 @@ const DashboardMobileMenu: FC<Props> = () => {
           onClick={() => dispatch(closeDashboardMobileMenu())}
         />
       )}
-      <DashboardMobileMenuContainer menuActive={dashboardMobileMenuActive}>
+      <DashboardMobileMenuContainer $menuActive={dashboardMobileMenuActive}>
         <DashboardMobileMenuHeader>
           <Logo variant="light" />
 

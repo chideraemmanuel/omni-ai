@@ -29,18 +29,18 @@ const Button: React.FC<ComponentProps> = ({
       <StyledButton
         href={tagType === 'a' ? href : undefined}
         as={tagType}
-        variant={variant}
-        borderRadius={borderRadius}
-        padding={padding}
-        background={background}
-        color={color}
-        width={width}
-        fontSize={fontSize}
+        $variant={variant}
+        $borderRadius={borderRadius}
+        $padding={padding}
+        $background={background}
+        $color={color}
+        $width={width}
+        $fontSize={fontSize}
         //
-        size={size}
-        hover={hover}
-        focus={focus}
-        disabled={disabled}
+        $size={size}
+        $hover={hover}
+        $focus={focus}
+        $disabled={disabled}
         onClick={onClick}
         {...props}
       >

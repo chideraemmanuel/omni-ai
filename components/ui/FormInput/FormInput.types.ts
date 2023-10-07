@@ -13,5 +13,5 @@ export interface ComponentProps {
 }
 
 export interface FormInputFieldProps {
-  error: boolean;
+  $error: boolean;
 }

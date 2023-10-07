@@ -1,17 +1,17 @@
 import styled from 'styled-components';
 
 interface BubbleProps {
-  role: 'user' | 'assistant';
+  $role: 'user' | 'assistant';
 }
 
 export const ChatBubbleContainer = styled.div<BubbleProps>`
   display: flex;
-  justify-content: ${({ role }) =>
-    role === 'user' ? 'flex-end' : 'flex-start'};
+  justify-content: ${({ $role }) =>
+    $role === 'user' ? 'flex-end' : 'flex-start'};
 
   p {
-    background-color: ${({ theme, role }) =>
-      role === 'user' ? theme.colors['primary-color'] : '#fff'};
+    background-color: ${({ theme, $role }) =>
+      $role === 'user' ? theme.colors['primary-color'] : '#fff'};
     padding: ${({ theme }) =>
       `${theme.space['fluid-block-space-2']} ${theme.space['fluid-inline-space-4']}`};
     border-radius: 0.5rem;
