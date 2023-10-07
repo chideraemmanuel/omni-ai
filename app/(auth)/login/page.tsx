@@ -21,6 +21,7 @@ import {
   setLoginPassword,
 } from '@/redux/slices/formInputSlice';
 import { useLogin } from '@/lib/hooks/useLogin';
+import FullScreenLoader from '@/components/ui/fullScreenLoader/FullScreenLoader';
 
 interface Props {}
 
@@ -46,7 +47,7 @@ const LoginPage: FC<Props> = () => {
 
   return (
     <>
-      {/* {isLoggingIn && <FullScreenLoader />} */}
+      {isLoggingIn && <FullScreenLoader />}
       <LoginPageContainer>
         <LoginPageFormContainer>
           <LoginFormHeader>
@@ -78,7 +79,7 @@ const LoginPage: FC<Props> = () => {
                 // error={'this is an error'}
                 clearError={clearLoginPasswordError}
               />
-              <Button tagType="button">Create Account</Button>
+              <Button tagType="button">Login</Button>
             </form>
 
             <LoginFormBreak>

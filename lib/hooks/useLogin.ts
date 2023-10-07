@@ -31,14 +31,15 @@ export const useLogin = () => {
   useEffect(() => {
     // MONITOR AUTH STATE AND TREAT ACCORDINGLY
     if (isSuccess) {
-      // alert('Registration Successful!');
+      // alert('Login Successful!');
       toast.success('Login successful!');
-      dispatch(resetAllForms());
       router.replace('/dashboard');
+      dispatch(resetAllForms());
     }
 
     if (isError) {
-      alert(error || 'An error occured during sign up.');
+      // alert(error || 'An error occured during sign up.');
+      toast.success(error || 'An error occured during sign up.');
     }
 
     dispatch(resetAuthState());
@@ -63,8 +64,8 @@ export const useLogin = () => {
     }
 
     if (!navigator.onLine) {
-      //   toast('Please check your internet connection');
-      alert('Please check your internet connection');
+      toast.warning('Please check your internet connection');
+      // alert('Please check your internet connection');
       return;
     }
 

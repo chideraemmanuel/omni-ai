@@ -1,5 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { sendMessage } from './chatService';
+import { toast } from 'react-toastify';
 
 interface Messagetypes {
   role: 'user' | 'assistant';
@@ -9,7 +10,7 @@ interface Messagetypes {
 export interface ChatStateTypes {
   userInput: string;
   messages: Messagetypes[] | [];
-  isResponding: boolean;
+  isLoading: boolean;
   isSuccess: boolean;
   isError: boolean;
   error: null | string;
@@ -18,7 +19,7 @@ export interface ChatStateTypes {
 const initialState: ChatStateTypes = {
   userInput: '',
   messages: [],
-  isResponding: false,
+  isLoading: false,
   isSuccess: false,
   isError: false,
   error: null,
@@ -40,12 +41,12 @@ const chatSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(sendMessage.pending, (state: ChatStateTypes) => {
-        state.isResponding = true;
+        state.isLoading = true;
       })
       .addCase(
         sendMessage.fulfilled,
         (state: ChatStateTypes, action: { payload: Messagetypes }) => {
-          state.isResponding = false;
+          state.isLoading = false;
           state.isSuccess = true;
           // @ts-ignore
           state.messages.push({
@@ -57,9 +58,12 @@ const chatSlice = createSlice({
       .addCase(
         sendMessage.rejected,
         (state: ChatStateTypes, action: { payload: any }) => {
-          state.isResponding = false;
+          state.isLoading = false;
           state.isError = true;
           state.error = action.payload;
+          state.messages.pop();
+
+          toast.error('An error occured');
           // state.messages.push({
           //   role: 'assistant',
           //   content: 'An error occured!',

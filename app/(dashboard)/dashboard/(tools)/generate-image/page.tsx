@@ -22,6 +22,7 @@ import Image from 'next/image';
 import illustration from '@/assets/illustration.svg';
 import { generateImage } from '@/redux/slices/image-generation/imageGenerationService';
 import { imageNumberList, sizeList } from '@/constants';
+import { useGenerateImage } from '@/lib/hooks/useGenerateImage';
 
 interface Props {}
 
@@ -30,7 +31,7 @@ const ImageGenerationPage: FC<Props> = () => {
     prompt,
     size,
     amount,
-    isGenerating,
+    isLoading: isGenerating,
     isSuccess,
     isError,
     error,
@@ -39,22 +40,16 @@ const ImageGenerationPage: FC<Props> = () => {
 
   const dispatch = useDispatch();
 
+  const { mutate: generateImage } = useGenerateImage();
+
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    if (!prompt || prompt === '') {
-      alert('Please enter a prompt');
-      return;
-    } else if (!size?.value) {
-      alert('Please select image(s) size');
-      return;
-    } else if (!amount?.value) {
-      alert('Please select number of images');
-      return;
-    }
-    dispatch(
-      generateImage({ prompt, size: size?.value, amount: amount?.value })
-    );
+    generateImage({
+      prompt,
+      size: size?.value,
+      amount: amount?.value,
+    });
   };
 
   return (

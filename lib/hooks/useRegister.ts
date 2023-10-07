@@ -13,6 +13,7 @@ import { useRouter } from 'next/navigation';
 import { useState, useEffect } from 'react';
 // import { toast } from 'react-hot-toast';
 import { useDispatch, useSelector } from 'react-redux';
+import { toast } from 'react-toastify';
 
 interface RegistrationCredentials {
   name: string;
@@ -34,13 +35,15 @@ export const useRegister = () => {
   useEffect(() => {
     // MONITOR AUTH STATE AND TREAT ACCORDINGLY
     if (isSuccess) {
-      alert('Registration Successful!');
-      dispatch(resetAllForms());
+      // alert('Registration Successful!');
+      toast.success('Registration successful!');
       router.replace('/dashboard');
+      dispatch(resetAllForms());
     }
 
     if (isError) {
-      alert(error || 'An error occured during sign up.');
+      // alert(error || 'An error occured during sign up.');
+      toast.success(error || 'An error occured during sign up.');
     }
 
     dispatch(resetAuthState());
@@ -75,8 +78,8 @@ export const useRegister = () => {
     }
 
     if (!navigator.onLine) {
-      //   toast('Please check your internet connection');
-      alert('Please check your internet connection');
+      // alert('Please check your internet connection');
+      toast.warning('Please check your internet connection');
       return;
     }
 

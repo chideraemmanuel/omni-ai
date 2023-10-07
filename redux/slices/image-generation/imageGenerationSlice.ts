@@ -12,7 +12,7 @@ export interface ImageGenerationTypes {
     value: string | null;
   } | null;
 
-  isGenerating: boolean;
+  isLoading: boolean;
   isSuccess: boolean;
   isError: boolean;
   error: null | string;
@@ -29,7 +29,7 @@ const initialState: ImageGenerationTypes = {
     title: '1 image',
     value: '1',
   },
-  isGenerating: false,
+  isLoading: false,
   isSuccess: false,
   isError: false,
   error: null,
@@ -59,12 +59,12 @@ const imageGenerationSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(generateImage.pending, (state: ImageGenerationTypes) => {
-        state.isGenerating = true;
+        state.isLoading = true;
       })
       .addCase(
         generateImage.fulfilled,
         (state: ImageGenerationTypes, action: { payload: any }) => {
-          state.isGenerating = false;
+          state.isLoading = false;
           state.isSuccess = true;
           state.images = action.payload;
         }
@@ -72,7 +72,7 @@ const imageGenerationSlice = createSlice({
       .addCase(
         generateImage.rejected,
         (state: ImageGenerationTypes, action: { payload: any }) => {
-          state.isGenerating = false;
+          state.isLoading = false;
           state.isError = true;
           state.error = action.payload;
         }

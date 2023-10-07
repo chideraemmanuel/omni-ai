@@ -11,29 +11,33 @@ import { useDispatch, useSelector } from 'react-redux';
 import { StoreTypes } from '@/redux/store';
 import { addUserMessage, setUserInput } from '@/redux/slices/chat/chatSlice';
 import { sendMessage } from '@/redux/slices/chat/chatService';
+import RelativeLoader from '@/components/ui/relativeLoader/RelativeLoader';
+import { toast } from 'react-toastify';
+import { useSendMessage } from '@/lib/hooks/useSendMessage';
 
 interface Props {}
 
 const ChatPage: FC<Props> = () => {
-  const { userInput, messages, isResponding } = useSelector(
-    (store: StoreTypes) => store.chat
-  );
+  const {
+    userInput,
+    messages,
+    isLoading: isResponding,
+  } = useSelector((store: StoreTypes) => store.chat);
 
   const dispatch = useDispatch();
+
+  const { mutate: sendMessage } = useSendMessage();
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    dispatch(setUserInput(''));
-    dispatch(addUserMessage(userInput));
-
-    // @ts-ignore
-    dispatch(sendMessage([...messages, { role: 'user', content: userInput }]));
+    sendMessage(userInput);
   };
 
   return (
     <ChatContainer>
       <ConversationContainer>
+        {isResponding && <RelativeLoader />}
         {/* <ChatBubble text="Hi there!" role="user" />
         <ChatBubble
           text="Hello, how can i assist you today?"

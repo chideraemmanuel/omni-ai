@@ -9,6 +9,7 @@ export const ChatContainer = styled.div`
 `;
 
 export const ConversationContainer = styled.div`
+  position: relative;
   display: flex;
   flex-direction: column;
   gap: ${({ theme }) => theme.space['fluid-block-space-5']};
