@@ -27,9 +27,8 @@ const ChatPage: FC<Props> = () => {
     dispatch(setUserInput(''));
     dispatch(addUserMessage(userInput));
 
+    // @ts-ignore
     dispatch(sendMessage([...messages, { role: 'user', content: userInput }]));
-
-    console.log([...messages, { role: 'user', content: userInput }]);
   };
 
   return (
@@ -41,7 +40,7 @@ const ChatPage: FC<Props> = () => {
           role="assistant"
         /> */}
         {messages.map((message, index) => (
-          <ChatBubble text={message.content} role={message.role} />
+          <ChatBubble text={message.content} role={message.role} key={index} />
         ))}
       </ConversationContainer>
       <InputContainer onSubmit={(e) => handleSubmit(e)}>

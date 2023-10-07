@@ -9,13 +9,13 @@ export function middleware(request: NextRequest) {
   //   console.log('url', url);
   //   console.log('nextUrl', nextUrl);
 
-  // console.log(token);
+  console.log(token);
 
   // if (!token) {
   //   // return NextResponse.redirect(new URL('/login', request.url));
   // }
 }
 
-// export const config = {
-//   matcher: '/dashboard/:path*',
-// };
+export const config = {
+  matcher: '/dashboard/:path*',
+};

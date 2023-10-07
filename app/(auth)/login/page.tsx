@@ -29,7 +29,11 @@ const LoginPage: FC<Props> = () => {
     (store: StoreTypes) => store.formInputs.login
   );
 
-  const { mutate: login, isLoading: isLoggingIn } = useLogin();
+  const { isLoading: isLoggingIn } = useSelector(
+    (store: StoreTypes) => store.auth
+  );
+
+  const { mutate: login } = useLogin();
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();

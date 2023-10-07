@@ -1,3 +1,5 @@
+import { registerUser } from '@/redux/slices/auth/authService';
+import { resetAuthState } from '@/redux/slices/auth/authSlice';
 import {
   resetAllForms,
   setRegistrationConfirmPasswordError,
@@ -5,11 +7,12 @@ import {
   setRegistrationNameError,
   setRegistrationPasswordError,
 } from '@/redux/slices/formInputSlice';
+import { StoreTypes } from '@/redux/store';
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 // import { toast } from 'react-hot-toast';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 interface RegistrationCredentials {
   name: string;
@@ -19,10 +22,29 @@ interface RegistrationCredentials {
 }
 
 export const useRegister = () => {
-  const [isLoading, setIsLoading] = useState(false);
+  // const [isLoading, setIsLoading] = useState(false);
+
+  const { isLoading, isSuccess, isError, error } = useSelector(
+    (store: StoreTypes) => store.auth
+  );
 
   const dispatch = useDispatch();
   const router = useRouter();
+
+  useEffect(() => {
+    // MONITOR AUTH STATE AND TREAT ACCORDINGLY
+    if (isSuccess) {
+      alert('Registration Successful!');
+      dispatch(resetAllForms());
+      router.replace('/dashboard');
+    }
+
+    if (isError) {
+      alert(error || 'An error occured during sign up.');
+    }
+
+    dispatch(resetAuthState());
+  }, [isSuccess, isError, error]);
 
   const emailRegex = /^([a-z\d\.-]+)@([a-z\d-]+)\.([a-z]{2,5})(\.[a-z]{2,5})?$/;
 
@@ -58,39 +80,48 @@ export const useRegister = () => {
       return;
     }
 
-    setIsLoading(true);
+    dispatch(
+      // @ts-ignore
+      registerUser({
+        name,
+        email,
+        password,
+      })
+    );
 
-    try {
-      const response = await axios.post(
-        '/api/auth/register',
-        JSON.stringify({
-          name,
-          email,
-          password,
-        })
-      );
+    // setIsLoading(true);
 
-      console.log(response.data);
+    // try {
+    //   const response = await axios.post(
+    //     '/api/auth/register',
+    //     JSON.stringify({
+    //       name,
+    //       email,
+    //       password,
+    //     })
+    //   );
 
-      dispatch(resetAllForms());
-      setIsLoading(false);
-      //   router.replace('/dashboard');
-      router.push('/');
-    } catch (error) {
-      setIsLoading(false);
-      //   console.log(error);
-      //   console.log(error.response.data.error);
+    //   console.log(response.data);
 
-      //   @ts-ignore
-      if (error.response.data.error === 'Email has already been used') {
-        dispatch(setRegistrationEmailError('Email has already been used'));
-        return;
-      }
+    //   dispatch(resetAllForms());
+    //   setIsLoading(false);
+    //   //   router.replace('/dashboard');
+    //   router.push('/');
+    // } catch (error) {
+    //   setIsLoading(false);
+    //   //   console.log(error);
+    //   //   console.log(error.response.data.error);
 
-      //   toast('Something went wrong. Please try again.');
-      alert('Something went wrong. Please try again.');
-    }
+    //   //   @ts-ignore
+    //   if (error.response.data.error === 'Email has already been used') {
+    //     dispatch(setRegistrationEmailError('Email has already been used'));
+    //     return;
+    //   }
+
+    //   //   toast('Something went wrong. Please try again.');
+    //   alert('Something went wrong. Please try again.');
+    // }
   };
 
-  return { mutate, isLoading };
+  return { mutate };
 };

@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { register } from './authService';
+import { loginUser, registerUser } from './authService';
 
 export interface AuthStateTypes {
   user: any;
@@ -20,18 +20,38 @@ const initialState: AuthStateTypes = {
 const authSlice = createSlice({
   name: 'auth',
   initialState,
-  reducers: {},
+  reducers: {
+    resetAuthState: (state: AuthStateTypes) => {
+      state.error = null;
+      state.isError = false;
+      state.isLoading = false;
+      state.isSuccess = false;
+    },
+  },
   extraReducers: (builder) => {
     builder
-      .addCase(register.pending, (state: AuthStateTypes) => {
+      .addCase(registerUser.pending, (state: AuthStateTypes) => {
         state.isLoading = true;
       })
-      .addCase(register.fulfilled, (state: AuthStateTypes, action) => {
+      .addCase(registerUser.fulfilled, (state: AuthStateTypes, action) => {
         state.isLoading = false;
         state.isSuccess = true;
         state.user = action.payload;
       })
-      .addCase(register.rejected, (state: AuthStateTypes, action) => {
+      .addCase(registerUser.rejected, (state: AuthStateTypes, action) => {
+        state.isLoading = false;
+        state.isError = true;
+        state.error = action.payload;
+      })
+      .addCase(loginUser.pending, (state: AuthStateTypes) => {
+        state.isLoading = true;
+      })
+      .addCase(loginUser.fulfilled, (state: AuthStateTypes, action) => {
+        state.isLoading = false;
+        state.isSuccess = true;
+        state.user = action.payload;
+      })
+      .addCase(loginUser.rejected, (state: AuthStateTypes, action) => {
         state.isLoading = false;
         state.isError = true;
         state.error = action.payload;
@@ -39,6 +59,6 @@ const authSlice = createSlice({
   },
 });
 
-export const {} = authSlice.actions;
+export const { resetAuthState } = authSlice.actions;
 
 export default authSlice.reducer;

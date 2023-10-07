@@ -51,6 +51,16 @@ export async function POST(request: NextRequest) {
         const token = generateToken(id);
         //   console.log(token);
 
+        // set cookie
+        // const response = NextResponse.next();
+        // const cookie = response.cookies.set('token', token, {
+        //   maxAge: 60 * 60 * 24 * 7, // 1 week
+        //   // httpOnly: true,
+        //   secure: process.env.NODE_ENV === 'production', // Secure in production
+        // });
+
+        // console.log(cookie);
+
         return NextResponse.json(
           {
             id,
@@ -60,9 +70,7 @@ export async function POST(request: NextRequest) {
           {
             status: 200,
             headers: {
-              'Set-Cookie': `token=${token}; httpOnly; path=/ secure=${
-                process.env.NODE_ENV === 'production'
-              }`,
+              'Set-Cookie': `token=${token}; httpOnly; path=/`,
             },
           }
         );

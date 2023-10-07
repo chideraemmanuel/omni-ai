@@ -34,7 +34,12 @@ const RegistrationPage: FC<Props> = () => {
     (store: StoreTypes) => store.formInputs.register
   );
 
-  const { mutate: signUp, isLoading: isSigningUp } = useRegister();
+  const { isLoading: isSigningUp } = useSelector(
+    (store: StoreTypes) => store.auth
+  );
+
+  // REGISTRATION HOOK
+  const { mutate: signUp } = useRegister();
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();

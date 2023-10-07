@@ -4,6 +4,7 @@ import theme from './theme';
 import ReduxProvider from '@/redux/ReduxProvider';
 import StyledComponentsRegistry from '@/lib/registry';
 import StyledComponentsThemeProvider from '@/lib/StyledComponentsThemeProvider';
+import ToastProvider from '@/lib/ToastProvider';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -22,7 +23,9 @@ export default function RootLayout({
       <ReduxProvider>
         <html lang="en">
           <body className={inter.className}>
-            <StyledComponentsRegistry>{children}</StyledComponentsRegistry>
+            <ToastProvider>
+              <StyledComponentsRegistry>{children}</StyledComponentsRegistry>
+            </ToastProvider>
           </body>
         </html>
       </ReduxProvider>
