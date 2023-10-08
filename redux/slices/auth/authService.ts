@@ -25,7 +25,8 @@ export const registerUser = createAsyncThunk(
     } catch (error) {
       console.log(error);
       return thunkAPI.rejectWithValue(
-        error?.response?.data?.error || 'An error occured'
+        // @ts-ignore
+        error?.response?.data?.message || 'An error occured'
       );
     }
   }
@@ -41,21 +42,44 @@ export const loginUser = createAsyncThunk(
       );
 
       return response.data;
-      // const res = await fetch('/api/auth/login', {
-      //   method: 'POST',
-      //   body: JSON.stringify(credentials),
-      // });
-      // if (!res.ok) {
-      //   throw new Error('Res not okay!');
-      // }
-
-      // const data = await res.json();
-      // console.log('from auth service:', data);
-      // return data;
     } catch (error) {
       console.log('from auth service error:', error);
       return thunkAPI.rejectWithValue(
-        error?.response?.data?.error || 'An error occured'
+        // @ts-ignore
+        error?.response?.data?.message || 'An error occured'
+      );
+    }
+  }
+);
+
+// const axiosInstance = axios.create();
+
+// axiosInstance.interceptors.response.use(
+//   (response) => {
+//     // console.log(response);
+//     return response;
+//   },
+//   (error) => {
+//     // console.log(error);
+//     if (error.response.status === 401) {
+//       window.location.href = '/login';
+//     }
+
+//     return Promise.reject(error);
+//   }
+// );
+
+export const getCurrentUser = createAsyncThunk(
+  'auth/get-user',
+  async (_, thunkAPI) => {
+    try {
+      const response = await axios.get('/api/auth/user');
+      return response.data;
+    } catch (error) {
+      console.log(error);
+      return thunkAPI.rejectWithValue(
+        // @ts-ignore
+        error?.response?.data?.message || 'An error occureddd'
       );
     }
   }

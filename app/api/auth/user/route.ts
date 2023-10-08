@@ -11,7 +11,7 @@ interface UserTypes {
 }
 
 export async function GET(request: NextRequest) {
-  const token = request.cookies.get('token2')?.value;
+  const token = request.cookies.get('token')?.value;
 
   //   console.log(cookie);
 
@@ -25,7 +25,7 @@ export async function GET(request: NextRequest) {
   if (!token) {
     return NextResponse.json(
       { message: 'Not authorized, no token' },
-      { status: 400 }
+      { status: 401 }
     );
   } else {
     const decoded = jwt.verify(token, process.env.JWT_SECRET!);
@@ -42,7 +42,7 @@ export async function GET(request: NextRequest) {
         email: user.email,
       });
     } else {
-      return NextResponse.json({ message: 'Not authorized' });
+      return NextResponse.json({ message: 'Not authorized' }, { status: 401 });
     }
   }
 

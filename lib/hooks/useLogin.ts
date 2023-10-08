@@ -39,7 +39,7 @@ export const useLogin = () => {
 
     if (isError) {
       // alert(error || 'An error occured during sign up.');
-      toast.success(error || 'An error occured during sign up.');
+      toast.error(error || 'An error occured during sign in.');
     }
 
     dispatch(resetAuthState());

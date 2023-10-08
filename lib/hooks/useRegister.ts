@@ -43,7 +43,7 @@ export const useRegister = () => {
 
     if (isError) {
       // alert(error || 'An error occured during sign up.');
-      toast.success(error || 'An error occured during sign up.');
+      toast.error(error || 'An error occured during sign up.');
     }
 
     dispatch(resetAuthState());

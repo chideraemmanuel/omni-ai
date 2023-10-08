@@ -7,6 +7,7 @@ import {
   DashboardLayoutContainer,
 } from './layout.styled';
 import DashboardHeader from '@/components/dashboard/dashboardHeader/DashboardHeader';
+import AuthProvider from '@/lib/AuthProvider';
 
 interface Props {
   children: React.ReactNode;
@@ -14,14 +15,16 @@ interface Props {
 
 const DashboardLayout: FC<Props> = ({ children }) => {
   return (
-    <DashboardLayoutContainer>
-      <DashboardNavigation />
-      <DashboardLayoutContent>
-        <DashboardHeader />
+    <AuthProvider>
+      <DashboardLayoutContainer>
+        <DashboardNavigation />
+        <DashboardLayoutContent>
+          <DashboardHeader />
 
-        <section>{children}</section>
-      </DashboardLayoutContent>
-    </DashboardLayoutContainer>
+          <section>{children}</section>
+        </DashboardLayoutContent>
+      </DashboardLayoutContainer>
+    </AuthProvider>
   );
 };
 

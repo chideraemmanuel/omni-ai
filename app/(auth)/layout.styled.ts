@@ -8,5 +8,11 @@ export const AuthLayoutContainer = styled.main`
 
   @media screen and (max-width: 768px) {
     grid-template-columns: 1fr;
+    grid-template-rows: auto 1fr;
+    align-items: flex-start;
+
+    /* > *:first-child {
+      display: none;
+    } */
   }
 `;
