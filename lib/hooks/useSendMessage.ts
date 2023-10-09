@@ -4,9 +4,10 @@ import { useDispatch, useSelector } from 'react-redux';
 import { StoreTypes } from '@/redux/store';
 import { toast } from 'react-toastify';
 import { addUserMessage, setUserInput } from '@/redux/slices/chat/chatSlice';
+import { sendMessage } from '@/redux/slices/chat/chatService';
 
 export const useSendMessage = () => {
-  const { isLoading, isSuccess, isError, error } = useSelector(
+  const { isLoading, isSuccess, isError, error, messages } = useSelector(
     (store: StoreTypes) => store.chat
   );
 
@@ -22,7 +23,6 @@ export const useSendMessage = () => {
     dispatch(setUserInput(''));
     dispatch(addUserMessage(userInput));
 
-    // @ts-ignore
     dispatch(sendMessage([...messages, { role: 'user', content: userInput }]));
   };
 

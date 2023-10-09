@@ -23,6 +23,8 @@ export const useGenerateImage = () => {
   const mutate = async (options: ImageGenerationOptionsTypes) => {
     const { amount, prompt, size } = options;
 
+    console.log('options', options);
+
     if (!prompt || prompt === '') {
       // alert('Please enter a prompt');
       toast.warning('Please enter a prompt');
@@ -44,7 +46,7 @@ export const useGenerateImage = () => {
 
     dispatch(
       // @ts-ignore
-      generateImage({ prompt, size: size?.value, amount: amount?.value })
+      generateImage({ prompt, size: size, amount: amount })
     );
   };
 

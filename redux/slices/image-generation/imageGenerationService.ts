@@ -14,12 +14,13 @@ interface PayloadTypes {
 export const generateImage = createAsyncThunk(
   'generate-image',
   async (payload: PayloadTypes, thunkAPI) => {
+    console.log(payload);
     try {
       const response = await axios.post('/api/generate-image', payload);
       return response.data;
     } catch (error) {
       console.log(error);
-      thunkAPI.rejectWithValue('The image could not be generated');
+      return thunkAPI.rejectWithValue('The image could not be generated');
     }
   }
 );

@@ -5,6 +5,8 @@ export interface AuthStateTypes {
   user: any;
   isAuthenticated: boolean;
   isAuthenticating: boolean;
+  isAuthError: boolean;
+  authError: null | string;
   isLoading: boolean;
   isSuccess: boolean;
   isError: boolean;
@@ -14,7 +16,9 @@ export interface AuthStateTypes {
 const initialState: AuthStateTypes = {
   user: null,
   isAuthenticated: false,
-  isAuthenticating: false,
+  isAuthenticating: true,
+  isAuthError: false,
+  authError: null,
   isLoading: false,
   isSuccess: false,
   isError: false,
@@ -73,8 +77,9 @@ const authSlice = createSlice({
       .addCase(getCurrentUser.rejected, (state: AuthStateTypes, action) => {
         state.isAuthenticating = false;
         state.isAuthenticated = false;
+        state.isAuthError = true;
         // @ts-ignore
-        // state.error = action.payload;
+        state.authError = action.payload;
       });
   },
 });

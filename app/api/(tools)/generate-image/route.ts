@@ -5,6 +5,8 @@ export const POST = async (request: NextRequest) => {
   const body = await request.json();
   const { prompt, amount, size } = body;
 
+  console.log(body);
+
   if (!prompt || !amount || !size) {
     return NextResponse.json(
       { error: true, message: 'Please provide the required options' },

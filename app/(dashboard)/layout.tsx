@@ -7,7 +7,7 @@ import {
   DashboardLayoutContainer,
 } from './layout.styled';
 import DashboardHeader from '@/components/dashboard/dashboardHeader/DashboardHeader';
-import AuthProvider from '@/lib/AuthProvider';
+import AuthProvider from '@/lib/decorators/AuthProvider';
 
 interface Props {
   children: React.ReactNode;
