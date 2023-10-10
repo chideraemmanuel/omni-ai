@@ -4,6 +4,9 @@ import { generateToken } from '@/lib/utils/generateToken';
 import User from '@/models/user';
 import { NextRequest, NextResponse } from 'next/server';
 import bcrypt from 'bcrypt';
+import generateOtp from '@/lib/utils/generateOtp';
+import OTP from '@/models/otp';
+import { transporter } from '@/config/nodemailer';
 
 interface RequestBodyTypes {
   name: string;
@@ -48,8 +51,6 @@ export async function POST(request: NextRequest) {
     );
   } else {
     try {
-      //   await registerUser({ name, email, password }); DOES NOT WORK!
-
       // HASH PASSWORD
       const salt = await bcrypt.genSalt(10);
       const hashedPassword = await bcrypt.hash(password, salt);
@@ -67,10 +68,41 @@ export async function POST(request: NextRequest) {
       const token = generateToken(createdUser._id);
       //   console.log(token);
 
+      // GENERATE OTP
+      const otp = generateOtp();
+
+      // HASH OTP
+      const otpSalt = 10;
+      const hashedOtp = bcrypt.hash(otp, otpSalt);
+
+      // STORE OTP
+      await OTP.create({
+        email,
+        otp: hashedOtp,
+        createdAt: Date.now(),
+        expiresAt: Date.now() + 360000,
+      });
+
+      // SEND OTP
+      const mailOptions = {
+        from: '',
+        to: email,
+        subject: 'Email Verification',
+        html: `<p>Thank you for joining OmniAI. Please enter the code <b>${otp}</b> to complete registration</p>`,
+      };
+
+      transporter.sendMail(mailOptions, (error, info) => {
+        if (error) {
+          console.log('failed to send mail', error);
+        } else {
+          console.log('Mail sent!', info.messageId);
+        }
+      });
+
       return NextResponse.json(
         {
-          id: createdUser._id,
-          name: createdUser.name,
+          status: 'PENDING',
+          message: 'OTP sent to email',
           email: createdUser.email,
         },
         {
@@ -82,6 +114,26 @@ export async function POST(request: NextRequest) {
           },
         }
       );
+
+      // //   GENERATE SESSION TOKEN
+      // const token = generateToken(createdUser._id);
+      // //   console.log(token);
+
+      // return NextResponse.json(
+      //   {
+      //     id: createdUser._id,
+      //     name: createdUser.name,
+      //     email: createdUser.email,
+      //   },
+      //   {
+      //     status: 201,
+      //     headers: {
+      //       'Set-Cookie': `token=${token}; httpOnly; path=/ secure=${
+      //         process.env.NODE_ENV === 'production'
+      //       }`,
+      //     },
+      //   }
+      // );
     } catch (error) {
       console.log(error);
       return NextResponse.json({ error: 'Server error' }, { status: 500 });

@@ -14,6 +14,10 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: [true, 'Please enter a password'],
   },
+  verified: {
+    type: Boolean,
+    default: false,
+  },
 });
 
 const User = models.User || model('User', userSchema);

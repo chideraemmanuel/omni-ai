@@ -25,7 +25,7 @@ interface RegistrationCredentials {
 export const useRegister = () => {
   // const [isLoading, setIsLoading] = useState(false);
 
-  const { isLoading, isSuccess, isError, error } = useSelector(
+  const { isLoading, isSuccess, isError, error, user } = useSelector(
     (store: StoreTypes) => store.auth
   );
 
@@ -35,14 +35,13 @@ export const useRegister = () => {
   useEffect(() => {
     // MONITOR AUTH STATE AND TREAT ACCORDINGLY
     if (isSuccess) {
-      // alert('Registration Successful!');
       toast.success('Registration successful!');
-      router.replace('/dashboard');
+      // router.replace('/dashboard');
+      router.replace('/user/verify');
       dispatch(resetAllForms());
     }
 
     if (isError) {
-      // alert(error || 'An error occured during sign up.');
       toast.error(error || 'An error occured during sign up.');
     }
 
@@ -78,7 +77,6 @@ export const useRegister = () => {
     }
 
     if (!navigator.onLine) {
-      // alert('Please check your internet connection');
       toast.warning('Please check your internet connection');
       return;
     }

@@ -8,7 +8,7 @@ import { FC, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 const AuthProvider = ({ children }: { children: React.ReactNode }) => {
-  const { isAuthenticated, isAuthenticating, isAuthError, authError } =
+  const { isAuthenticated, isAuthenticating, isAuthError, authError, user } =
     useSelector((store: StoreTypes) => store.auth);
 
   const dispatch = useDispatch();
@@ -23,7 +23,11 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     if (isAuthError) {
       router.replace('/login');
     }
-  }, [isAuthError, authError]);
+
+    if (!user.verified) {
+      router.replace('/user/verify');
+    }
+  }, [isAuthError, authError, user]);
 
   if (isAuthenticating) {
     return <FullScreenLoader />;

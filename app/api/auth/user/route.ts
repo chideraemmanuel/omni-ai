@@ -8,6 +8,7 @@ interface UserTypes {
   name: string;
   email: string;
   password: string;
+  verified: boolean;
 }
 
 export async function GET(request: NextRequest) {
@@ -35,15 +36,20 @@ export async function GET(request: NextRequest) {
     // @ts-ignore
     const user: UserTypes | undefined | null = await User.findById(decoded.id);
 
-    if (user) {
-      return NextResponse.json({
-        id: user._id,
-        name: user.name,
-        email: user.email,
-      });
-    } else {
+    if (!user) {
       return NextResponse.json({ message: 'Not authorized' }, { status: 401 });
     }
+
+    // if (!user.verified) {
+    //   return NextResponse.json({ message: 'Email not verified' }, { status: 401 });
+    // }
+
+    return NextResponse.json({
+      id: user._id,
+      name: user.name,
+      email: user.email,
+      verified: user.verified,
+    });
   }
 
   //   return NextResponse.json({ message: 'User!' });
