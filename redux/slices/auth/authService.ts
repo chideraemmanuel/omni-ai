@@ -21,6 +21,8 @@ export const registerUser = createAsyncThunk(
         JSON.stringify(credentials)
       );
 
+      console.log(response.data);
+
       return response.data;
     } catch (error) {
       console.log(error);
@@ -80,6 +82,36 @@ export const getCurrentUser = createAsyncThunk(
       return thunkAPI.rejectWithValue(
         // @ts-ignore
         error?.response?.data?.message || 'An error occureddd'
+      );
+    }
+  }
+);
+
+export const verifyOtp = createAsyncThunk(
+  'auth/verify-otp',
+  async (otp: string, thunkAPI) => {
+    try {
+      const userResponse = await axios.get('/api/auth/user');
+
+      console.log('user response', userResponse);
+
+      const { email } = userResponse.data;
+
+      const otpVerificationResponse = await axios.post(
+        '/api/auth/otp/verify',
+        JSON.stringify({
+          otp,
+          email,
+        })
+      );
+      console.log('otp verification response', otpVerificationResponse.data);
+
+      return otpVerificationResponse.data;
+    } catch (error) {
+      console.log('otp verification error', error);
+      return thunkAPI.rejectWithValue(
+        // @ts-ignore
+        error?.response?.data?.message || 'Otp Verification Failed'
       );
     }
   }

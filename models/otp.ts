@@ -11,6 +11,6 @@ const OTPSchema = new mongoose.Schema({
   expiresAt: Date,
 });
 
-const OTP = models.User || model('OTP', OTPSchema);
+const OTP = models.OTP || model('OTP', OTPSchema);
 
 export default OTP;

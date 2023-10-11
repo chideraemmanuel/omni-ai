@@ -1,6 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server';
+import User from './models/user';
+import jwt from 'jsonwebtoken';
+import { connectToDatabase } from './lib/utils/database';
 
-export function middleware(request: NextRequest) {
+export async function middleware(request: NextRequest) {
   // get cookie on request
   const url = request.url;
   const nextUrl = request.nextUrl;
@@ -20,6 +23,27 @@ export function middleware(request: NextRequest) {
 
   if (nextUrl.pathname.startsWith('/dashboard') && !token) {
     return NextResponse.redirect(new URL('/login', request.url));
+  }
+
+  // WHEN NAVIGATING TO VERIFICATION PPAGE...
+  if (nextUrl.pathname.startsWith('/user/verify') && !token) {
+    return NextResponse.redirect(new URL('/login', request.url));
+  }
+
+  if (nextUrl.pathname.startsWith('/user/verify') && token) {
+    const decoded = jwt.verify(token, process.env.JWT_SECRET!);
+
+    await connectToDatabase();
+
+    // @ts-ignore
+    const currentUser = await User.findById(decoded.id);
+
+    if (!currentUser) {
+      return NextResponse.redirect(new URL('/login', request.url));
+    } else if (currentUser.verified) {
+      // NAVIGATE TO DASHBOARD IF USER IS ALREADY VERIFIED
+      return NextResponse.redirect(new URL('/dashboard', request.url));
+    }
   }
 
   // if (!token) {

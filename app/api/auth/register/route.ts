@@ -7,6 +7,9 @@ import bcrypt from 'bcrypt';
 import generateOtp from '@/lib/utils/generateOtp';
 import OTP from '@/models/otp';
 import { transporter } from '@/config/nodemailer';
+import { Resend } from 'resend';
+
+const resend = new Resend(process.env.RESEND_API_KEY);
 
 interface RequestBodyTypes {
   name: string;
@@ -29,7 +32,7 @@ export async function POST(request: NextRequest) {
 
   if (!name || !email || !password) {
     return NextResponse.json(
-      { error: 'Please supply the required credentials' },
+      { message: 'Please supply the required credentials' },
       { status: 400 }
     );
   }
@@ -46,7 +49,7 @@ export async function POST(request: NextRequest) {
 
   if (userExists) {
     return NextResponse.json(
-      { error: 'Email is already in use' },
+      { message: 'Email is already in use' },
       { status: 400 }
     );
   } else {
@@ -73,7 +76,7 @@ export async function POST(request: NextRequest) {
 
       // HASH OTP
       const otpSalt = 10;
-      const hashedOtp = bcrypt.hash(otp, otpSalt);
+      const hashedOtp = await bcrypt.hash(otp, otpSalt);
 
       // STORE OTP
       await OTP.create({
@@ -84,20 +87,30 @@ export async function POST(request: NextRequest) {
       });
 
       // SEND OTP
-      const mailOptions = {
-        from: '',
+      // const mailOptions = {
+      //   from: 'chideraemmanuel01@hotmail.com',
+      //   to: email,
+      //   subject: 'Email Verification',
+      //   html: `<p>Thank you for joining OmniAI. Please enter the code <b>${otp}</b> to complete registration</p>`,
+      // };
+
+      // await transporter.sendMail(mailOptions, (error, info) => {
+      //   if (error) {
+      //     console.log('failed to send mail', error);
+      //     // return NextResponse.json({ error: 'Server error' }, { status: 500 });
+      //   } else {
+      //     console.log('Mail sent!', info.messageId);
+      //   }
+      // });
+      const data = await resend.emails.send({
+        from: 'Acme <onboarding@resend.dev>',
         to: email,
         subject: 'Email Verification',
         html: `<p>Thank you for joining OmniAI. Please enter the code <b>${otp}</b> to complete registration</p>`,
-      };
-
-      transporter.sendMail(mailOptions, (error, info) => {
-        if (error) {
-          console.log('failed to send mail', error);
-        } else {
-          console.log('Mail sent!', info.messageId);
-        }
+        //  react: EmailTemplate({ firstName: 'John' }),
       });
+
+      console.log('email data', data);
 
       return NextResponse.json(
         {

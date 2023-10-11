@@ -1,10 +1,13 @@
 import nodemailer from 'nodemailer';
 
 export const transporter = nodemailer.createTransport({
-  host: '',
+  // host: 'smtp.live.com',
+  // host: 'smtp.office365.com',
+  host: 'smtp-mail.outlook.com',
+  service: 'hotmail',
   auth: {
-    user: '',
-    pass: '',
+    user: 'chideraemmanuel01@hotmail.com',
+    pass: 'Anonymou$1',
   },
 });
 

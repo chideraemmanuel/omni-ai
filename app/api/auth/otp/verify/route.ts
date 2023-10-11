@@ -19,7 +19,7 @@ export const POST = async (request: NextRequest) => {
 
   if (!email || !otp) {
     return NextResponse.json(
-      { message: 'Please enter email and otp to verify' },
+      { message: 'Please provide email and otp to verify' },
       { status: 400 }
     );
   }
@@ -61,8 +61,11 @@ export const POST = async (request: NextRequest) => {
   }
 
   try {
-    //   const updatedUser = await User.findOneAndUpdate({ email }, { verified: true})
-    await User.updateOne({ email }, { verified: true });
+    const updatedUser = await User.findOneAndUpdate(
+      { email },
+      { verified: true }
+    );
+    // await User.updateOne({ email }, { verified: true });
 
     await OTP.deleteOne({ email });
 

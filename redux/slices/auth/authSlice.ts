@@ -1,8 +1,17 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { getCurrentUser, loginUser, registerUser } from './authService';
+import {
+  getCurrentUser,
+  loginUser,
+  registerUser,
+  verifyOtp,
+} from './authService';
 
 export interface AuthStateTypes {
   user: any;
+  isVerifying: boolean;
+  isVerified: boolean;
+  isVerificationError: boolean;
+  verificationError: null | string;
   isAuthenticated: boolean;
   isAuthenticating: boolean;
   isAuthError: boolean;
@@ -15,6 +24,10 @@ export interface AuthStateTypes {
 
 const initialState: AuthStateTypes = {
   user: null,
+  isVerifying: false,
+  isVerified: false,
+  isVerificationError: false,
+  verificationError: null,
   isAuthenticated: false,
   isAuthenticating: true,
   isAuthError: false,
@@ -34,6 +47,16 @@ const authSlice = createSlice({
       state.isError = false;
       state.isLoading = false;
       state.isSuccess = false;
+
+      state.isVerified = false;
+      state.isVerifying = false;
+      state.isVerificationError = false;
+      state.verificationError = null;
+
+      state.authError = null;
+      state.isAuthError = false;
+      state.isAuthenticated = false;
+      state.isAuthenticating = false;
     },
   },
   extraReducers: (builder) => {
@@ -80,6 +103,20 @@ const authSlice = createSlice({
         state.isAuthError = true;
         // @ts-ignore
         state.authError = action.payload;
+      })
+      .addCase(verifyOtp.pending, (state: AuthStateTypes) => {
+        state.isVerifying = true;
+      })
+      .addCase(verifyOtp.fulfilled, (state: AuthStateTypes, action) => {
+        state.isVerifying = false;
+        state.isVerified = true;
+        // state.user = action.payload;
+      })
+      .addCase(verifyOtp.rejected, (state: AuthStateTypes, action) => {
+        state.isVerifying = false;
+        state.isVerificationError = true;
+        // @ts-ignore
+        state.verificationError = action.payload;
       });
   },
 });
