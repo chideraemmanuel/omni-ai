@@ -89,13 +89,14 @@ export const getCurrentUser = createAsyncThunk(
 
 export const verifyOtp = createAsyncThunk(
   'auth/verify-otp',
-  async (otp: string, thunkAPI) => {
+  async (credentials: { otp: string; email: string }, thunkAPI) => {
+    const { otp, email } = credentials;
     try {
-      const userResponse = await axios.get('/api/auth/user');
+      // const userResponse = await axios.get('/api/auth/user');
 
-      console.log('user response', userResponse);
+      // console.log('user response', userResponse);
 
-      const { email } = userResponse.data;
+      // const { email } = userResponse.data;
 
       const otpVerificationResponse = await axios.post(
         '/api/auth/otp/verify',

@@ -45,16 +45,17 @@ export const POST = async (request: NextRequest) => {
     expiresAt,
   } = OtpRecord;
 
-  if (expiresAt < Date.now()) {
-    await OTP.deleteOne({ email });
+  // if (expiresAt < Date.now()) {
+  //   await OTP.deleteOne({ email });
 
-    return NextResponse.json(
-      { message: 'otp has already expired' },
-      { status: 400 }
-    );
-  }
+  //   return NextResponse.json(
+  //     { message: 'otp has already expired' },
+  //     { status: 400 }
+  //   );
+  // }
 
-  const otpValid = bcrypt.compare(otp, storedOtp);
+  const otpValid = await bcrypt.compare(otp, storedOtp);
+  console.log(otpValid);
 
   if (!otpValid) {
     return NextResponse.json({ message: 'Invalid otp' }, { status: 400 });

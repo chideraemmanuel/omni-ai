@@ -1,6 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 export interface FormInputStateTypes {
+  otpInput: string;
   register: {
     name: {
       value: string;
@@ -32,6 +33,7 @@ export interface FormInputStateTypes {
 }
 
 const initialState: FormInputStateTypes = {
+  otpInput: '',
   register: {
     name: {
       value: '',
@@ -68,6 +70,9 @@ const signInSlice = createSlice({
   name: 'signIn',
   initialState,
   reducers: {
+    setOtpInput: (state: FormInputStateTypes, action: { payload: string }) => {
+      state.otpInput = action.payload;
+    },
     setRegistrationName: (
       state: FormInputStateTypes,
       action: { payload: string }
@@ -190,6 +195,7 @@ const signInSlice = createSlice({
 });
 
 export const {
+  setOtpInput,
   setRegistrationName,
   setRegistrationEmail,
   setRegistrationPassword,

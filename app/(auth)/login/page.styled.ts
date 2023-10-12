@@ -10,6 +10,7 @@ export const LoginPageContainer = styled.section`
   align-items: center;
   justify-content: center;
   padding: 30px 0;
+  padding: ${({ theme }) => `${theme.space['fluid-block-space-15']} 0`};
 `;
 
 export const LoginPageFormContainer = styled.div`

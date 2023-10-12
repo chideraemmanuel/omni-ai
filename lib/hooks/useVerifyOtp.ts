@@ -26,13 +26,13 @@ export const useVerifyOtp = () => {
     dispatch(resetAuthState());
   }, [isVerified, isVerificationError]);
 
-  const mutate = async (otp: string) => {
+  const mutate = async (credentials: { otp: string; email: string }) => {
     // if (otp.length !== 6) {
     //     toast.error()
     // }
 
     // @ts-ignore
-    dispatch(verifyOtp(otp));
+    dispatch(verifyOtp(credentials));
   };
 
   return { mutate };

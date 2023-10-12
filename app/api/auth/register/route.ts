@@ -103,7 +103,7 @@ export async function POST(request: NextRequest) {
       //   }
       // });
       const data = await resend.emails.send({
-        from: 'Acme <onboarding@resend.dev>',
+        from: 'OmniAi <onboarding@resend.dev>',
         to: email,
         subject: 'Email Verification',
         html: `<p>Thank you for joining OmniAI. Please enter the code <b>${otp}</b> to complete registration</p>`,
@@ -121,9 +121,7 @@ export async function POST(request: NextRequest) {
         {
           status: 201,
           headers: {
-            'Set-Cookie': `token=${token}; httpOnly; path=/ secure=${
-              process.env.NODE_ENV === 'production'
-            }`,
+            'Set-Cookie': `token=${token}; httpOnly; path=/`,
           },
         }
       );
