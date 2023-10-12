@@ -81,7 +81,7 @@ export const getCurrentUser = createAsyncThunk(
       console.log(error);
       return thunkAPI.rejectWithValue(
         // @ts-ignore
-        error?.response?.data?.message || 'An error occureddd'
+        error?.response?.data?.message || 'An error occured'
       );
     }
   }
