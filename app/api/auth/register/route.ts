@@ -83,7 +83,7 @@ export async function POST(request: NextRequest) {
         email,
         otp: hashedOtp,
         createdAt: Date.now(),
-        expiresAt: Date.now() + 360000,
+        expiresAt: Date.now() + 3600000,
       });
 
       // SEND OTP

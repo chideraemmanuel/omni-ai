@@ -106,7 +106,9 @@ const RegistrationPage: FC<Props> = () => {
                 // error={'this is an error'}
                 clearError={clearRegistrationConfirmPasswordError}
               />
-              <Button tagType="button">Create Account</Button>
+              <Button tagType="button" disabled={isSigningUp}>
+                {isSigningUp ? 'Creating account...' : 'Create Account'}
+              </Button>
             </form>
 
             <RegistrationFormBreak>

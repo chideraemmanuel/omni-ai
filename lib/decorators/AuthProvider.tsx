@@ -16,7 +16,7 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
   useEffect(() => {
     // @ts-ignore
-    dispatch(getCurrentUser());
+    !user && dispatch(getCurrentUser());
   }, []);
 
   useEffect(() => {

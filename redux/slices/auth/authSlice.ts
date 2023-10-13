@@ -3,6 +3,7 @@ import {
   getCurrentUser,
   loginUser,
   registerUser,
+  resendOtp,
   verifyOtp,
 } from './authService';
 
@@ -117,7 +118,10 @@ const authSlice = createSlice({
         state.isVerificationError = true;
         // @ts-ignore
         state.verificationError = action.payload;
-      });
+      })
+      .addCase(resendOtp.pending, (state: AuthStateTypes) => {})
+      .addCase(resendOtp.fulfilled, (state: AuthStateTypes) => {})
+      .addCase(resendOtp.rejected, (state: AuthStateTypes) => {});
   },
 });
 

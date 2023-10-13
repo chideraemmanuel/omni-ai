@@ -20,8 +20,14 @@ import { toast } from 'react-toastify';
 interface Props {}
 
 const EmailVerificationPage: FC<Props> = () => {
-  const { isAuthenticated, isAuthenticating, isAuthError, authError, user } =
-    useSelector((store: StoreTypes) => store.auth);
+  const {
+    isAuthenticated,
+    isAuthenticating,
+    isAuthError,
+    authError,
+    user,
+    isVerifying,
+  } = useSelector((store: StoreTypes) => store.auth);
   const { otpInput } = useSelector((store: StoreTypes) => store.formInputs);
 
   const dispatch = useDispatch();
@@ -29,7 +35,7 @@ const EmailVerificationPage: FC<Props> = () => {
 
   useEffect(() => {
     // @ts-ignore
-    dispatch(getCurrentUser());
+    !user && dispatch(getCurrentUser());
   }, []);
 
   useEffect(() => {
@@ -53,7 +59,7 @@ const EmailVerificationPage: FC<Props> = () => {
     });
   };
 
-  if (isAuthenticating) {
+  if (isAuthenticating || !user) {
     return <FullScreenLoader />;
   }
 
@@ -77,8 +83,12 @@ const EmailVerificationPage: FC<Props> = () => {
             setValue={setOtpInput}
           />
 
-          <Button tagType="button" width="100%" disabled={otpInput.length < 6}>
-            Verify
+          <Button
+            tagType="button"
+            width="100%"
+            disabled={otpInput.length < 6 || isVerifying}
+          >
+            {isVerifying ? 'Verifying...' : 'Verify'}
           </Button>
         </form>
 

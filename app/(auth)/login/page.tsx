@@ -79,7 +79,9 @@ const LoginPage: FC<Props> = () => {
                 // error={'this is an error'}
                 clearError={clearLoginPasswordError}
               />
-              <Button tagType="button">Login</Button>
+              <Button tagType="button" disabled={isLoggingIn}>
+                {isLoggingIn ? 'Signing in...' : 'Login'}
+              </Button>
             </form>
 
             <LoginFormBreak>

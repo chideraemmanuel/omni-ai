@@ -112,7 +112,23 @@ export const verifyOtp = createAsyncThunk(
       console.log('otp verification error', error);
       return thunkAPI.rejectWithValue(
         // @ts-ignore
-        error?.response?.data?.message || 'Otp Verification Failed'
+        error?.response?.data?.message || 'OTP Verification Failed'
+      );
+    }
+  }
+);
+
+export const resendOtp = createAsyncThunk(
+  'auth/resend-otp',
+  async (email: string, thunkAPI) => {
+    try {
+      const response = await axios.post('/api/auth/user/resend-otp');
+
+      return response.data;
+    } catch (error) {
+      thunkAPI.rejectWithValue(
+        // @ts-ignore
+        error?.response?.data?.message || 'Error resending OTP'
       );
     }
   }
