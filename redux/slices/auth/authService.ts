@@ -99,7 +99,7 @@ export const verifyOtp = createAsyncThunk(
       // const { email } = userResponse.data;
 
       const otpVerificationResponse = await axios.post(
-        '/api/auth/otp/verify',
+        '/api/auth/user/verify',
         JSON.stringify({
           otp,
           email,

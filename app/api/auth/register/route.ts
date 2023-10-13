@@ -87,30 +87,30 @@ export async function POST(request: NextRequest) {
       });
 
       // SEND OTP
-      // const mailOptions = {
-      //   from: 'chideraemmanuel01@hotmail.com',
-      //   to: email,
-      //   subject: 'Email Verification',
-      //   html: `<p>Thank you for joining OmniAI. Please enter the code <b>${otp}</b> to complete registration</p>`,
-      // };
-
-      // await transporter.sendMail(mailOptions, (error, info) => {
-      //   if (error) {
-      //     console.log('failed to send mail', error);
-      //     // return NextResponse.json({ error: 'Server error' }, { status: 500 });
-      //   } else {
-      //     console.log('Mail sent!', info.messageId);
-      //   }
-      // });
-      const data = await resend.emails.send({
-        from: 'OmniAi <onboarding@resend.dev>',
+      const mailOptions = {
+        from: 'omni-ai@outlook.com',
         to: email,
         subject: 'Email Verification',
         html: `<p>Thank you for joining OmniAI. Please enter the code <b>${otp}</b> to complete registration</p>`,
-        //  react: EmailTemplate({ firstName: 'John' }),
-      });
+      };
 
-      console.log('email data', data);
+      transporter.sendMail(mailOptions, (error, info) => {
+        if (error) {
+          console.log('failed to send mail', error);
+          // return NextResponse.json({ error: 'Server error' }, { status: 500 });
+        } else {
+          console.log('Mail sent!', info.messageId);
+        }
+      });
+      // const data = await resend.emails.send({
+      //   from: 'OmniAi <onboarding@resend.dev>',
+      //   to: email,
+      //   subject: 'Email Verification',
+      //   html: `<p>Thank you for joining OmniAI. Please enter the code <b>${otp}</b> to complete registration</p>`,
+      //   //  react: EmailTemplate({ firstName: 'John' }),
+      // });
+
+      // console.log('email data', data);
 
       return NextResponse.json(
         {

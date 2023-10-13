@@ -4,10 +4,11 @@ export const transporter = nodemailer.createTransport({
   // host: 'smtp.live.com',
   // host: 'smtp.office365.com',
   host: 'smtp-mail.outlook.com',
-  service: 'hotmail',
+  port: 587,
+  secure: false,
   auth: {
-    user: 'chideraemmanuel01@hotmail.com',
-    pass: 'Anonymou$1',
+    user: 'omni-ai@outlook.com',
+    pass: 'aadjqkgzhwpyensg',
   },
 });
 
