@@ -24,7 +24,7 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       router.replace('/login');
     }
 
-    if (!user?.verified) {
+    if (user && !user?.verified) {
       router.replace('/user/verify');
     }
   }, [isAuthError, authError, user]);

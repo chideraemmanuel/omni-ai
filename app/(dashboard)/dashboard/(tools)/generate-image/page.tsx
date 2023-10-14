@@ -90,6 +90,8 @@ const ImageGenerationPage: FC<Props> = () => {
       </GenerationConfig>
 
       <GenerationOutput>
+        {isGenerating && <p>Generating Images...</p>}
+
         {images?.length > 0 && (
           <div className="image-grid">
             {images.map((image, index) => (

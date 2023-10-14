@@ -60,6 +60,7 @@ const imageGenerationSlice = createSlice({
     builder
       .addCase(generateImage.pending, (state: ImageGenerationTypes) => {
         state.isLoading = true;
+        state.images = [];
       })
       .addCase(
         generateImage.fulfilled,

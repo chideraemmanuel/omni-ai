@@ -37,15 +37,20 @@ const ChatPage: FC<Props> = () => {
   return (
     <ChatContainer>
       <ConversationContainer>
-        {isResponding && <RelativeLoader />}
+        {/* {isResponding && <RelativeLoader />} */}
         {/* <ChatBubble text="Hi there!" role="user" />
         <ChatBubble
           text="Hello, how can i assist you today?"
           role="assistant"
         /> */}
         {messages.map((message, index) => (
-          <ChatBubble text={message.content} role={message.role} key={index} />
+          <ChatBubble
+            content={message.content}
+            role={message.role}
+            key={index}
+          />
         ))}
+        {isResponding && <ChatBubble role="assistant" content={'● ● ●'} />}
       </ConversationContainer>
       <InputContainer onSubmit={(e) => handleSubmit(e)}>
         {/* <input type="text" placeholder="Type a message." /> */}

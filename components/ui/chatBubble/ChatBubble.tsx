@@ -2,14 +2,14 @@ import { FC } from 'react';
 import { ChatBubbleContainer } from './ChatBubble.styled';
 
 interface Props {
-  text: string;
+  content: string | React.ReactNode;
   role: 'user' | 'assistant';
 }
 
-const ChatBubble: FC<Props> = ({ text, role }) => {
+const ChatBubble: FC<Props> = ({ content, role }) => {
   return (
     <ChatBubbleContainer $role={role}>
-      <p>{text}</p>
+      <p>{content}</p>
     </ChatBubbleContainer>
   );
 };
