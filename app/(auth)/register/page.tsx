@@ -26,6 +26,8 @@ import { StoreTypes } from '@/redux/store';
 import Button from '@/components/ui/button/Button';
 import { FaGoogle } from 'react-icons/fa';
 import { useRegister } from '@/lib/hooks/useRegister';
+import { generateGoogleOauthUrl } from '@/lib/utils/oauth';
+import FullScreenLoader from '@/components/ui/fullScreenLoader/FullScreenLoader';
 
 interface Props {}
 
@@ -54,7 +56,7 @@ const RegistrationPage: FC<Props> = () => {
 
   return (
     <>
-      {/* {isSigningUp && <FullScreenLoader />} */}
+      {isSigningUp && <FullScreenLoader />}
       <RegistrationPageContainer>
         <RegistrationPageFormContainer>
           <RegistrationFormHeader>
@@ -117,7 +119,11 @@ const RegistrationPage: FC<Props> = () => {
               <div></div>
             </RegistrationFormBreak>
 
-            <Button width="100%" variant="google">
+            <Button
+              width="100%"
+              variant="google"
+              href={generateGoogleOauthUrl()}
+            >
               <FaGoogle />
               <span>Sign in with google</span>
             </Button>

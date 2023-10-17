@@ -22,6 +22,7 @@ import {
 } from '@/redux/slices/formInputSlice';
 import { useLogin } from '@/lib/hooks/useLogin';
 import FullScreenLoader from '@/components/ui/fullScreenLoader/FullScreenLoader';
+import { generateGoogleOauthUrl } from '@/lib/utils/oauth';
 
 interface Props {}
 
@@ -90,7 +91,11 @@ const LoginPage: FC<Props> = () => {
               <div></div>
             </LoginFormBreak>
 
-            <Button width="100%" variant="google">
+            <Button
+              width="100%"
+              variant="google"
+              href={generateGoogleOauthUrl()}
+            >
               <FaGoogle />
               <span>Continue with google</span>
             </Button>

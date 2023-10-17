@@ -43,7 +43,7 @@ const EmailVerificationPage: FC<Props> = () => {
       router.replace('/login');
       toast.error(authError);
     }
-    if (user?.verified) {
+    if (user && user?.verified) {
       router.replace('/dashboard');
     }
   }, [isAuthError, authError, user]);

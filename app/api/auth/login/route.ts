@@ -16,7 +16,7 @@ export async function POST(request: NextRequest) {
 
   if (!email || !password) {
     return NextResponse.json(
-      { error: 'Please supply the required credentials' },
+      { message: 'Please supply the required credentials' },
       { status: 400 }
     );
   }
@@ -31,11 +31,27 @@ export async function POST(request: NextRequest) {
 
   if (!userExists) {
     return NextResponse.json(
-      { error: 'No user with the provided email' },
+      { message: 'No user with the provided email' },
       { status: 400 }
     );
   } else {
-    const { password: hashedPassword, _id: id, name, email } = userExists;
+    const {
+      password: hashedPassword,
+      _id: id,
+      name,
+      email,
+      auth_type,
+    } = userExists;
+
+    if (auth_type === 'GOOGLE_AUTH_SERVICE') {
+      return NextResponse.json(
+        {
+          message:
+            'Account already verified with Google. Sign in with Google instead.',
+        },
+        { status: 400 }
+      );
+    }
 
     try {
       // CHECK IF PASSWORD MATCHES
@@ -43,7 +59,7 @@ export async function POST(request: NextRequest) {
 
       if (!passwordMatches) {
         return NextResponse.json(
-          { error: 'Incorrect password' },
+          { message: 'Incorrect password' },
           { status: 400 }
         );
       } else {

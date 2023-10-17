@@ -12,11 +12,16 @@ const userSchema = new mongoose.Schema({
   },
   password: {
     type: String,
-    required: [true, 'Please enter a password'],
+    // required: [true, 'Please enter a password'],
   },
   verified: {
     type: Boolean,
     default: false,
+  },
+  auth_type: {
+    // type: 'OMNIAI_AUTH_SERVICE' || 'GOOGLE_AUTH_SERVICE',
+    type: String,
+    required: true,
   },
 });
 

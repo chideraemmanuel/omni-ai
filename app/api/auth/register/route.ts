@@ -22,6 +22,7 @@ interface UserTypes {
   name: string;
   email: string;
   password: string;
+  auth_type: 'OMNIAI_AUTH_SERVICE' | 'GOOGLE_AUTH_SERVICE';
 }
 
 export async function POST(request: NextRequest) {
@@ -63,6 +64,7 @@ export async function POST(request: NextRequest) {
         name,
         email,
         password: hashedPassword,
+        auth_type: 'OMNIAI_AUTH_SERVICE',
       });
 
       //   console.log(createdUser);
