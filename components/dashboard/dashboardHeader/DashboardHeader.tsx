@@ -11,13 +11,25 @@ import image from '@/assets/profile.jpg';
 import Link from 'next/link';
 import Logo from '../../ui/logo/Logo';
 import { FiMenu } from 'react-icons/fi';
-import { useDispatch } from 'react-redux';
-import { openDashboardMobileMenu } from '@/redux/slices/navigationSlice';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+  openDashboardMobileMenu,
+  toggleDashboardHeaderLinks,
+} from '@/redux/slices/navigationSlice';
+import { logOutUser } from '@/redux/slices/auth/authService';
+import { StoreTypes } from '@/redux/store';
+import { useLogout } from '@/lib/hooks/useLogout';
 
 interface Props {}
 
 const DashboardHeader: FC<Props> = () => {
+  const { dashboardHeaderLinks } = useSelector(
+    (store: StoreTypes) => store.navigation
+  );
+
   const dispatch = useDispatch();
+
+  const { mutate: logout } = useLogout();
 
   return (
     <DashboardHeaderContainer>
@@ -32,13 +44,11 @@ const DashboardHeader: FC<Props> = () => {
       </DashboardHeaderLogo>
       {/* <UserButtonOverlay /> */}
       <DashboardHeaderUserButton>
-        <button
-        // onClick={() => dispatch(toggleDashboardHeaderLinks())}
-        >
+        <button onClick={() => dispatch(toggleDashboardHeaderLinks())}>
           <Image src={image} alt="" />
         </button>
 
-        {false && (
+        {dashboardHeaderLinks && (
           <div>
             <li
             // onClick={() => dispatch(closeDashboardHeaderLinks())}
@@ -53,7 +63,8 @@ const DashboardHeader: FC<Props> = () => {
             <li
             // onClick={() => dispatch(closeDashboardHeaderLinks())}
             >
-              <button>Logout</button>
+              {/* @ts-ignore */}
+              <button onClick={() => logout()}>Logout</button>
             </li>
           </div>
         )}
