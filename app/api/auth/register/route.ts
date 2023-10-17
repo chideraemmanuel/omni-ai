@@ -8,6 +8,7 @@ import generateOtp from '@/lib/utils/generateOtp';
 import OTP from '@/models/otp';
 import { transporter } from '@/config/nodemailer';
 import { Resend } from 'resend';
+import { hashData } from '@/lib/utils/hashData';
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
@@ -27,8 +28,6 @@ interface UserTypes {
 
 export async function POST(request: NextRequest) {
   const requestBody: RequestBodyTypes = await request.json();
-  //   console.log(requestBody);
-
   const { name, email, password } = requestBody;
 
   if (!name || !email || !password) {
@@ -38,15 +37,12 @@ export async function POST(request: NextRequest) {
     );
   }
 
-  //  CONNECT TO DATABASE
   console.log('connecting to database...');
   await connectToDatabase();
   console.log('connected to database!');
 
   // CHECK IF EMAIL IS IN USE
   const userExists = await User.findOne({ email });
-
-  //   console.log(userExists);
 
   if (userExists) {
     return NextResponse.json(
@@ -56,10 +52,11 @@ export async function POST(request: NextRequest) {
   } else {
     try {
       // HASH PASSWORD
-      const salt = await bcrypt.genSalt(10);
-      const hashedPassword = await bcrypt.hash(password, salt);
+      // const salt = await bcrypt.genSalt(10);
+      // const hashedPassword = await bcrypt.hash(password, salt);
+      const hashedPassword = await hashData(password);
 
-      //   ADD USER TO DATABASE
+      // ADD USER TO DATABASE
       const createdUser: UserTypes = await User.create({
         name,
         email,
@@ -67,18 +64,16 @@ export async function POST(request: NextRequest) {
         auth_type: 'OMNIAI_AUTH_SERVICE',
       });
 
-      //   console.log(createdUser);
-
       //   GENERATE SESSION TOKEN
       const token = generateToken(createdUser._id);
-      //   console.log(token);
 
       // GENERATE OTP
       const otp = generateOtp();
 
       // HASH OTP
-      const otpSalt = 10;
-      const hashedOtp = await bcrypt.hash(otp, otpSalt);
+      // const otpSalt = 10;
+      // const hashedOtp = await bcrypt.hash(otp, otpSalt);
+      const hashedOtp = await hashData(otp);
 
       // STORE OTP
       await OTP.create({
@@ -90,7 +85,7 @@ export async function POST(request: NextRequest) {
 
       // SEND OTP
       const mailOptions = {
-        from: 'omni-ai@outlook.com',
+        from: process.env.AUTH_EMAIL!,
         to: email,
         subject: 'Email Verification',
         html: `<p>Thank you for joining OmniAI. Please enter the code <b>${otp}</b> to complete registration</p>`,

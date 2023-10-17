@@ -3,6 +3,7 @@ import User from '@/models/user';
 import { connectToDatabase } from '@/lib/utils/database';
 import { NextResponse } from 'next/server';
 import { generateToken } from '@/lib/utils/generateToken';
+import { hashData } from '@/lib/utils/hashData';
 
 interface UserTypes {
   _id: string;
@@ -34,8 +35,9 @@ export const registerUser = async (credentials: Record<string, string>) => {
   } else {
     try {
       // HASH PASSWORD
-      const salt = await bcrypt.genSalt(10);
-      const hashedPassword = await bcrypt.hash(password, salt);
+      // const salt = await bcrypt.genSalt(10);
+      // const hashedPassword = await bcrypt.hash(password, salt);
+      const hashedPassword = await hashData(password);
 
       //   ADD USER TO DATABASE
       const createdUser: UserTypes = await User.create({

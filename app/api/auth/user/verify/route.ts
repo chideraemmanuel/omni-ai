@@ -4,6 +4,7 @@ import User from '@/models/user';
 import { NextRequest, NextResponse } from 'next/server';
 import bcrypt from 'bcrypt';
 import { connectToDatabase } from '@/lib/utils/database';
+import { compareHash } from '@/lib/utils/hashData';
 
 interface OtpRecord {
   email: string;
@@ -54,8 +55,9 @@ export const POST = async (request: NextRequest) => {
   //   );
   // }
 
-  const otpValid = await bcrypt.compare(otp, storedOtp);
-  console.log(otpValid);
+  // const otpValid = await bcrypt.compare(otp, storedOtp);
+  const otpValid = await compareHash(otp, storedOtp);
+  // console.log(otpValid);
 
   if (!otpValid) {
     return NextResponse.json({ message: 'Invalid otp' }, { status: 400 });
