@@ -112,8 +112,7 @@ export async function POST(request: NextRequest) {
       return NextResponse.json(
         {
           status: 'PENDING',
-          message: 'OTP sent to email',
-          email: createdUser.email,
+          message: `OTP has been sent to ${createdUser.email}`,
         },
         {
           status: 201,

@@ -64,11 +64,11 @@ export const POST = async (request: NextRequest) => {
   }
 
   try {
-    const updatedUser = await User.findOneAndUpdate(
-      { email },
-      { verified: true }
-    );
-    // await User.updateOne({ email }, { verified: true });
+    // const updatedUser = await User.findOneAndUpdate(
+    //   { email },
+    //   { verified: true }
+    // );
+    await User.updateOne({ email }, { verified: true });
 
     await OTP.deleteOne({ email });
 
@@ -86,6 +86,7 @@ export const POST = async (request: NextRequest) => {
       }
     );
   } catch (error) {
+    console.log('VERIFICATION_ERROR', error);
     return NextResponse.json(
       { message: 'An error occured during verification' },
       { status: 500 }

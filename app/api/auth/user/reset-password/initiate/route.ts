@@ -3,6 +3,8 @@ import User from '@/models/user';
 import { NextRequest, NextResponse } from 'next/server';
 import bcrypt from 'bcrypt';
 import { transporter } from '@/config/nodemailer';
+import { hashData } from '@/lib/utils/hashData';
+import { connectToDatabase } from '@/lib/utils/database';
 
 export const POST = async (request: NextRequest) => {
   const body = await request.json();
@@ -15,6 +17,10 @@ export const POST = async (request: NextRequest) => {
       { status: 400 }
     );
   }
+
+  console.log('connecting to database...');
+  await connectToDatabase();
+  console.log('connected to database!');
 
   const userExists = await User.findOne({ email });
 
@@ -32,6 +38,7 @@ export const POST = async (request: NextRequest) => {
     );
   }
 
+  // use uuid to generate!
   const resetString = '2';
 
   const mailOptions = {
@@ -42,8 +49,9 @@ export const POST = async (request: NextRequest) => {
   };
 
   try {
-    const salt = 10;
-    const hashedResetString = await bcrypt.hash(resetString, salt);
+    // const salt = 10;
+    // const hashedResetString = await bcrypt.hash(resetString, salt);
+    const hashedResetString = await hashData(resetString);
 
     const passwordResetRecord = await PasswordReset.create({
       email,
@@ -59,6 +67,14 @@ export const POST = async (request: NextRequest) => {
         console.log('Mail sent!', info);
       }
     });
+
+    return NextResponse.json(
+      {
+        status: 'PENDING',
+        message: `Password reset link has been sent to ${email}`,
+      },
+      { status: 201 }
+    );
   } catch (error) {
     console.log('PASSWORD_RESET_ERROR', error);
     return NextResponse.json(
