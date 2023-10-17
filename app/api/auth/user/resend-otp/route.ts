@@ -4,6 +4,7 @@ import OTP from '@/models/otp';
 import { NextRequest, NextResponse } from 'next/server';
 import bcrypt from 'bcrypt';
 import { transporter } from '@/config/nodemailer';
+import { hashData } from '@/lib/utils/hashData';
 
 interface OtpRecord {
   email: string;
@@ -40,8 +41,9 @@ export const POST = async (request: NextRequest) => {
     const otp = generateOtp();
 
     // HASH OTP
-    const otpSalt = 10;
-    const hashedOtp = await bcrypt.hash(otp, otpSalt);
+    // const otpSalt = 10;
+    // const hashedOtp = await bcrypt.hash(otp, otpSalt);
+    const hashedOtp = hashData(otp);
 
     // STORE OTP
     await OTP.create({

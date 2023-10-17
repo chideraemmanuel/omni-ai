@@ -24,11 +24,10 @@ export const registerUser = createAsyncThunk(
       console.log(response.data);
 
       return response.data;
-    } catch (error) {
+    } catch (error: any) {
       console.log(error);
       return thunkAPI.rejectWithValue(
-        // @ts-ignore
-        error?.response?.data?.message || 'An error occured'
+        error?.response?.data?.message || 'An error occured during registration'
       );
     }
   }
@@ -44,11 +43,26 @@ export const loginUser = createAsyncThunk(
       );
 
       return response.data;
-    } catch (error) {
-      console.log('from auth service error:', error);
+    } catch (error: any) {
+      console.log('from auth service login error:', error);
       return thunkAPI.rejectWithValue(
-        // @ts-ignore
-        error?.response?.data?.message || 'An error occured'
+        error?.response?.data?.message || 'An error occured during login'
+      );
+    }
+  }
+);
+
+export const logOutUser = createAsyncThunk(
+  'auth/logout',
+  async (_, thunkAPI) => {
+    try {
+      const response = await axios.get('/api/auth/logout');
+
+      return response.data;
+    } catch (error: any) {
+      console.log('from auth service logout error:', error);
+      return thunkAPI.rejectWithValue(
+        error?.response?.data?.message || 'An error occured during logout'
       );
     }
   }
@@ -77,10 +91,9 @@ export const getCurrentUser = createAsyncThunk(
     try {
       const response = await axios.get('/api/auth/user');
       return response.data;
-    } catch (error) {
+    } catch (error: any) {
       console.log(error);
       return thunkAPI.rejectWithValue(
-        // @ts-ignore
         error?.response?.data?.message || 'An error occured'
       );
     }
@@ -92,12 +105,6 @@ export const verifyOtp = createAsyncThunk(
   async (credentials: { otp: string; email: string }, thunkAPI) => {
     const { otp, email } = credentials;
     try {
-      // const userResponse = await axios.get('/api/auth/user');
-
-      // console.log('user response', userResponse);
-
-      // const { email } = userResponse.data;
-
       const otpVerificationResponse = await axios.post(
         '/api/auth/user/verify',
         JSON.stringify({
@@ -108,10 +115,9 @@ export const verifyOtp = createAsyncThunk(
       console.log('otp verification response', otpVerificationResponse.data);
 
       return otpVerificationResponse.data;
-    } catch (error) {
+    } catch (error: any) {
       console.log('otp verification error', error);
       return thunkAPI.rejectWithValue(
-        // @ts-ignore
         error?.response?.data?.message || 'OTP Verification Failed'
       );
     }
@@ -125,9 +131,8 @@ export const resendOtp = createAsyncThunk(
       const response = await axios.post('/api/auth/user/resend-otp');
 
       return response.data;
-    } catch (error) {
+    } catch (error: any) {
       thunkAPI.rejectWithValue(
-        // @ts-ignore
         error?.response?.data?.message || 'Error resending OTP'
       );
     }

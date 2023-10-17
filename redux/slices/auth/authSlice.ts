@@ -1,6 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 import {
   getCurrentUser,
+  logOutUser,
   loginUser,
   registerUser,
   resendOtp,
@@ -21,6 +22,9 @@ export interface AuthStateTypes {
   isSuccess: boolean;
   isError: boolean;
   error: null | string;
+  isLoggingOut: boolean;
+  isLoggedOut: boolean;
+  logOutError: null | string;
 }
 
 const initialState: AuthStateTypes = {
@@ -37,6 +41,9 @@ const initialState: AuthStateTypes = {
   isSuccess: false,
   isError: false,
   error: null,
+  isLoggingOut: false,
+  isLoggedOut: false,
+  logOutError: null,
 };
 
 const authSlice = createSlice({
@@ -58,6 +65,10 @@ const authSlice = createSlice({
       state.isAuthError = false;
       state.isAuthenticated = false;
       state.isAuthenticating = false;
+
+      state.isLoggingOut = false;
+      state.isLoggedOut = false;
+      state.logOutError = null;
     },
   },
   extraReducers: (builder) => {
@@ -121,7 +132,22 @@ const authSlice = createSlice({
       })
       .addCase(resendOtp.pending, (state: AuthStateTypes) => {})
       .addCase(resendOtp.fulfilled, (state: AuthStateTypes) => {})
-      .addCase(resendOtp.rejected, (state: AuthStateTypes) => {});
+      .addCase(resendOtp.rejected, (state: AuthStateTypes) => {})
+      .addCase(logOutUser.pending, (state: AuthStateTypes) => {
+        state.isLoggingOut = true;
+      })
+      .addCase(logOutUser.fulfilled, (state: AuthStateTypes) => {
+        state.isLoggingOut = false;
+        state.isLoggedOut = true;
+      })
+      .addCase(
+        logOutUser.rejected,
+        (state: AuthStateTypes, action: { payload: any }) => {
+          state.isLoggingOut = false;
+          state.isLoggedOut = false;
+          state.logOutError = action.payload;
+        }
+      );
   },
 });
 
