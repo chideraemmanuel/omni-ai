@@ -55,6 +55,7 @@ export const DashboardHeaderUserButton = styled.div<HeaderLinkProps>`
     opacity: 0;
     visibility: hidden;
     transition: 0.3s ease;
+    z-index: 7;
 
     ${({ $active }) =>
       $active &&
