@@ -14,6 +14,7 @@ import { sendMessage } from '@/redux/slices/chat/chatService';
 import RelativeLoader from '@/components/ui/relativeLoader/RelativeLoader';
 import { toast } from 'react-toastify';
 import { useSendMessage } from '@/lib/hooks/useSendMessage';
+import TypingAnimation from '@/components/misc/typingAnimation/TypingAnimation';
 
 interface Props {}
 
@@ -50,7 +51,10 @@ const ChatPage: FC<Props> = () => {
             key={index}
           />
         ))}
-        {isResponding && <ChatBubble role="assistant" content={'● ● ●'} />}
+        {/* {isResponding && <ChatBubble role="assistant" content={'● ● ●'} />} */}
+        {isResponding && (
+          <ChatBubble role="assistant" content={<TypingAnimation />} />
+        )}
       </ConversationContainer>
       <InputContainer onSubmit={(e) => handleSubmit(e)}>
         {/* <input type="text" placeholder="Type a message." /> */}

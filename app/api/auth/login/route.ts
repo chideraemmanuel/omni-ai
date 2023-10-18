@@ -77,7 +77,7 @@ export async function POST(request: NextRequest) {
 
         // console.log(cookie);
 
-        return NextResponse.json(
+        const response = NextResponse.json(
           {
             id,
             name,
@@ -85,11 +85,18 @@ export async function POST(request: NextRequest) {
           },
           {
             status: 200,
-            headers: {
-              'Set-Cookie': `token=${token}; httpOnly; path=/`,
-            },
+            // headers: {
+            //   'Set-Cookie': `token=${token}; httpOnly; path=/`,
+            // },
           }
         );
+
+        response.cookies.set('token', token, {
+          maxAge: 60 * 60 * 24 * 7, // 1 week
+          httpOnly: true,
+        });
+
+        return response;
       }
     } catch (error) {
       console.log(error);

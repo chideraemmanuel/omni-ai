@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 
 export const DashboardHeaderContainer = styled.div`
   background-color: #fff;
@@ -16,7 +16,11 @@ export const DashboardHeaderContainer = styled.div`
   }
 `;
 
-export const DashboardHeaderUserButton = styled.div`
+interface HeaderLinkProps {
+  $active: boolean;
+}
+
+export const DashboardHeaderUserButton = styled.div<HeaderLinkProps>`
   position: relative;
   display: inline-block;
 
@@ -38,7 +42,7 @@ export const DashboardHeaderUserButton = styled.div`
   > div:last-child {
     position: absolute;
     right: 0;
-    top: 120%;
+    top: 100%;
     background-color: #fff;
     width: max(30vw, 270px);
     max-width: 300px;
@@ -48,6 +52,17 @@ export const DashboardHeaderUserButton = styled.div`
     flex-direction: column;
     gap: 3px;
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+    opacity: 0;
+    visibility: hidden;
+    transition: 0.3s ease;
+
+    ${({ $active }) =>
+      $active &&
+      css`
+        opacity: 1;
+        visibility: visible;
+        top: 120%;
+      `}
 
     li {
       list-style: none;
@@ -67,6 +82,10 @@ export const DashboardHeaderUserButton = styled.div`
         /* border: 1px solid red; */
         font-size: ${({ theme }) => theme.font['sm-font']};
         border-radius: 5px;
+
+        &:hover {
+          background: #f9fafb;
+        }
       }
     }
   }

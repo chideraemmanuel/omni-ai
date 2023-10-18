@@ -27,3 +27,75 @@ export const FullScreenLoaderContainer = styled.div`
     }
   }
 `;
+
+// NORMAL SIZE ***************
+// .custom-loader {
+//   width: 12px;
+//   height: 12px;
+//   border-radius: 50%;
+//   background:#B5CFF8;
+//   color: #B5CFF8;
+//   clip-path: inset(-26px);
+//   animation: d8 2s infinite linear;
+// }
+
+// @keyframes d8 {
+//   0%  {box-shadow:0 0 0 0   , 40px 0,-40px 0,0 40px,0 -40px}
+//   10% {box-shadow:0 0 0 0   , 12px 0,-40px 0,0 40px,0 -40px}
+//   20% {box-shadow:0 0 0 4px , 0px  0,-40px 0,0 40px,0 -40px}
+//   30% {box-shadow:0 0 0 4px , 0px  0,-12px 0,0 40px,0 -40px}
+//   40% {box-shadow:0 0 0 8px , 0px  0,  0px 0,0 40px,0 -40px}
+//   50% {box-shadow:0 0 0 8px , 0px  0,  0px 0,0 12px,0 -40px}
+//   60% {box-shadow:0 0 0 12px, 0px  0,  0px 0,0  0px,0 -40px}
+//   70% {box-shadow:0 0 0 12px, 0px  0,  0px 0,0  0px,0 -12px}
+//   80% {box-shadow:0 0 0 16px, 0px  0,  0px 0,0  0px,0  0px }
+//   90%,
+//   100%{box-shadow:0 0 0 0   , 40px 0,-40px 0,0 40px,0 -40px}
+// }
+
+//
+// LARGE SIZE *****************
+// .custom-loader {
+//   width: 24px;
+//   height: 24px;
+//   border-radius: 50%;
+//   background:#B5CFF8;
+//   color: #B5CFF8;
+//   clip-path: inset(-52px);
+//   animation: d8 2s infinite linear;
+// }
+
+// @keyframes d8 {
+//   0%  {box-shadow:0 0 0 0   , 80px 0,-80px 0,0 80px,0 -80px}
+//   10% {box-shadow:0 0 0 0   , 24px 0,-80px 0,0 80px,0 -80px}
+//   20% {box-shadow:0 0 0 8px , 0px  0,-80px 0,0 80px,0 -80px}
+//   30% {box-shadow:0 0 0 8px , 0px  0,-24px 0,0 80px,0 -80px}
+//   40% {box-shadow:0 0 0 16px , 0px  0,  0px 0,0 80px,0 -80px}
+//   50% {box-shadow:0 0 0 16px , 0px  0,  0px 0,0 24px,0 -80px}
+//   60% {box-shadow:0 0 0 24px, 0px  0,  0px 0,0  0px,0 -80px}
+//   70% {box-shadow:0 0 0 24px, 0px  0,  0px 0,0  0px,0 -24px}
+//   80% {box-shadow:0 0 0 32px, 0px  0,  0px 0,0  0px,0  0px }
+//   90%,
+//   100%{box-shadow:0 0 0 0   , 80px 0,-80px 0,0 80px,0 -80px}
+// }
+//
+//
+//
+// PROBABLY USE THIS ************
+// .custom-loader {
+//   width: 32px;
+//   height: 32px;
+//   --c:radial-gradient(farthest-side,#B5CFF8 90%,#0000);
+//   background:
+//     var(--c) 0    0,
+//     var(--c) 100% 0,
+//     var(--c) 100% 100%,
+//     var(--c) 0    100%;
+//   background-size: 12px 12px; INCREASE BACKGROUND SIZE TO INCREASE
+//   background-repeat: no-repeat;
+//   animation:d8 .5s infinite;
+// }
+
+// @keyframes d8 {
+//   100% {background-position: 100% 0,100% 100%,0 100%,0 0}
+// }

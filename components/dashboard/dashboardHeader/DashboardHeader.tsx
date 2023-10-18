@@ -13,6 +13,7 @@ import Logo from '../../ui/logo/Logo';
 import { FiMenu } from 'react-icons/fi';
 import { useDispatch, useSelector } from 'react-redux';
 import {
+  closeDashboardHeaderLinks,
   openDashboardMobileMenu,
   toggleDashboardHeaderLinks,
 } from '@/redux/slices/navigationSlice';
@@ -43,31 +44,23 @@ const DashboardHeader: FC<Props> = () => {
         <Logo variant="dark" />
       </DashboardHeaderLogo>
       {/* <UserButtonOverlay /> */}
-      <DashboardHeaderUserButton>
+      <DashboardHeaderUserButton $active={dashboardHeaderLinks}>
         <button onClick={() => dispatch(toggleDashboardHeaderLinks())}>
           <Image src={image} alt="" />
         </button>
 
-        {dashboardHeaderLinks && (
-          <div>
-            <li
-            // onClick={() => dispatch(closeDashboardHeaderLinks())}
-            >
-              <Link href={'/'}>View profile</Link>
-            </li>
-            <li
-            // onClick={() => dispatch(closeDashboardHeaderLinks())}
-            >
-              <Link href={'/'}>Settings</Link>
-            </li>
-            <li
-            // onClick={() => dispatch(closeDashboardHeaderLinks())}
-            >
-              {/* @ts-ignore */}
-              <button onClick={() => logout()}>Logout</button>
-            </li>
-          </div>
-        )}
+        <div>
+          <li onClick={() => dispatch(closeDashboardHeaderLinks())}>
+            <Link href={'/'}>View profile</Link>
+          </li>
+          <li onClick={() => dispatch(closeDashboardHeaderLinks())}>
+            <Link href={'/'}>Settings</Link>
+          </li>
+          <li onClick={() => dispatch(closeDashboardHeaderLinks())}>
+            {/* @ts-ignore */}
+            <button onClick={() => logout()}>Logout</button>
+          </li>
+        </div>
       </DashboardHeaderUserButton>
     </DashboardHeaderContainer>
   );

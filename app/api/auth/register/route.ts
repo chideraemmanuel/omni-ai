@@ -109,38 +109,25 @@ export async function POST(request: NextRequest) {
 
       // console.log('email data', data);
 
-      return NextResponse.json(
+      const response = NextResponse.json(
         {
           status: 'PENDING',
           message: `OTP has been sent to ${createdUser.email}`,
         },
         {
           status: 201,
-          headers: {
-            'Set-Cookie': `token=${token}; httpOnly; path=/`,
-          },
+          // headers: {
+          //   'Set-Cookie': `token=${token}; httpOnly; path=/`,
+          // },
         }
       );
 
-      // //   GENERATE SESSION TOKEN
-      // const token = generateToken(createdUser._id);
-      // //   console.log(token);
+      response.cookies.set('token', token, {
+        maxAge: 60 * 60 * 24 * 7, // 1 week
+        httpOnly: true,
+      });
 
-      // return NextResponse.json(
-      //   {
-      //     id: createdUser._id,
-      //     name: createdUser.name,
-      //     email: createdUser.email,
-      //   },
-      //   {
-      //     status: 201,
-      //     headers: {
-      //       'Set-Cookie': `token=${token}; httpOnly; path=/ secure=${
-      //         process.env.NODE_ENV === 'production'
-      //       }`,
-      //     },
-      //   }
-      // );
+      return response;
     } catch (error) {
       console.log(error);
       return NextResponse.json({ error: 'Server error' }, { status: 500 });
