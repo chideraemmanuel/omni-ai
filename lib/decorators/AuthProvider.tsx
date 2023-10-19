@@ -1,5 +1,6 @@
 'use client';
 
+import AuthErrorPage from '@/components/misc/authErrorPage/AuthErrorPage';
 import FullScreenLoader from '@/components/ui/fullScreenLoader/FullScreenLoader';
 import { getCurrentUser } from '@/redux/slices/auth/authService';
 import { StoreTypes } from '@/redux/store';
@@ -20,7 +21,7 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   }, []);
 
   useEffect(() => {
-    if (isAuthError) {
+    if (isAuthError && authError !== 'Server error') {
       router.replace('/login');
     }
 
@@ -29,8 +30,16 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     }
   }, [isAuthError, authError, user]);
 
+  if (!navigator.onLine) {
+    return <AuthErrorPage />;
+  }
+
   if (isAuthenticating) {
     return <FullScreenLoader />;
+  }
+
+  if (authError === 'Server error') {
+    return <AuthErrorPage />;
   }
 
   //   if (!isAuthenticated) {

@@ -1,18 +1,18 @@
 'use client';
 
 import { FC } from 'react';
+import { DashboardNavigationContainer } from './DashboardNavigation.styled';
 import DashboardSideMenu from '../dashboardSideMenu/DashboardSideMenu';
 import DashboardMobileMenu from '../dashboardMobileMenu/DashboardMobileMenu';
-import styles from './DashboardNavigation.module.scss';
 
 interface Props {}
 
 const DashboardNavigation: FC<Props> = () => {
   return (
-    <div className={styles.container}>
+    <DashboardNavigationContainer>
       <DashboardSideMenu />
       <DashboardMobileMenu />
-    </div>
+    </DashboardNavigationContainer>
   );
 };
 

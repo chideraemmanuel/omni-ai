@@ -32,7 +32,7 @@ export const DashboardHeaderUserButton = styled.div<HeaderLinkProps>`
     border: none;
     cursor: pointer;
 
-    img {
+    > * {
       border-radius: inherit;
       width: 100%;
       height: 100%;

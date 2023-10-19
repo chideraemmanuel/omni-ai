@@ -1,7 +1,6 @@
-'use client';
-
 import { FC } from 'react';
-import { AuthLayoutContainer } from './layout.styled';
+import Logo from '@/components/ui/logo/Logo';
+import styles from './layout.module.scss';
 
 interface Props {
   children: React.ReactNode;
@@ -9,10 +8,12 @@ interface Props {
 
 const AuthPagesLayout: FC<Props> = ({ children }) => {
   return (
-    <AuthLayoutContainer>
-      <span style={{ background: 'gray' }}>Logo!</span>
+    <main className={styles.container}>
+      <div style={{ background: 'gray' }}>
+        <Logo />
+      </div>
       {children}
-    </AuthLayoutContainer>
+    </main>
   );
 };
 

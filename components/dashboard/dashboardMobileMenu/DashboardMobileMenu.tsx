@@ -1,14 +1,18 @@
-'use client';
-
 import { FC } from 'react';
+import {
+  DashboardMobileMenuContainer,
+  DashboardMobileMenuHeader,
+  DashboardMobileMenuOverlay,
+  MobileMenuLinks,
+} from './DashboardMobileMenu.styled';
 import { DashboardNavigationLinks } from '@/constants';
+import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import Logo from '../../ui/logo/Logo';
 import { FiX } from 'react-icons/fi';
 import { useDispatch, useSelector } from 'react-redux';
 import { StoreTypes } from '@/redux/store';
 import { closeDashboardMobileMenu } from '@/redux/slices/navigationSlice';
-import styles from './DashboardMobileMenu.module.scss';
 import DashboardNavigationLink from '../dashboardNavigationLink/DashboardNavigationLink';
 
 interface Props {}
@@ -23,25 +27,20 @@ const DashboardMobileMenu: FC<Props> = () => {
   return (
     <>
       {dashboardMobileMenuActive && (
-        <div
-          className={styles.overlay}
+        <DashboardMobileMenuOverlay
           onClick={() => dispatch(closeDashboardMobileMenu())}
-        ></div>
+        />
       )}
-      <div
-        className={`${styles.menu_container} ${
-          dashboardMobileMenuActive && styles.menu_container_active
-        }`}
-      >
-        <div className={styles.menu_header}>
+      <DashboardMobileMenuContainer $menuActive={dashboardMobileMenuActive}>
+        <DashboardMobileMenuHeader>
           <Logo variant="light" />
 
           <button onClick={() => dispatch(closeDashboardMobileMenu())}>
             <FiX />
           </button>
-        </div>
+        </DashboardMobileMenuHeader>
 
-        <div className={styles.menu_links}>
+        <MobileMenuLinks>
           {DashboardNavigationLinks.map((item, index) => (
             <div key={index}>
               <span>{item.label}</span>
@@ -52,16 +51,16 @@ const DashboardMobileMenu: FC<Props> = () => {
                     onClick={() => dispatch(closeDashboardMobileMenu())}
                   >
                     <DashboardNavigationLink
-                      label={link.label}
                       href={link.href}
+                      label={link.label}
                     />
                   </li>
                 ))}
               </ul>
             </div>
           ))}
-        </div>
-      </div>
+        </MobileMenuLinks>
+      </DashboardMobileMenuContainer>
     </>
   );
 };

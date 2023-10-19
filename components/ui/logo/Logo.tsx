@@ -1,3 +1,5 @@
+'use client';
+
 import { FC } from 'react';
 import { StyledLogo } from './Logo.styled';
 import Image from 'next/image';

@@ -1,19 +1,25 @@
 import { FC } from 'react';
+import {
+  DashboardSideMenuContainer,
+  SideMenuLinks,
+  SideMenuLogo,
+} from './DashboardSideMenu.styled';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { DashboardNavigationLinks } from '@/constants';
 import Logo from '../../ui/logo/Logo';
-import styles from './DashboardSideMenu.module.scss';
 import DashboardNavigationLink from '../dashboardNavigationLink/DashboardNavigationLink';
 
 interface Props {}
 
 const DashboardSideMenu: FC<Props> = () => {
   return (
-    <aside className={styles.container}>
-      <div className={styles.logo}>
+    <DashboardSideMenuContainer>
+      <SideMenuLogo>
         <Logo variant="light" />
-      </div>
+      </SideMenuLogo>
 
-      <div className={styles.links}>
+      <SideMenuLinks>
         {DashboardNavigationLinks.map((item, index) => (
           <div key={index}>
             <span>{item.label}</span>
@@ -29,8 +35,8 @@ const DashboardSideMenu: FC<Props> = () => {
             </ul>
           </div>
         ))}
-      </div>
-    </aside>
+      </SideMenuLinks>
+    </DashboardSideMenuContainer>
   );
 };
 

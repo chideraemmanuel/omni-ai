@@ -5,6 +5,7 @@ interface UserTypes {
   id: string;
   name: string;
   email: string;
+  profileImage?: string;
   //   verified: boolean;
 }
 

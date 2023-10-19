@@ -22,12 +22,12 @@ import {
 import { logOutUser } from '@/redux/slices/auth/authService';
 import { StoreTypes } from '@/redux/store';
 import { useLogout } from '@/lib/hooks/useLogout';
-import styles from './DashboardHeader.module.scss';
+import ProfileImage from '@/components/misc/profileImage/ProfileImage';
 
 interface Props {}
 
 const DashboardHeader: FC<Props> = () => {
-  const { dashboardHeaderLinksActive } = useSelector(
+  const { dashboardHeaderLinks } = useSelector(
     (store: StoreTypes) => store.navigation
   );
 
@@ -36,27 +36,24 @@ const DashboardHeader: FC<Props> = () => {
   const { mutate: logout } = useLogout();
 
   return (
-    <div className={styles.container}>
-      <div
-        className={styles.toggle}
+    <DashboardHeaderContainer>
+      <DashboardHeaderMobileToggle
         onClick={() => dispatch(openDashboardMobileMenu())}
       >
         <FiMenu />
-      </div>
+      </DashboardHeaderMobileToggle>
 
-      <div className={styles.logo}>
+      <DashboardHeaderLogo>
         <Logo variant="dark" />
-      </div>
-      <div
-        className={`${styles.user_button} ${
-          dashboardHeaderLinksActive && styles.user_button_active
-        }`}
-      >
+      </DashboardHeaderLogo>
+      {/* <UserButtonOverlay /> */}
+      <DashboardHeaderUserButton $active={dashboardHeaderLinks}>
         <button onClick={() => dispatch(toggleDashboardHeaderLinks())}>
-          <Image src={image} alt="" />
+          {/* <Image src={image} alt="" /> */}
+          <ProfileImage />
         </button>
 
-        <div className={dashboardHeaderLinksActive ? styles.active : undefined}>
+        <div>
           <li onClick={() => dispatch(closeDashboardHeaderLinks())}>
             <Link href={'/'}>View profile</Link>
           </li>
@@ -68,8 +65,8 @@ const DashboardHeader: FC<Props> = () => {
             <button onClick={() => logout()}>Logout</button>
           </li>
         </div>
-      </div>
-    </div>
+      </DashboardHeaderUserButton>
+    </DashboardHeaderContainer>
   );
 };
 
