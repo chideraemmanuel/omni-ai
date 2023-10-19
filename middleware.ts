@@ -25,6 +25,21 @@ export async function middleware(request: NextRequest) {
     return NextResponse.redirect(new URL('/login', request.url));
   }
 
+  // if (nextUrl.pathname.startsWith('/dashboard') && token) {
+  //   const decoded = jwt.verify(token, process.env.JWT_SECRET!);
+
+  //   await connectToDatabase();
+
+  //   // @ts-ignore
+  //   const currentUser = await User.findById(decoded.id);
+
+  //   if (!currentUser) {
+  //     return NextResponse.redirect(new URL('/login', request.url));
+  //   } else if (currentUser && !currentUser?.verified) {
+  //     return NextResponse.redirect(new URL('/user/verify', request.url));
+  //   }
+  // }
+
   // WHEN NAVIGATING TO VERIFICATION PPAGE...
   // if (nextUrl.pathname.startsWith('/user/verify') && !token) {
   //   return NextResponse.redirect(new URL('/login', request.url));

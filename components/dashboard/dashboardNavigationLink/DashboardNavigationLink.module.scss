@@ -1,0 +1,25 @@
+.link {
+  /* background-color: blue; */
+  display: block;
+  font-size: var(--sm-font);
+  padding: var(--fluid-block-space-3) var(--fluid-inline-space-3);
+  border-radius: 0.5rem;
+  color: var(--gray-500);
+  transition: 0.2s ease;
+
+  &:hover {
+    /* background-color: #dee8f8; */
+    background-color: rgba(181, 207, 248, 0.5);
+    color: var(--primary-color);
+  }
+
+  //   &.active {
+  //     background-color: rgba(181, 207, 248, 0.5);
+  //     color: var(--primary-color);
+  //   }
+}
+
+.active {
+  background-color: rgba(181, 207, 248, 0.5);
+  color: var(--primary-color);
+}

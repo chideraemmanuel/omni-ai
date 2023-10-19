@@ -1,3 +1,5 @@
+'use client';
+
 import { FC } from 'react';
 import {
   DashboardHeaderContainer,
@@ -20,11 +22,12 @@ import {
 import { logOutUser } from '@/redux/slices/auth/authService';
 import { StoreTypes } from '@/redux/store';
 import { useLogout } from '@/lib/hooks/useLogout';
+import styles from './DashboardHeader.module.scss';
 
 interface Props {}
 
 const DashboardHeader: FC<Props> = () => {
-  const { dashboardHeaderLinks } = useSelector(
+  const { dashboardHeaderLinksActive } = useSelector(
     (store: StoreTypes) => store.navigation
   );
 
@@ -33,23 +36,27 @@ const DashboardHeader: FC<Props> = () => {
   const { mutate: logout } = useLogout();
 
   return (
-    <DashboardHeaderContainer>
-      <DashboardHeaderMobileToggle
+    <div className={styles.container}>
+      <div
+        className={styles.toggle}
         onClick={() => dispatch(openDashboardMobileMenu())}
       >
         <FiMenu />
-      </DashboardHeaderMobileToggle>
+      </div>
 
-      <DashboardHeaderLogo>
+      <div className={styles.logo}>
         <Logo variant="dark" />
-      </DashboardHeaderLogo>
-      {/* <UserButtonOverlay /> */}
-      <DashboardHeaderUserButton $active={dashboardHeaderLinks}>
+      </div>
+      <div
+        className={`${styles.user_button} ${
+          dashboardHeaderLinksActive && styles.user_button_active
+        }`}
+      >
         <button onClick={() => dispatch(toggleDashboardHeaderLinks())}>
           <Image src={image} alt="" />
         </button>
 
-        <div>
+        <div className={dashboardHeaderLinksActive ? styles.active : undefined}>
           <li onClick={() => dispatch(closeDashboardHeaderLinks())}>
             <Link href={'/'}>View profile</Link>
           </li>
@@ -61,8 +68,8 @@ const DashboardHeader: FC<Props> = () => {
             <button onClick={() => logout()}>Logout</button>
           </li>
         </div>
-      </DashboardHeaderUserButton>
-    </DashboardHeaderContainer>
+      </div>
+    </div>
   );
 };
 

@@ -1,13 +1,7 @@
-'use client';
-
 import DashboardNavigation from '@/components/dashboard/dashboardNavigation/DashboardNavigation';
 import { FC } from 'react';
-import {
-  DashboardLayoutContent,
-  DashboardLayoutContainer,
-} from './layout.styled';
 import DashboardHeader from '@/components/dashboard/dashboardHeader/DashboardHeader';
-import AuthProvider from '@/lib/decorators/AuthProvider';
+import styles from './layout.module.scss';
 
 interface Props {
   children: React.ReactNode;
@@ -15,16 +9,16 @@ interface Props {
 
 const DashboardLayout: FC<Props> = ({ children }) => {
   return (
-    <AuthProvider>
-      <DashboardLayoutContainer>
-        <DashboardNavigation />
-        <DashboardLayoutContent>
-          <DashboardHeader />
+    // <AuthProvider>
+    <div className={styles.container}>
+      <DashboardNavigation />
+      <div className={styles.content}>
+        <DashboardHeader />
 
-          <section>{children}</section>
-        </DashboardLayoutContent>
-      </DashboardLayoutContainer>
-    </AuthProvider>
+        <section>{children}</section>
+      </div>
+    </div>
+    // </AuthProvider>
   );
 };
 

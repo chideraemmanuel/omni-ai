@@ -1,6 +1,6 @@
 import { FC } from 'react';
-import { LinkContainer } from './DashboardHomeLink.styled';
-import { FiArrowDownRight, FiArrowRight } from 'react-icons/fi';
+import { FiArrowRight } from 'react-icons/fi';
+import styles from './DashboardHomeLink.module.scss';
 
 interface Props {
   href: string;
@@ -10,14 +10,14 @@ interface Props {
 
 const DashboardHomeLink: FC<Props> = ({ href, title, description }) => {
   return (
-    <LinkContainer href={href}>
+    <a href={href} className={styles.link_container}>
       <div>
         <h3>{title}</h3>
         <p>{description}</p>
       </div>
 
       <FiArrowRight />
-    </LinkContainer>
+    </a>
   );
 };
 

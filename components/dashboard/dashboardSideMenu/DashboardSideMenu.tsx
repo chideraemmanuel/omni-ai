@@ -1,45 +1,36 @@
 import { FC } from 'react';
-import {
-  DashboardSideMenuContainer,
-  SideMenuLinks,
-  SideMenuLogo,
-} from './DashboardSideMenu.styled';
-import Link from 'next/link';
-import { usePathname } from 'next/navigation';
 import { DashboardNavigationLinks } from '@/constants';
 import Logo from '../../ui/logo/Logo';
+import styles from './DashboardSideMenu.module.scss';
+import DashboardNavigationLink from '../dashboardNavigationLink/DashboardNavigationLink';
 
 interface Props {}
 
 const DashboardSideMenu: FC<Props> = () => {
-  const pathname = usePathname();
-
   return (
-    <DashboardSideMenuContainer>
-      <SideMenuLogo>
+    <aside className={styles.container}>
+      <div className={styles.logo}>
         <Logo variant="light" />
-      </SideMenuLogo>
+      </div>
 
-      <SideMenuLinks>
+      <div className={styles.links}>
         {DashboardNavigationLinks.map((item, index) => (
           <div key={index}>
             <span>{item.label}</span>
             <ul>
               {item.links.map((link, index) => (
                 <li key={index}>
-                  <Link
+                  <DashboardNavigationLink
                     href={link.href}
-                    className={pathname === link.href ? 'active' : undefined}
-                  >
-                    {link.label}
-                  </Link>
+                    label={link.label}
+                  />
                 </li>
               ))}
             </ul>
           </div>
         ))}
-      </SideMenuLinks>
-    </DashboardSideMenuContainer>
+      </div>
+    </aside>
   );
 };
 

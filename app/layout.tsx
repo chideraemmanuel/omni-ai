@@ -5,6 +5,7 @@ import ReduxProvider from '@/redux/ReduxProvider';
 import StyledComponentsRegistry from '@/lib/decorators/registry';
 import StyledComponentsThemeProvider from '@/lib/decorators/StyledComponentsThemeProvider';
 import ToastProvider from '@/lib/decorators/ToastProvider';
+import './globals.scss';
 
 const inter = Inter({ subsets: ['latin'] });
 
