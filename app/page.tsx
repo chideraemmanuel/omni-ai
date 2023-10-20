@@ -7,6 +7,7 @@ import { dark } from 'react-syntax-highlighter/dist/esm/styles/prism';
 import ReactMarkdown from 'react-markdown';
 import ChatBubble from '@/components/ui/chatBubble/ChatBubble';
 import TypingAnimation from '@/components/misc/typingAnimation/TypingAnimation';
+import FullScreenLoader from '@/components/ui/fullScreenLoader/FullScreenLoader';
 
 interface Props {}
 
@@ -27,6 +28,7 @@ const Homepage: FC<Props> = () => {
 
   return (
     <>
+      <FullScreenLoader />
       <ChatBubble
         role="assistant"
         content={`

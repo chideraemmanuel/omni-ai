@@ -18,25 +18,25 @@ const GoogleCallbackPage: FC<Props> = () => {
     if (code) {
       const authenticate = async () => {
         try {
-          await axios.post('/api/auth/google', {
+          const response = await axios.post('/api/auth/google', {
             code,
           });
           // toast and navigate to dashboard on successful google verification
-          toast.success('Registration successful!');
+          toast.success(response?.data?.message);
           router.replace('/dashboard');
         } catch (error: any) {
           toast.error(
             error?.response?.data?.message ||
               'An error occured during authentication'
           );
-          router.replace('/register');
+          router.replace('/login');
         }
       };
 
       authenticate();
     } else {
       toast.error('Authentication failed');
-      router.replace('/register');
+      router.replace('/login');
     }
   }, [searchParams, code]);
 

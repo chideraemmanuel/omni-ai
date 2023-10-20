@@ -30,9 +30,9 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     }
   }, [isAuthError, authError, user]);
 
-  if (!navigator.onLine) {
-    return <AuthErrorPage />;
-  }
+  // if (!navigator.onLine) {
+  //   return <AuthErrorPage />;
+  // }
 
   if (isAuthenticating) {
     return <FullScreenLoader />;

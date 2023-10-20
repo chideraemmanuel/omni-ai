@@ -9,8 +9,9 @@ export const FullScreenLoaderContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: rgba(0, 0, 0, 0.5);
-  backdrop-filter: blur(10px);
+  /* background-color: rgba(0, 0, 0, 0.5); */
+  background-color: #fff;
+  /* backdrop-filter: blur(10px); */
 
   svg {
     animation: rotate 2s infinite linear;
@@ -24,6 +25,66 @@ export const FullScreenLoaderContainer = styled.div`
     }
     to {
       transform: rotate(0deg);
+    }
+  }
+`;
+
+// export const StyledLoader = styled.div`
+//   width: 12px;
+//   height: 12px;
+//   border-radius: 50%;
+//   background: #b5cff8;
+//   color: #b5cff8;
+//   clip-path: inset(-26px);
+//   animation: d8 2s infinite linear;
+
+//   @keyframes d8 {
+//     0% {
+//       box-shadow: 0 0 0 0, 40px 0, -40px 0, 0 40px, 0 -40px;
+//     }
+//     10% {
+//       box-shadow: 0 0 0 0, 12px 0, -40px 0, 0 40px, 0 -40px;
+//     }
+//     20% {
+//       box-shadow: 0 0 0 4px, 0px 0, -40px 0, 0 40px, 0 -40px;
+//     }
+//     30% {
+//       box-shadow: 0 0 0 4px, 0px 0, -12px 0, 0 40px, 0 -40px;
+//     }
+//     40% {
+//       box-shadow: 0 0 0 8px, 0px 0, 0px 0, 0 40px, 0 -40px;
+//     }
+//     50% {
+//       box-shadow: 0 0 0 8px, 0px 0, 0px 0, 0 12px, 0 -40px;
+//     }
+//     60% {
+//       box-shadow: 0 0 0 12px, 0px 0, 0px 0, 0 0px, 0 -40px;
+//     }
+//     70% {
+//       box-shadow: 0 0 0 12px, 0px 0, 0px 0, 0 0px, 0 -12px;
+//     }
+//     80% {
+//       box-shadow: 0 0 0 16px, 0px 0, 0px 0, 0 0px, 0 0px;
+//     }
+//     90%,
+//     100% {
+//       box-shadow: 0 0 0 0, 40px 0, -40px 0, 0 40px, 0 -40px;
+//     }
+//   }
+// `;
+
+export const StyledLoader = styled.div`
+  --c: radial-gradient(farthest-side, #b5cff8 90%, #0000);
+  width: 32px;
+  height: 32px;
+  background: var(--c) 0 0, var(--c) 100% 0, var(--c) 100% 100%, var(--c) 0 100%;
+  background-size: 12px 12px; // INCREASE BACKGROUND SIZE TO INCREASE
+  background-repeat: no-repeat;
+  animation: d8 0.5s infinite;
+
+  @keyframes d8 {
+    100% {
+      background-position: 100% 0, 100% 100%, 0 100%, 0 0;
     }
   }
 `;

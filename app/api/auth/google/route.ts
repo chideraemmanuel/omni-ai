@@ -34,21 +34,48 @@ export const POST = async (request: NextRequest) => {
 
   const userData = jwt.decode(response?.data?.id_token);
 
-  console.log(userData);
+  // console.log(userData);
 
   const { email, name } = userData;
 
-  try {
-    //  CONNECT TO DATABASE
-    console.log('connecting to database...');
-    await connectToDatabase();
-    console.log('connected to database!');
+  //  CONNECT TO DATABASE
+  console.log('connecting to database...');
+  await connectToDatabase();
+  console.log('connected to database!');
 
+  try {
     // CHECK IF EMAIL IS IN USE
     const userExists = await User.findOne({ email });
     // const { auth_type } = userExists;
 
-    //   console.log(userExists);
+    console.log('user esixts', userExists);
+
+    // if (!userExists) {
+    //   // USER DOESN'T EXIST IN DATABASE
+    //   //   ADD USER TO DATABASE
+    //   console.log('in if');
+    //   const createdUser: GoogleUserTypes = await User.create({
+    //     name,
+    //     email,
+    //     verified: true,
+    //   });
+
+    //   //   GENERATE SESSION TOKEN
+    //   const token = generateToken(createdUser._id);
+    //   //   console.log(token);
+
+    //   return NextResponse.json(
+    //     {
+    //       message: 'Registration successful',
+    //     },
+    //     {
+    //       status: 201,
+    //       headers: {
+    //         'Set-Cookie': `token=${token}; httpOnly; path=/`,
+    //       },
+    //     }
+    //   );
+    // }
 
     if (userExists && userExists?.auth_type !== 'GOOGLE_AUTH_SERVICE') {
       return NextResponse.json(
@@ -80,6 +107,7 @@ export const POST = async (request: NextRequest) => {
     const createdUser: GoogleUserTypes = await User.create({
       name,
       email,
+      auth_type: 'GOOGLE_AUTH_SERVICE',
       verified: true,
     });
 
@@ -99,6 +127,7 @@ export const POST = async (request: NextRequest) => {
       }
     );
   } catch (error) {
+    console.log(error);
     return NextResponse.json({ message: 'Server error' }, { status: 500 });
   }
 };
