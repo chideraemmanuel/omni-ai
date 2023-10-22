@@ -27,7 +27,7 @@ import ProfileImage from '@/components/misc/profileImage/ProfileImage';
 interface Props {}
 
 const DashboardHeader: FC<Props> = () => {
-  const { dashboardHeaderLinks } = useSelector(
+  const { dashboardHeaderLinksActive } = useSelector(
     (store: StoreTypes) => store.navigation
   );
 
@@ -47,13 +47,19 @@ const DashboardHeader: FC<Props> = () => {
         <Logo variant="dark" />
       </DashboardHeaderLogo>
       {/* <UserButtonOverlay /> */}
-      <DashboardHeaderUserButton $active={dashboardHeaderLinks}>
+      <DashboardHeaderUserButton $active={dashboardHeaderLinksActive}>
+        {dashboardHeaderLinksActive && (
+          <div
+            className="overlay"
+            onClick={() => dispatch(closeDashboardHeaderLinks())}
+          ></div>
+        )}
         <button onClick={() => dispatch(toggleDashboardHeaderLinks())}>
           {/* <Image src={image} alt="" /> */}
           <ProfileImage />
         </button>
 
-        <div>
+        <div className="links">
           <li onClick={() => dispatch(closeDashboardHeaderLinks())}>
             <Link href={'/'}>View profile</Link>
           </li>

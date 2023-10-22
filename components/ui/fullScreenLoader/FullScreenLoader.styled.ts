@@ -74,11 +74,24 @@ export const FullScreenLoaderContainer = styled.div`
 // `;
 
 export const StyledLoader = styled.div`
-  --c: radial-gradient(farthest-side, #b5cff8 90%, #0000);
+  /* --c: radial-gradient(farthest-side, #b5cff8 90%, #0000);
   width: 32px;
   height: 32px;
   background: var(--c) 0 0, var(--c) 100% 0, var(--c) 100% 100%, var(--c) 0 100%;
   background-size: 12px 12px; // INCREASE BACKGROUND SIZE TO INCREASE
+  background-repeat: no-repeat;
+  animation: d8 0.5s infinite;
+
+  @keyframes d8 {
+    100% {
+      background-position: 100% 0, 100% 100%, 0 100%, 0 0;
+    }
+  } */
+  --c: radial-gradient(farthest-side, #b5cff8 90%, #0000);
+  width: 64px;
+  height: 64px;
+  background: var(--c) 0 0, var(--c) 100% 0, var(--c) 100% 100%, var(--c) 0 100%;
+  background-size: 24px 24px;
   background-repeat: no-repeat;
   animation: d8 0.5s infinite;
 
@@ -142,21 +155,18 @@ export const StyledLoader = styled.div`
 //
 //
 //
-// PROBABLY USE THIS ************
+// FOR IMAGE GEN *****************
 // .custom-loader {
-//   width: 32px;
-//   height: 32px;
-//   --c:radial-gradient(farthest-side,#B5CFF8 90%,#0000);
-//   background:
-//     var(--c) 0    0,
-//     var(--c) 100% 0,
-//     var(--c) 100% 100%,
-//     var(--c) 0    100%;
-//   background-size: 12px 12px; INCREASE BACKGROUND SIZE TO INCREASE
-//   background-repeat: no-repeat;
-//   animation:d8 .5s infinite;
+//   width: 4px;
+//   height: 4px;
+//   color: #b5cff8;
+//   border-radius: 50%;
+//   box-shadow: 19px 0 0 7px, 38px 0 0 3px, 57px 0 0 0;
+//   transform: translateX(-38px);
+//   animation: d1 .5s infinite alternate linear;
 // }
 
-// @keyframes d8 {
-//   100% {background-position: 100% 0,100% 100%,0 100%,0 0}
+// @keyframes d1 {
+//   50%  {box-shadow: 19px 0 0 3px, 38px 0 0 7px, 57px 0 0 3px}
+//   100% {box-shadow: 19px 0 0 0  , 38px 0 0 3px, 57px 0 0 7px}
 // }

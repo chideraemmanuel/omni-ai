@@ -6,6 +6,17 @@ export const StyledSelectFieldContainer = styled.div`
   flex-direction: column;
   gap: ${({ theme }) => theme['fluid-block-space-1'] || '0.5rem'};
   position: relative;
+
+  .overlay {
+    position: fixed;
+    background-color: transparent;
+    /* display: none; */
+    left: 0;
+    top: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 3;
+  }
 `;
 
 export const StyledSelectFieldToggle = styled.div<SelectFieldToggleProps>`
@@ -14,6 +25,7 @@ export const StyledSelectFieldToggle = styled.div<SelectFieldToggleProps>`
 
     &:checked {
       + label {
+        z-index: 7;
         /* border: 1px solid #d6bbfb;
         box-shadow: 0px 0px 0px 4px #f4ebff,
           0px 1px 2px 0px rgba(16, 24, 40, 0.05); */

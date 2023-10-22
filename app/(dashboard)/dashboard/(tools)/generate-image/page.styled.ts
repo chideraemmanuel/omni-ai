@@ -96,6 +96,34 @@ export const GenerationOutput = styled.section`
     }
   }
 
+  .generating {
+    background-color: #fff;
+    width: 100%;
+    min-height: 60vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    .loader {
+      width: 4px;
+      height: 4px;
+      color: #b5cff8;
+      border-radius: 50%;
+      box-shadow: 19px 0 0 7px, 38px 0 0 3px, 57px 0 0 0;
+      transform: translateX(-38px);
+      animation: d1 0.5s infinite alternate linear;
+
+      @keyframes d1 {
+        50% {
+          box-shadow: 19px 0 0 3px, 38px 0 0 7px, 57px 0 0 3px;
+        }
+        100% {
+          box-shadow: 19px 0 0 0, 38px 0 0 3px, 57px 0 0 7px;
+        }
+      }
+    }
+  }
+
   .image-grid {
     /* background-color: red; */
     min-height: 60vh;

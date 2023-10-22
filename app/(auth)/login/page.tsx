@@ -48,7 +48,7 @@ const LoginPage: FC<Props> = () => {
 
   return (
     <>
-      {isLoggingIn && <FullScreenLoader />}
+      {/* {isLoggingIn && <FullScreenLoader />} */}
       <LoginPageContainer>
         <LoginPageFormContainer>
           <LoginFormHeader>

@@ -19,7 +19,7 @@ const DashboardPage: FC<Props> = () => {
   return (
     <DashboardContainer>
       <DashboardHeader>
-        <h2>Welcome, {user?.name}</h2>
+        <h2>Welcome, {user?.name.split(' ')[0]}</h2>
         <p>Which AI tool would you like to use?</p>
       </DashboardHeader>
 

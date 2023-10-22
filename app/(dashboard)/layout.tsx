@@ -10,16 +10,16 @@ interface Props {
 
 const DashboardLayout: FC<Props> = ({ children }) => {
   return (
-    <AuthProvider>
-      <div className={styles.container}>
-        <DashboardNavigation />
-        <div className={styles.content}>
-          <DashboardHeader />
+    // <AuthProvider>
+    <div className={styles.container}>
+      <DashboardNavigation />
+      <div className={styles.content}>
+        <DashboardHeader />
 
-          <section>{children}</section>
-        </div>
+        <section>{children}</section>
       </div>
-    </AuthProvider>
+    </div>
+    // </AuthProvider>
   );
 };
 

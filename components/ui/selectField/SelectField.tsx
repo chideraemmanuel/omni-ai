@@ -46,6 +46,9 @@ const SelectField: React.FC<ComponentProps> = ({
   return (
     <StyledSelectFieldContainer>
       {/* <StyledSelectFieldToggle {...toggleStyles}> */}
+      {dropdownActive && (
+        <div className="overlay" onClick={() => setDropdownActive(false)}></div>
+      )}
       <StyledSelectFieldToggle {...toggleStyles} $fontSize={fontSize}>
         <input
           type="checkbox"

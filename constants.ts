@@ -12,7 +12,7 @@ export const DashboardNavigationLinks = [
     label: 'Tools',
     links: [
       {
-        label: 'Chat Bot',
+        label: 'Virtual Assistant',
         href: '/dashboard/chat',
       },
       {
@@ -25,7 +25,7 @@ export const DashboardNavigationLinks = [
 
 export const tools = [
   {
-    name: 'Chat Bot',
+    name: 'Virtual Assistant',
     description: 'Chat with our AI text generation model about anything!',
     href: '/dashboard/chat',
   },
@@ -68,6 +68,39 @@ export const sizeList = [
     title: '1024 x 1024',
     value: '1024',
   },
+];
+
+export const profileColors = [
+  '#FFDDC1',
+  '#FFB6C1',
+  '#FFD700',
+  '#FFA07A',
+  '#FF6347',
+  '#FF4500',
+  '#FFA500',
+  '#FF8C00',
+  '#FFDAB9',
+  '#FFE4B5',
+  '#FFC0CB',
+  '#FF69B4',
+  '#FF1493',
+  '#FFC3A0',
+  '#FFB6C1',
+  '#FF69B4',
+  '#FF00FF',
+  '#FF00FF',
+  '#8A2BE2',
+  '#9932CC',
+  '#DA70D6',
+  '#BA55D3',
+  '#9370DB',
+  '#800080',
+  '#4B0082',
+  '#6A5ACD',
+  '#483D8B',
+  '#7B68EE',
+  '#0000FF',
+  '#0000CD',
 ];
 
 // TODO: install openai sdk, take screenshots of all openai tools implementation, make route handlers for all tools

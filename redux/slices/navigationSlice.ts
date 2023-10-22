@@ -2,12 +2,12 @@ import { createSlice } from '@reduxjs/toolkit';
 
 export interface NavigationStateTypes {
   dashboardMobileMenuActive: boolean;
-  dashboardHeaderLinks: boolean;
+  dashboardHeaderLinksActive: boolean;
 }
 
 const initialState: NavigationStateTypes = {
   dashboardMobileMenuActive: false,
-  dashboardHeaderLinks: false,
+  dashboardHeaderLinksActive: false,
 };
 
 const navigationSlice = createSlice({
@@ -21,16 +21,16 @@ const navigationSlice = createSlice({
       state.dashboardMobileMenuActive = false;
     },
     openDashboardHeaderLinks: (state: NavigationStateTypes) => {
-      state.dashboardHeaderLinks = true;
+      state.dashboardHeaderLinksActive = true;
     },
     closeDashboardHeaderLinks: (state: NavigationStateTypes) => {
-      state.dashboardHeaderLinks = false;
+      state.dashboardHeaderLinksActive = false;
     },
     toggleDashboardHeaderLinks: (state: NavigationStateTypes) => {
-      if (state.dashboardHeaderLinks) {
-        state.dashboardHeaderLinks = false;
+      if (state.dashboardHeaderLinksActive) {
+        state.dashboardHeaderLinksActive = false;
       } else {
-        state.dashboardHeaderLinks = true;
+        state.dashboardHeaderLinksActive = true;
       }
     },
   },

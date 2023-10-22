@@ -56,7 +56,7 @@ const RegistrationPage: FC<Props> = () => {
 
   return (
     <>
-      {isSigningUp && <FullScreenLoader />}
+      {/* {isSigningUp && <FullScreenLoader />} */}
       <RegistrationPageContainer>
         <RegistrationPageFormContainer>
           <RegistrationFormHeader>

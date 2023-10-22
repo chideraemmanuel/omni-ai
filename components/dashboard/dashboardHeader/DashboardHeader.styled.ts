@@ -39,7 +39,17 @@ export const DashboardHeaderUserButton = styled.div<HeaderLinkProps>`
     }
   }
 
-  > div:last-child {
+  .overlay {
+    position: fixed;
+    background-color: transparent;
+    left: 0;
+    top: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 3;
+  }
+
+  .links {
     position: absolute;
     right: 0;
     top: 100%;
@@ -83,6 +93,7 @@ export const DashboardHeaderUserButton = styled.div<HeaderLinkProps>`
         /* border: 1px solid red; */
         font-size: ${({ theme }) => theme.font['sm-font']};
         border-radius: 5px;
+        color: inherit;
 
         &:hover {
           background: #f9fafb;

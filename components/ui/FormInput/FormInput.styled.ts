@@ -41,6 +41,7 @@ export const FormInputField = styled.div<FormInputFieldProps>`
       theme.space['fluid-inline-space-10'] || '2.25rem'};
     padding-right: ${({ theme }) =>
       theme.space['fluid-inline-space-10'] || '2.25rem'};
+    color: inherit;
 
     &::placeholder {
       color: ${({ theme }) => theme.colors.light['gray-500']};

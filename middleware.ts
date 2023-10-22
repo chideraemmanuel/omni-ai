@@ -13,17 +13,17 @@ export async function middleware(request: NextRequest) {
   // console.log('nextUrl', nextUrl.pathname);
   // console.log('token', token);
 
-  // if (
-  //   (nextUrl.pathname.startsWith('/login') ||
-  //     nextUrl.pathname.startsWith('/register')) &&
-  //   token
-  // ) {
-  //   return NextResponse.redirect(new URL('/dashboard', request.url));
-  // }
-
-  if (nextUrl.pathname.startsWith('/dashboard') && !token) {
-    return NextResponse.redirect(new URL('/login', request.url));
+  if (
+    (nextUrl.pathname.startsWith('/login') ||
+      nextUrl.pathname.startsWith('/register')) &&
+    token
+  ) {
+    return NextResponse.redirect(new URL('/dashboard', request.url));
   }
+
+  // if (nextUrl.pathname.startsWith('/dashboard') && !token) {
+  //   return NextResponse.redirect(new URL('/login', request.url));
+  // }
 }
 
 // export const config = {

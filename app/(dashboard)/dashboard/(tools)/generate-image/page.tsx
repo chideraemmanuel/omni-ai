@@ -90,9 +90,17 @@ const ImageGenerationPage: FC<Props> = () => {
       </GenerationConfig>
 
       <GenerationOutput>
-        {isGenerating && <p>Generating Images...</p>}
+        {isGenerating && (
+          <div className="generating">
+            <div className="loader"></div>
+          </div>
+        )}
 
-        {images?.length > 0 && (
+        {/* <div className="generating">
+          <div className="loader"></div>
+        </div> */}
+
+        {images?.length > 0 && !isGenerating && (
           <div className="image-grid">
             {images.map((image, index) => (
               <ImageCard imageSrc={image.url} key={index} />
@@ -100,7 +108,7 @@ const ImageGenerationPage: FC<Props> = () => {
           </div>
         )}
 
-        {images.length === 0 && (
+        {images.length === 0 && !isGenerating && (
           <div className="no-output">
             <div>
               <Image src={illustration} alt="No generation" />

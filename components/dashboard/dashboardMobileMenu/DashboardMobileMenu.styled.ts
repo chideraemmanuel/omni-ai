@@ -104,26 +104,8 @@ export const MobileMenuLinks = styled.div`
       flex-direction: column;
       gap: ${({ theme }) => theme.space['fluid-block-space-1']};
 
-      a {
-        /* background-color: blue; */
-        display: block;
-        font-size: ${({ theme }) => theme.font['sm-font']};
-        padding: ${({ theme }) =>
-          `${theme.space['fluid-block-space-3']} ${theme.space['fluid-inline-space-3']}`};
-        border-radius: 0.5rem;
-        color: ${({ theme }) => theme.colors.light['gray-500']};
-        transition: 0.2s ease;
-
-        &:hover {
-          /* background-color: #dee8f8; */
-          background-color: rgba(181, 207, 248, 0.5);
-          color: ${({ theme }) => theme.colors['primary-color']};
-        }
-
-        &.active {
-          background-color: rgba(181, 207, 248, 0.5);
-          color: ${({ theme }) => theme.colors['primary-color']};
-        }
+      li {
+        list-style: none;
       }
     }
   }

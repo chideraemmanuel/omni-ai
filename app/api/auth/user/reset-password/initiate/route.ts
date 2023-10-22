@@ -34,7 +34,7 @@ export const POST = async (request: NextRequest) => {
   if (!userExists.verified) {
     return NextResponse.json(
       { message: `Email hasn't been verified` },
-      { status: 403 }
+      { status: 401 }
     );
   }
 

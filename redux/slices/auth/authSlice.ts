@@ -139,6 +139,7 @@ const authSlice = createSlice({
       .addCase(logOutUser.fulfilled, (state: AuthStateTypes) => {
         state.isLoggingOut = false;
         state.isLoggedOut = true;
+        state.user = null;
       })
       .addCase(
         logOutUser.rejected,
