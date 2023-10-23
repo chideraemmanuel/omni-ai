@@ -6,6 +6,7 @@ import {
   loginUser,
   registerUser,
   resendOtp,
+  resetPassword,
   verifyOtp,
 } from './authService';
 
@@ -30,6 +31,10 @@ export interface AuthStateTypes {
   isInitatedPasswordReset: boolean;
   isInitiatingPasswordResetError: boolean;
   PasswordResetInitiationError: null | string;
+  isResettingPassword: boolean;
+  isPasswordResetSuccess: boolean;
+  isPasswordResetError: boolean;
+  passwordResetError: null | string;
 }
 
 const initialState: AuthStateTypes = {
@@ -53,6 +58,10 @@ const initialState: AuthStateTypes = {
   isInitatedPasswordReset: false,
   isInitiatingPasswordResetError: false,
   PasswordResetInitiationError: null,
+  isResettingPassword: false,
+  isPasswordResetSuccess: false,
+  isPasswordResetError: false,
+  passwordResetError: null,
 };
 
 const authSlice = createSlice({
@@ -78,6 +87,16 @@ const authSlice = createSlice({
       state.isLoggingOut = false;
       state.isLoggedOut = false;
       state.logOutError = null;
+
+      state.isInitiatingPasswordReset = false;
+      state.isInitatedPasswordReset = false;
+      state.isInitiatingPasswordResetError = false;
+      state.PasswordResetInitiationError = null;
+
+      state.isResettingPassword = false;
+      state.isPasswordResetSuccess = false;
+      state.isPasswordResetError = false;
+      state.passwordResetError = null;
     },
   },
   extraReducers: (builder) => {
@@ -171,6 +190,23 @@ const authSlice = createSlice({
           state.isInitiatingPasswordReset = false;
           state.isInitiatingPasswordResetError = true;
           state.PasswordResetInitiationError = action.payload;
+        }
+      )
+      .addCase(resetPassword.pending, (state: AuthStateTypes) => {
+        state.isResettingPassword = true;
+      })
+      .addCase(resetPassword.fulfilled, (state: AuthStateTypes) => {
+        state.isResettingPassword = false;
+        state.isPasswordResetSuccess = true;
+        state.isPasswordResetError = false;
+      })
+      .addCase(
+        resetPassword.rejected,
+        (state: AuthStateTypes, action: { payload: any }) => {
+          state.isResettingPassword = false;
+          state.isPasswordResetSuccess = false;
+          state.isPasswordResetError = true;
+          state.passwordResetError = action.payload;
         }
       );
   },

@@ -165,7 +165,7 @@ export const initiatePasswordReset = createAsyncThunk(
 );
 
 export const resetPassword = createAsyncThunk(
-  'auth/reset-password/initiate',
+  'auth/reset-password',
   async (
     credentials: { email: string; resetString: string; newPassword: string },
     thunkAPI

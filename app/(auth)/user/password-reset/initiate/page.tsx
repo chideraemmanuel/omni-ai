@@ -2,61 +2,67 @@
 
 import { FC, FormEvent } from 'react';
 import {
-  PasswordResetFormContainer,
-  PasswordResetFormHeader,
-  PasswordResetPageContainer,
+  PasswordResetInitiationFormContainer,
+  PasswordResetInitiationFormHeader,
+  PasswordResetInitiationPageContainer,
 } from './page.styled';
 import TextInput from '@/components/ui/textInput/TextInput';
 import Button from '@/components/ui/button/Button';
 import { useSelector } from 'react-redux';
 import { StoreTypes } from '@/redux/store';
-import { setPasswordResetInput } from '@/redux/slices/formInputSlice';
+import { setPasswordResetInitiationInput } from '@/redux/slices/formInputSlice';
 import { usePasswordReset } from '@/lib/hooks/usePasswordReset';
 
 interface Props {}
 
 const PasswordResetInitiationPage: FC<Props> = () => {
-  const emailRegex = /^([a-z\d\.-]+)@([a-z\d-]+)\.([a-z]{2,5})(\.[a-z]{2,5})?$/;
-
-  const { passwordResetInput } = useSelector(
+  const { passwordResetInitiationInput } = useSelector(
     (store: StoreTypes) => store.formInputs
+  );
+
+  const { isInitiatingPasswordReset } = useSelector(
+    (store: StoreTypes) => store.auth
   );
 
   const { sendResetEmail } = usePasswordReset();
 
-  const handlePasswordReset = async (e: FormEvent<HTMLFormElement>) => {
+  const handlePasswordResetInitiation = async (
+    e: FormEvent<HTMLFormElement>
+  ) => {
     e.preventDefault();
 
-    await sendResetEmail(passwordResetInput);
+    await sendResetEmail(passwordResetInitiationInput.value);
   };
 
   return (
-    <PasswordResetPageContainer>
-      <PasswordResetFormContainer>
-        <PasswordResetFormHeader>
+    <PasswordResetInitiationPageContainer>
+      <PasswordResetInitiationFormContainer>
+        <PasswordResetInitiationFormHeader>
           <h2>Reset your password</h2>
           <p>
             Please enter the email address associated with your account. We wil
             send you an email with instructions on how to recover your password.
           </p>
-        </PasswordResetFormHeader>
+        </PasswordResetInitiationFormHeader>
 
-        <form onSubmit={(e) => handlePasswordReset(e)}>
+        <form onSubmit={(e) => handlePasswordResetInitiation(e)}>
           {/* <input type="text" maxLength={6} placeholder="Enter OTP" />
           <button>Verify</button> */}
           <TextInput
             placeholder="Enter your email address"
-            value={passwordResetInput}
-            setValue={setPasswordResetInput}
+            value={passwordResetInitiationInput.value}
+            setValue={setPasswordResetInitiationInput}
+            error={passwordResetInitiationInput.error}
           />
 
           <Button
             tagType="button"
             width="100%"
-            disabled={!emailRegex.test(passwordResetInput)}
+            disabled={isInitiatingPasswordReset}
           >
-            {/* {isVerifying ? 'Verifying...' : 'Verify'} */}
-            Send reset email
+            {isInitiatingPasswordReset
+              ? 'Sending reset email..'
+              : 'Send reset email'}
           </Button>
 
           <Button
@@ -70,8 +76,8 @@ const PasswordResetInitiationPage: FC<Props> = () => {
             Return to Login
           </Button>
         </form>
-      </PasswordResetFormContainer>
-    </PasswordResetPageContainer>
+      </PasswordResetInitiationFormContainer>
+    </PasswordResetInitiationPageContainer>
   );
 };
 

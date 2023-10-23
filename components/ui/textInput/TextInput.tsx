@@ -1,6 +1,7 @@
 import { ChangeEvent, FC } from 'react';
 import {
   TextInputContainer,
+  TextInputError,
   TextInputField,
   TextInputLabel,
 } from './TextInput.styled';
@@ -11,12 +12,22 @@ interface Props {
   placeholder?: string;
   value: string;
   setValue: any;
+  error?: null | string;
+  clearError?: any;
 }
 
-const TextInput: FC<Props> = ({ label, placeholder, value, setValue }) => {
+const TextInput: FC<Props> = ({
+  label,
+  placeholder,
+  value,
+  setValue,
+  error,
+  clearError,
+}) => {
   const dispatch = useDispatch();
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+    dispatch(clearError());
     dispatch(setValue(e.target.value));
   };
 
@@ -29,7 +40,10 @@ const TextInput: FC<Props> = ({ label, placeholder, value, setValue }) => {
         placeholder={placeholder}
         value={value}
         onChange={(e) => handleChange(e)}
+        $error={error}
       />
+
+      <TextInputError>{error}</TextInputError>
     </TextInputContainer>
   );
 };

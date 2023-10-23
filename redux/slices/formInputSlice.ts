@@ -1,8 +1,21 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 export interface FormInputStateTypes {
-  passwordResetInput: string;
+  passwordResetInitiationInput: {
+    value: string;
+    error: string | null;
+  };
   otpInput: string;
+  resetPassword: {
+    newPassword: {
+      value: string;
+      error: string | null;
+    };
+    confirmNewPassword: {
+      value: string;
+      error: string | null;
+    };
+  };
   register: {
     name: {
       value: string;
@@ -34,8 +47,21 @@ export interface FormInputStateTypes {
 }
 
 const initialState: FormInputStateTypes = {
-  passwordResetInput: '',
+  passwordResetInitiationInput: {
+    value: '',
+    error: null,
+  },
   otpInput: '',
+  resetPassword: {
+    newPassword: {
+      value: '',
+      error: null,
+    },
+    confirmNewPassword: {
+      value: '',
+      error: null,
+    },
+  },
   register: {
     name: {
       value: '',
@@ -72,14 +98,50 @@ const signInSlice = createSlice({
   name: 'signIn',
   initialState,
   reducers: {
-    setPasswordResetInput: (
+    setPasswordResetInitiationInput: (
       state: FormInputStateTypes,
       action: { payload: string }
     ) => {
-      state.passwordResetInput = action.payload;
+      state.passwordResetInitiationInput.value = action.payload;
+    },
+    setPasswordResetInitiationInputError: (
+      state: FormInputStateTypes,
+      action: { payload: string }
+    ) => {
+      state.passwordResetInitiationInput.error = action.payload;
     },
     setOtpInput: (state: FormInputStateTypes, action: { payload: string }) => {
       state.otpInput = action.payload;
+    },
+    setNewPassword: (
+      state: FormInputStateTypes,
+      action: { payload: string }
+    ) => {
+      state.resetPassword.newPassword.value = action.payload;
+    },
+    setConfirmNewPassword: (
+      state: FormInputStateTypes,
+      action: { payload: string }
+    ) => {
+      state.resetPassword.confirmNewPassword.value = action.payload;
+    },
+    setNewPasswordError: (
+      state: FormInputStateTypes,
+      action: { payload: string }
+    ) => {
+      state.resetPassword.newPassword.error = action.payload;
+    },
+    setConfirmNewPasswordError: (
+      state: FormInputStateTypes,
+      action: { payload: string }
+    ) => {
+      state.resetPassword.confirmNewPassword.error = action.payload;
+    },
+    clearNewPasswordError: (state: FormInputStateTypes) => {
+      state.resetPassword.newPassword.error = null;
+    },
+    clearConfirmNewPasswordError: (state: FormInputStateTypes) => {
+      state.resetPassword.confirmNewPassword.error = null;
     },
     setRegistrationName: (
       state: FormInputStateTypes,
@@ -203,8 +265,15 @@ const signInSlice = createSlice({
 });
 
 export const {
-  setPasswordResetInput,
+  setPasswordResetInitiationInput,
+  setPasswordResetInitiationInputError,
   setOtpInput,
+  setNewPassword,
+  setConfirmNewPassword,
+  setNewPasswordError,
+  setConfirmNewPasswordError,
+  clearNewPasswordError,
+  clearConfirmNewPasswordError,
   setRegistrationName,
   setRegistrationEmail,
   setRegistrationPassword,

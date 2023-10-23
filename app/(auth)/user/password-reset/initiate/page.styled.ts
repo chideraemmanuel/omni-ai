@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-export const PasswordResetPageContainer = styled.div`
+export const PasswordResetInitiationPageContainer = styled.div`
   /* background-color: red; */
   /* height: 100%; */
   /* width: 100%; */
@@ -16,7 +16,7 @@ export const PasswordResetPageContainer = styled.div`
   }
 `;
 
-export const PasswordResetFormContainer = styled.div`
+export const PasswordResetInitiationFormContainer = styled.div`
   /* background-color: blue; */
   width: min(90%, 600px);
   display: flex;
@@ -33,7 +33,7 @@ export const PasswordResetFormContainer = styled.div`
   }
 `;
 
-export const PasswordResetFormHeader = styled.div`
+export const PasswordResetInitiationFormHeader = styled.div`
   text-align: center;
 
   h2 {
