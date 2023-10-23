@@ -93,10 +93,32 @@ export async function POST(request: NextRequest) {
 
       transporter.sendMail(mailOptions, (error, info) => {
         if (error) {
-          console.log('failed to send mail', error);
-          // return NextResponse.json({ error: 'Server error' }, { status: 500 });
+          console.log('NODEMAILER_ERROR', error);
+          return NextResponse.json(
+            { error: 'Error sending email' },
+            { status: 500 }
+          );
         } else {
           console.log('Mail sent!', info.messageId);
+          const response = NextResponse.json(
+            {
+              status: 'PENDING',
+              message: `OTP has been sent to ${createdUser.email}`,
+            },
+            {
+              status: 201,
+              // headers: {
+              //   'Set-Cookie': `token=${token}; httpOnly; path=/`,
+              // },
+            }
+          );
+
+          response.cookies.set('token', token, {
+            maxAge: 60 * 60 * 24 * 7, // 1 week
+            httpOnly: true,
+          });
+
+          return response;
         }
       });
       // const data = await resend.emails.send({
@@ -108,26 +130,6 @@ export async function POST(request: NextRequest) {
       // });
 
       // console.log('email data', data);
-
-      const response = NextResponse.json(
-        {
-          status: 'PENDING',
-          message: `OTP has been sent to ${createdUser.email}`,
-        },
-        {
-          status: 201,
-          // headers: {
-          //   'Set-Cookie': `token=${token}; httpOnly; path=/`,
-          // },
-        }
-      );
-
-      response.cookies.set('token', token, {
-        maxAge: 60 * 60 * 24 * 7, // 1 week
-        httpOnly: true,
-      });
-
-      return response;
     } catch (error) {
       console.log(error);
       return NextResponse.json({ error: 'Server error' }, { status: 500 });

@@ -11,9 +11,9 @@ export const AuthShowcaseContainer = styled.div`
     background-color: rgba(0, 0, 0, 0.5);
     inset: 0;
 
-    /* @media screen and (max-width: 768px) {
-      background-color: rgba(0, 0, 0, 0.7);
-    } */
+    @media screen and (max-width: 768px) {
+      background-color: rgba(0, 0, 0, 0.2);
+    }
   }
 `;
 

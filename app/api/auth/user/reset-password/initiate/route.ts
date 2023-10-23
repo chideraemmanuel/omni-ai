@@ -38,6 +38,13 @@ export const POST = async (request: NextRequest) => {
     );
   }
 
+  if (userExists.auth_type === 'GOOGLE_AUTH_SERVICE') {
+    return NextResponse.json(
+      { message: `No user with the supplied email.` },
+      { status: 400 }
+    );
+  }
+
   // use uuid to generate!
   const resetString = '2';
 
@@ -63,18 +70,21 @@ export const POST = async (request: NextRequest) => {
     transporter.sendMail(mailOptions, (error, info) => {
       if (error) {
         console.log('NODEMAILER_ERROR', error);
+        return NextResponse.json(
+          { error: 'Error sending email' },
+          { status: 500 }
+        );
       } else {
-        console.log('Mail sent!', info);
+        console.log('Mail sent!', info.messageId);
+        return NextResponse.json(
+          {
+            status: 'PENDING',
+            message: `Password reset link has been sent to ${email}`,
+          },
+          { status: 201 }
+        );
       }
     });
-
-    return NextResponse.json(
-      {
-        status: 'PENDING',
-        message: `Password reset link has been sent to ${email}`,
-      },
-      { status: 201 }
-    );
   } catch (error) {
     console.log('PASSWORD_RESET_ERROR', error);
     return NextResponse.json(

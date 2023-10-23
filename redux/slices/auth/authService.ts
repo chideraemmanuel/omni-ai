@@ -128,12 +128,59 @@ export const resendOtp = createAsyncThunk(
   'auth/resend-otp',
   async (email: string, thunkAPI) => {
     try {
-      const response = await axios.post('/api/auth/user/resend-otp');
+      const response = await axios.post(
+        '/api/auth/user/resend-otp',
+        JSON.stringify({ email })
+      );
 
       return response.data;
     } catch (error: any) {
       thunkAPI.rejectWithValue(
         error?.response?.data?.message || 'Error resending OTP'
+      );
+    }
+  }
+);
+
+export const initiatePasswordReset = createAsyncThunk(
+  'auth/reset-password/initiate',
+  async (email: string, thunkAPI) => {
+    try {
+      const response = await axios.post(
+        'api/auth/user/reset-password/initiate',
+        JSON.stringify({
+          email,
+          redirectUrl: 'http://localhost:3000/password-reset',
+        })
+      );
+
+      return response.data;
+    } catch (error: any) {
+      console.log('Initiate password reset error', error);
+      return thunkAPI.rejectWithValue(
+        error?.response?.data?.message || 'Error initiating password reset'
+      );
+    }
+  }
+);
+
+export const resetPassword = createAsyncThunk(
+  'auth/reset-password/initiate',
+  async (
+    credentials: { email: string; resetString: string; newPassword: string },
+    thunkAPI
+  ) => {
+    try {
+      const response = await axios.post(
+        'api/auth/user/reset-password',
+        JSON.stringify(credentials)
+      );
+
+      return response.data;
+    } catch (error: any) {
+      console.log('Initiate password reset error', error);
+      return thunkAPI.rejectWithValue(
+        error?.response?.data?.message || 'Error resetting password'
       );
     }
   }

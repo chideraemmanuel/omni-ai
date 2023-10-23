@@ -12,6 +12,7 @@ const Button: React.FC<ComponentProps> = ({
   size = 'md',
   variant = 'primary',
   // custom styling
+  border,
   borderRadius,
   padding,
   background,
@@ -30,6 +31,7 @@ const Button: React.FC<ComponentProps> = ({
         href={tagType === 'a' ? href : undefined}
         as={tagType}
         $variant={variant}
+        $border={border}
         $borderRadius={borderRadius}
         $padding={padding}
         $background={background}

@@ -33,6 +33,7 @@ export const TextInputField = styled.input`
   transition: 0.2s ease;
   padding: ${({ theme }) =>
     `${theme.space['fluid-block-space-2']} ${theme.space['fluid-inline-space-2']}`};
+  color: ${({ theme }) => theme.colors.light['gray-900']};
 
   &::placeholder {
     color: ${({ theme }) => theme.colors.light['gray-500']};

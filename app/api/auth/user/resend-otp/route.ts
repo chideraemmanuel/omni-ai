@@ -32,7 +32,7 @@ export const POST = async (request: NextRequest) => {
 
   const OtpRecord: OtpRecord | null = await OTP.findOne({ email });
 
-  if (!OtpRecord) {
+  if (OtpRecord) {
     await OTP.deleteOne({ email });
   }
 
@@ -43,7 +43,7 @@ export const POST = async (request: NextRequest) => {
     // HASH OTP
     // const otpSalt = 10;
     // const hashedOtp = await bcrypt.hash(otp, otpSalt);
-    const hashedOtp = hashData(otp);
+    const hashedOtp = await hashData(otp);
 
     // STORE OTP
     await OTP.create({
@@ -63,22 +63,32 @@ export const POST = async (request: NextRequest) => {
 
     transporter.sendMail(mailOptions, (error, info) => {
       if (error) {
-        console.log('failed to send mail', error);
-        // return NextResponse.json({ error: 'Server error' }, { status: 500 });
+        console.log('NODEMAILER_ERROR', error);
+        return NextResponse.json(
+          { message: 'Error sending email' },
+          { status: 500 }
+        );
       } else {
         console.log('Mail sent!', info.messageId);
+        return NextResponse.json(
+          {
+            message: `OTP sent to ${email}`,
+          },
+          {
+            status: 201,
+          }
+        );
       }
     });
 
-    return NextResponse.json(
-      {
-        message: 'OTP sent to email',
-        email,
-      },
-      {
-        status: 200,
-      }
-    );
+    // return NextResponse.json(
+    //   {
+    //     message: `OTP sent to ${email}`,
+    //   },
+    //   {
+    //     status: 201,
+    //   }
+    // );
   } catch (error) {
     return NextResponse.json({ message: 'Server error' }, { status: 500 });
   }

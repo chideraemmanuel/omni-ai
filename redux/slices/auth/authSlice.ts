@@ -1,6 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 import {
   getCurrentUser,
+  initiatePasswordReset,
   logOutUser,
   loginUser,
   registerUser,
@@ -25,6 +26,10 @@ export interface AuthStateTypes {
   isLoggingOut: boolean;
   isLoggedOut: boolean;
   logOutError: null | string;
+  isInitiatingPasswordReset: boolean;
+  isInitatedPasswordReset: boolean;
+  isInitiatingPasswordResetError: boolean;
+  PasswordResetInitiationError: null | string;
 }
 
 const initialState: AuthStateTypes = {
@@ -44,6 +49,10 @@ const initialState: AuthStateTypes = {
   isLoggingOut: false,
   isLoggedOut: false,
   logOutError: null,
+  isInitiatingPasswordReset: false,
+  isInitatedPasswordReset: false,
+  isInitiatingPasswordResetError: false,
+  PasswordResetInitiationError: null,
 };
 
 const authSlice = createSlice({
@@ -147,6 +156,21 @@ const authSlice = createSlice({
           state.isLoggingOut = false;
           state.isLoggedOut = false;
           state.logOutError = action.payload;
+        }
+      )
+      .addCase(initiatePasswordReset.pending, (state: AuthStateTypes) => {
+        state.isInitiatingPasswordReset = true;
+      })
+      .addCase(initiatePasswordReset.fulfilled, (state: AuthStateTypes) => {
+        state.isInitiatingPasswordReset = false;
+        state.isInitatedPasswordReset = true;
+      })
+      .addCase(
+        initiatePasswordReset.rejected,
+        (state: AuthStateTypes, action: { payload: any }) => {
+          state.isInitiatingPasswordReset = false;
+          state.isInitiatingPasswordResetError = true;
+          state.PasswordResetInitiationError = action.payload;
         }
       );
   },
