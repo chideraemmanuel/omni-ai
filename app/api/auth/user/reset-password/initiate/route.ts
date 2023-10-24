@@ -5,6 +5,7 @@ import bcrypt from 'bcrypt';
 import { transporter } from '@/config/nodemailer';
 import { hashData } from '@/lib/utils/hashData';
 import { connectToDatabase } from '@/lib/utils/database';
+import { v4 as uuid } from 'uuid';
 
 export const POST = async (request: NextRequest) => {
   const body = await request.json();
@@ -45,8 +46,7 @@ export const POST = async (request: NextRequest) => {
     );
   }
 
-  // use uuid to generate!
-  const resetString = '2';
+  const resetString = uuid();
 
   const mailOptions = {
     from: process.env.AUTH_EMAIL!,
