@@ -110,6 +110,9 @@ const signInSlice = createSlice({
     ) => {
       state.passwordResetInitiationInput.error = action.payload;
     },
+    clearPasswordResetInitiationInputError: (state: FormInputStateTypes) => {
+      state.passwordResetInitiationInput.error = null;
+    },
     setOtpInput: (state: FormInputStateTypes, action: { payload: string }) => {
       state.otpInput = action.payload;
     },
@@ -267,6 +270,7 @@ const signInSlice = createSlice({
 export const {
   setPasswordResetInitiationInput,
   setPasswordResetInitiationInputError,
+  clearPasswordResetInitiationInputError,
   setOtpInput,
   setNewPassword,
   setConfirmNewPassword,

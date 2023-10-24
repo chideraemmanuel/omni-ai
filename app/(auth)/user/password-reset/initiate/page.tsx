@@ -10,7 +10,10 @@ import TextInput from '@/components/ui/textInput/TextInput';
 import Button from '@/components/ui/button/Button';
 import { useSelector } from 'react-redux';
 import { StoreTypes } from '@/redux/store';
-import { setPasswordResetInitiationInput } from '@/redux/slices/formInputSlice';
+import {
+  clearPasswordResetInitiationInputError,
+  setPasswordResetInitiationInput,
+} from '@/redux/slices/formInputSlice';
 import { usePasswordReset } from '@/lib/hooks/usePasswordReset';
 
 interface Props {}
@@ -53,6 +56,7 @@ const PasswordResetInitiationPage: FC<Props> = () => {
             value={passwordResetInitiationInput.value}
             setValue={setPasswordResetInitiationInput}
             error={passwordResetInitiationInput.error}
+            clearError={clearPasswordResetInitiationInputError}
           />
 
           <Button

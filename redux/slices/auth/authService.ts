@@ -147,7 +147,7 @@ export const initiatePasswordReset = createAsyncThunk(
   async (email: string, thunkAPI) => {
     try {
       const response = await axios.post(
-        'api/auth/user/reset-password/initiate',
+        '/api/auth/user/reset-password/initiate',
         JSON.stringify({
           email,
           redirectUrl: 'http://localhost:3000/password-reset',
@@ -172,7 +172,7 @@ export const resetPassword = createAsyncThunk(
   ) => {
     try {
       const response = await axios.post(
-        'api/auth/user/reset-password',
+        '/api/auth/user/reset-password',
         JSON.stringify(credentials)
       );
 

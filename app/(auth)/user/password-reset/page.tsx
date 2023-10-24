@@ -1,6 +1,6 @@
 'use client';
 
-import { useSearchParams } from 'next/navigation';
+import { notFound, useSearchParams } from 'next/navigation';
 import { FC, FormEvent } from 'react';
 import {
   PasswordResetFormContainer,
@@ -48,11 +48,7 @@ const PasswordResetPage: FC<Props> = () => {
   };
 
   if (!email || !resetString) {
-    return (
-      <>
-        <span>Not found!</span>
-      </>
-    );
+    notFound();
   }
 
   return (

@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import { StoreTypes } from '@/redux/store';
 import { useDispatch, useSelector } from 'react-redux';
+import { useRouter } from 'next/navigation';
 import {
   initiatePasswordReset,
   resetPassword,
@@ -38,6 +39,7 @@ export const usePasswordReset = () => {
   } = useSelector((store: StoreTypes) => store.auth);
 
   const dispatch = useDispatch();
+  const router = useRouter();
 
   useEffect(() => {
     if (isInitatedPasswordReset) {
@@ -54,7 +56,6 @@ export const usePasswordReset = () => {
       return;
     }
   }, [
-    isInitiatingPasswordReset,
     isInitatedPasswordReset,
     isInitiatingPasswordResetError,
     PasswordResetInitiationError,
@@ -67,6 +68,7 @@ export const usePasswordReset = () => {
           'Please enter a valid email address'
         )
       );
+      return;
     }
 
     if (!navigator.onLine) {
@@ -81,7 +83,9 @@ export const usePasswordReset = () => {
     if (isPasswordResetSuccess) {
       dispatch(setNewPassword(''));
       dispatch(setConfirmNewPassword(''));
+
       toast.success('Password reset successfully');
+      router.replace('/login');
       return;
     }
 
