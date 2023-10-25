@@ -1,7 +1,7 @@
 import { FC } from 'react';
 import styles from './not-found.module.scss';
 import Logo from '@/components/ui/logo/Logo';
-import illustration from '@/assets/illustration.svg';
+import notFound from '@/assets/not-found.svg';
 import Image from 'next/image';
 import Link from 'next/link';
 import Button from '@/components/ui/button/Button';
@@ -17,7 +17,7 @@ const NotFoundPage: FC<Props> = () => {
 
       <div className={styles.content}>
         <div className={styles.image}>
-          <Image src={illustration} alt="" />
+          <Image src={notFound} alt="" />
         </div>
 
         <div className={styles.text}>

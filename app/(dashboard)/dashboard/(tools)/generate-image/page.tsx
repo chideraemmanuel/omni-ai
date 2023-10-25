@@ -19,7 +19,7 @@ import {
 } from '@/redux/slices/image-generation/imageGenerationSlice';
 import Button from '@/components/ui/button/Button';
 import Image from 'next/image';
-import illustration from '@/assets/illustration.svg';
+import empty from '@/assets/empty.svg';
 import { generateImage } from '@/redux/slices/image-generation/imageGenerationService';
 import { imageNumberList, sizeList } from '@/constants';
 import { useGenerateImage } from '@/lib/hooks/useGenerateImage';
@@ -111,7 +111,7 @@ const ImageGenerationPage: FC<Props> = () => {
         {images.length === 0 && !isGenerating && (
           <div className="no-output">
             <div>
-              <Image src={illustration} alt="No generation" />
+              <Image src={empty} alt="No generation" />
             </div>
             <span>No generated images</span>
           </div>
