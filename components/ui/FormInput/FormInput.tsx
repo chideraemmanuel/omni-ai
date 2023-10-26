@@ -80,7 +80,10 @@ const FormInput: FC<ComponentProps> = ({
       <FormInputBottom>
         <span className="error">{error}</span>
         {forgotPassword && forgotPasswordAction && (
-          <span onClick={() => {}} className="forgot-password">
+          <span
+            onClick={() => forgotPasswordAction()}
+            className="forgot-password"
+          >
             Forgot password?
           </span>
         )}

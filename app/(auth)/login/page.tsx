@@ -23,6 +23,7 @@ import {
 import { useLogin } from '@/lib/hooks/useLogin';
 import FullScreenLoader from '@/components/ui/fullScreenLoader/FullScreenLoader';
 import { generateGoogleOauthUrl } from '@/lib/utils/oauth';
+import { useRouter } from 'next/navigation';
 
 interface Props {}
 
@@ -34,6 +35,8 @@ const LoginPage: FC<Props> = () => {
   const { isLoading: isLoggingIn } = useSelector(
     (store: StoreTypes) => store.auth
   );
+
+  const router = useRouter();
 
   const { mutate: login } = useLogin();
 
@@ -79,6 +82,10 @@ const LoginPage: FC<Props> = () => {
                 error={password.error}
                 // error={'this is an error'}
                 clearError={clearLoginPasswordError}
+                forgotPassword={true}
+                forgotPasswordAction={() =>
+                  router.push('/user/password-reset/initiate')
+                }
               />
               <Button tagType="button" disabled={isLoggingIn}>
                 {isLoggingIn ? 'Signing in...' : 'Login'}

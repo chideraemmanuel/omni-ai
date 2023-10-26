@@ -130,5 +130,10 @@ export const FormInputBottom = styled.div`
       'clamp(0.75rem, 0.7021rem + 0.2128vw, 0.875rem)'};
     line-height: 140%; /* 1.225rem */
     letter-spacing: -0.01263rem;
+    transition: 0.3s ease;
+
+    &:hover {
+      color: #171717;
+    }
   }
 `;
