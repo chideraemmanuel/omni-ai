@@ -1,42 +1,38 @@
 'use client';
 
 import { FC } from 'react';
-// import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
-import SyntaxHighlighter from 'react-syntax-highlighter/dist/esm/default-highlight';
-import { dark } from 'react-syntax-highlighter/dist/esm/styles/prism';
-import ReactMarkdown from 'react-markdown';
-import ChatBubble from '@/components/ui/chatBubble/ChatBubble';
-import TypingAnimation from '@/components/misc/typingAnimation/TypingAnimation';
-import FullScreenLoader from '@/components/ui/fullScreenLoader/FullScreenLoader';
+import styles from './page.module.scss';
+import bg from '@/assets/sign_in_showcase.jpg';
+import Button from '@/components/ui/button/Button';
+import Logo from '@/components/ui/logo/Logo';
 
 interface Props {}
 
 const Homepage: FC<Props> = () => {
-  const renderers = {
-    code: ({
-      language,
-      value,
-    }: {
-      language: string;
-      value: string | string[];
-    }) => {
-      return (
-        <SyntaxHighlighter style={dark} language={language} children={value} />
-      );
-    },
-  };
-
   return (
-    <>
-      <FullScreenLoader />
-      <ChatBubble
-        role="assistant"
-        content={`
-       hi
-      `}
-      />
-      <ChatBubble role="assistant" content={<TypingAnimation />} />
-    </>
+    <div
+      className={styles.container}
+      style={{ background: `url(${bg.src}) no-repeat center center/cover` }}
+    >
+      <div className={styles.header}>
+        <div className={styles.header_container}>
+          <Logo variant="light" />
+        </div>
+      </div>
+      <div className={styles.hero}>
+        <div className={styles.hero_container}>
+          <h2>Lorem ipsum dolor sit amet consectetur adipisicing.</h2>
+          <p>
+            Lorem ipsum dolor sit amet consectetur, adipisicing elit. Sed
+            temporibus perspiciatis illo dolores? Incidunt distinctio asperiores
+            ea commodi, iste laborum modi voluptatem quia quos, perferendis
+            quasi beatae deleniti, recusandae quis.
+          </p>
+
+          <Button size="lg" tagType='a' href='/register'>Get started</Button>
+        </div>
+      </div>
+    </div>
   );
 };
 
