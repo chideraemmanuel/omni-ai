@@ -18,11 +18,19 @@ export const StyledLogo = styled.a<LogoProps>`
   span {
     font-size: ${({ theme }) => theme.font['md-font']};
     font-weight: bolder;
-    color: ${({ $variant }) =>
+    /* color: ${({ $variant }) =>
       $variant === 'dark'
         ? '#1b1b1b'
         : $variant === 'light'
         ? '#fff'
-        : '#1b1b1b'};
+        : '#1b1b1b'}; */
+    background-image: ${({ theme, $variant }) =>
+      $variant === 'dark'
+        ? theme.colors.dark['text-gradient']
+        : theme.colors.light['text-gradient']};
+    background-clip: text;
+    color: transparent;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
   }
 `;

@@ -64,31 +64,31 @@ export const POST = async (request: NextRequest) => {
     transporter.sendMail(mailOptions, (error, info) => {
       if (error) {
         console.log('NODEMAILER_ERROR', error);
-        return NextResponse.json(
-          { message: 'Error sending email' },
-          { status: 500 }
-        );
+        // return NextResponse.json(
+        //   { message: 'Error sending email' },
+        //   { status: 500 }
+        // );
       } else {
         console.log('Mail sent!', info.messageId);
-        return NextResponse.json(
-          {
-            message: `OTP sent to ${email}`,
-          },
-          {
-            status: 201,
-          }
-        );
+        // return NextResponse.json(
+        //   {
+        //     message: `OTP sent to ${email}`,
+        //   },
+        //   {
+        //     status: 201,
+        //   }
+        // );
       }
     });
 
-    // return NextResponse.json(
-    //   {
-    //     message: `OTP sent to ${email}`,
-    //   },
-    //   {
-    //     status: 201,
-    //   }
-    // );
+    return NextResponse.json(
+      {
+        message: `OTP sent to ${email}`,
+      },
+      {
+        status: 201,
+      }
+    );
   } catch (error) {
     return NextResponse.json({ message: 'Server error' }, { status: 500 });
   }

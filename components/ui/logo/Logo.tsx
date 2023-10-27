@@ -10,7 +10,7 @@ interface Props {
   variant?: 'dark' | 'light';
 }
 
-const Logo: FC<Props> = ({ variant }) => {
+const Logo: FC<Props> = ({ variant = 'dark' }) => {
   return (
     <StyledLogo $variant={variant} href="/">
       <Image src={logo} alt="Logo" />

@@ -15,7 +15,7 @@ const theme = {
       // TEXT COLOR
       'primary-text-color': '#000',
       'secondary-text-color': '#666',
-      'text-gradient': 'linear-gradient(180deg, #555, #000)',
+      'text-gradient': 'linear-gradient(180deg, #fff, #adadad)',
 
       'gray-100': '#f2f2f2',
       'gray-200': '#ebebeb',
@@ -32,7 +32,7 @@ const theme = {
       // TEXT COLOR
       'primary-text-color': '#fafafa',
       'secondary-text-color': '#888',
-      'text-gradient': 'linear-gradient(180deg, #fff, #adadad)',
+      'text-gradient': 'linear-gradient(180deg, #555, #000)',
 
       'gray-100': '#1a1a1a',
       'gray-200': '#1f1f1f',

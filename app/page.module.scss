@@ -146,20 +146,18 @@
       -webkit-text-fill-color: transparent;
     }
 
-    p {
-      font-size: max(15px, min(2vw, 20px));
-      // font-size: var(--base-font);
-      color: #fff;
-      // color: var(--secondary-text-color);
-      padding-bottom: var(--fluid-block-space-7);
-      line-height: 1.6;
+    div {
+      p {
+        font-size: max(15px, min(2vw, 20px));
+        // font-size: var(--base-font);
+        color: #fff;
+        // color: var(--secondary-text-color);
+        padding-bottom: var(--fluid-block-space-7);
+        line-height: 1.6;
 
-      @media screen and (max-width: 375px) {
-        padding-bottom: 32px;
-      }
-
-      strong {
-        color: var(--primary-text-color);
+        @media screen and (max-width: 375px) {
+          padding-bottom: 32px;
+        }
       }
     }
   }

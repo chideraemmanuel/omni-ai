@@ -21,12 +21,12 @@ const AuthPageShowcase: React.FC = () => {
       </AuthShowcaseLogo>
 
       <AuthShowcaseText>
-        <h3>Lorem ipsum dolor sit amet consectetur adipisicing.</h3>
+        <h3>AI tools for creativity and productivity.</h3>
         <p>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Impedit
-          placeat aperiam accusantium saepe praesentium dicta, veniam ipsam nisi
-          possimus sapiente temporibus omnis eos libero reiciendis velit officia
-          iure nobis illo.
+          OmniAI is easy to use and accessible to everyone, regardless of your
+          technical expertise. Simply type in your request and OmniAI will take
+          care of the rest. Bask is the perfect tool for students,
+          professionals, and creatives alike.
         </p>
       </AuthShowcaseText>
     </AuthShowcaseContainer>

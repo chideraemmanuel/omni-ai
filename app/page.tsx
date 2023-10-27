@@ -21,15 +21,25 @@ const Homepage: FC<Props> = () => {
       </div>
       <div className={styles.hero}>
         <div className={styles.hero_container}>
-          <h2>Lorem ipsum dolor sit amet consectetur adipisicing.</h2>
-          <p>
-            Lorem ipsum dolor sit amet consectetur, adipisicing elit. Sed
-            temporibus perspiciatis illo dolores? Incidunt distinctio asperiores
-            ea commodi, iste laborum modi voluptatem quia quos, perferendis
-            quasi beatae deleniti, recusandae quis.
-          </p>
+          <h2>AI tools for creativity and productivity.</h2>
+          <div>
+            <p>
+              OmniAI is a friendly toolkit that helps you be more creative and
+              productive. Need to generate text, translate languages, write
+              different kinds of creative content, or answer your questions in
+              an informative way? Our virtual assistant is here to help! Feeling
+              artistic? Dive into our image generation tool and let your
+              imagination run wild!
+            </p>
+            <p>
+              Join us in the fun – it's creativity without limits. Ready to get
+              started?
+            </p>
+          </div>
 
-          <Button size="lg" tagType='a' href='/register'>Get started</Button>
+          <Button size="lg" tagType="a" href="/register">
+            Get started
+          </Button>
         </div>
       </div>
     </div>

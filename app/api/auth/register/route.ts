@@ -94,33 +94,54 @@ export async function POST(request: NextRequest) {
       transporter.sendMail(mailOptions, (error, info) => {
         if (error) {
           console.log('NODEMAILER_ERROR', error);
-          return NextResponse.json(
-            { error: 'Error sending email' },
-            { status: 500 }
-          );
+          // return NextResponse.json(
+          //   { error: 'Error sending email' },
+          //   { status: 500 }
+          // );
         } else {
           console.log('Mail sent!', info.messageId);
-          const response = NextResponse.json(
-            {
-              status: 'PENDING',
-              message: `OTP has been sent to ${createdUser.email}`,
-            },
-            {
-              status: 201,
-              // headers: {
-              //   'Set-Cookie': `token=${token}; httpOnly; path=/`,
-              // },
-            }
-          );
+          // const response = NextResponse.json(
+          //   {
+          //     status: 'PENDING',
+          //     message: `OTP has been sent to ${createdUser.email}`,
+          //   },
+          //   {
+          //     status: 201,
+          //     // headers: {
+          //     //   'Set-Cookie': `token=${token}; httpOnly; path=/`,
+          //     // },
+          //   }
+          // );
 
-          response.cookies.set('token', token, {
-            maxAge: 60 * 60 * 24 * 7, // 1 week
-            httpOnly: true,
-          });
+          // response.cookies.set('token', token, {
+          //   maxAge: 60 * 60 * 24 * 7, // 1 week
+          //   httpOnly: true,
+          // });
 
-          return response;
+          // return response;
         }
       });
+
+      const response = NextResponse.json(
+        {
+          status: 'PENDING',
+          message: `OTP has been sent to ${createdUser.email}`,
+        },
+        {
+          status: 201,
+          // headers: {
+          //   'Set-Cookie': `token=${token}; httpOnly; path=/`,
+          // },
+        }
+      );
+
+      response.cookies.set('token', token, {
+        maxAge: 60 * 60 * 24 * 7, // 1 week
+        httpOnly: true,
+        // secure: process.env.NODE_ENV === 'production', // Secure in production
+      });
+
+      return response;
       // const data = await resend.emails.send({
       //   from: 'OmniAi <onboarding@resend.dev>',
       //   to: email,

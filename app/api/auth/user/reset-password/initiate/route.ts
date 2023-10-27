@@ -70,21 +70,29 @@ export const POST = async (request: NextRequest) => {
     transporter.sendMail(mailOptions, (error, info) => {
       if (error) {
         console.log('NODEMAILER_ERROR', error);
-        return NextResponse.json(
-          { error: 'Error sending email' },
-          { status: 500 }
-        );
+        // return NextResponse.json(
+        //   { error: 'Error sending email' },
+        //   { status: 500 }
+        // );
       } else {
         console.log('Mail sent!', info.messageId);
-        return NextResponse.json(
-          {
-            status: 'PENDING',
-            message: `Password reset link has been sent to ${email}`,
-          },
-          { status: 201 }
-        );
+        // return NextResponse.json(
+        //   {
+        //     status: 'PENDING',
+        //     message: `Password reset link has been sent to ${email}`,
+        //   },
+        //   { status: 201 }
+        // );
       }
     });
+
+    return NextResponse.json(
+      {
+        status: 'PENDING',
+        message: `Password reset link has been sent to ${email}`,
+      },
+      { status: 201 }
+    );
   } catch (error) {
     console.log('PASSWORD_RESET_ERROR', error);
     return NextResponse.json(
