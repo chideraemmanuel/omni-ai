@@ -6,6 +6,21 @@ export const ChatContainer = styled.div`
   height: calc(100vh - ${({ theme }) => theme.space['fluid-block-space-17']});
   /* background-color: red; */
   background-color: ${({ theme }) => theme.colors.light['gray-100']};
+
+  .notice {
+    z-index: 5;
+    background-color: #fff;
+    padding: ${({ theme }) =>
+      `${theme.space['fluid-block-space-3']} ${theme.space['fluid-inline-space-3']}`};
+    border-radius: 0.5rem;
+    width: min(700px, 90%);
+    text-align: center;
+    position: absolute;
+    top: ${({ theme }) => theme.space['fluid-block-space-1']};
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: ${({ theme }) => theme.font['xs-font']};
+  }
 `;
 
 export const ConversationContainer = styled.div`
@@ -62,6 +77,8 @@ export const InputContainer = styled.form`
     resize: none;
     height: ${({ theme }) => theme.space['fluid-block-space-12']};
     font-family: inherit;
+    background-color: #fff;
+    color: inherit;
 
     &:disabled {
       background-color: ${({ theme }) => theme.colors.light['gray-400']};

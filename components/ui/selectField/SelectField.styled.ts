@@ -25,7 +25,8 @@ export const StyledSelectFieldToggle = styled.div<SelectFieldToggleProps>`
 
     &:checked {
       + label {
-        z-index: 7;
+        position: relative;
+        z-index: 50;
         /* border: 1px solid #d6bbfb;
         box-shadow: 0px 0px 0px 4px #f4ebff,
           0px 1px 2px 0px rgba(16, 24, 40, 0.05); */

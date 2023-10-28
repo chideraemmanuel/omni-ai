@@ -44,6 +44,7 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     return <FullScreenLoader />;
   }
 
+  // handles network error
   if (authError === 'Server error') {
     return <AuthErrorPage />;
   }

@@ -94,7 +94,7 @@
 
 .container {
   width: 100%;
-  height: 100vh;
+  min-height: 100vh;
   // background-color: red;
   display: flex;
   flex-direction: column;
@@ -120,13 +120,13 @@
   flex: 1;
   background-color: rgba($color: #000000, $alpha: 0.9);
   // background-color: red;
+  padding: var(--fluid-block-space-7) 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 
   &_container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-
     height: 100%;
     max-width: 1200px;
     margin: 0 auto;

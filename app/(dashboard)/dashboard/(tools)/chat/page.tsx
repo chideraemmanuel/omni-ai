@@ -1,6 +1,6 @@
 'use client';
 
-import { FC, FormEvent } from 'react';
+import { FC, FormEvent, useRef, useEffect } from 'react';
 import {
   ChatContainer,
   ConversationContainer,
@@ -35,13 +35,25 @@ const ChatPage: FC<Props> = () => {
     sendMessage(userInput);
   };
 
+  const ref = useRef(null);
+
+  useEffect(() => {
+    ref.current?.scrollIntoView({ behavior: 'smooth' });
+  }, [messages]);
+
   return (
     <ChatContainer>
+      {messages.length === 0 && (
+        <p className="notice">
+          Please note that conversations aren't being saved, and will be wiped
+          as soon as you reload this page. Be sure to use the responses as you
+          get them.
+        </p>
+      )}
       <ConversationContainer>
-        {/* {isResponding && <RelativeLoader />} */}
-        {/* <ChatBubble text="Hi there!" role="user" />
+        {/* <ChatBubble content="Hi there!" role="user" />
         <ChatBubble
-          text="Hello, how can i assist you today?"
+          content="Hello, how can i assist you today?"
           role="assistant"
         /> */}
         {messages.map((message, index) => (
@@ -55,11 +67,12 @@ const ChatPage: FC<Props> = () => {
         {isResponding && (
           <ChatBubble role="assistant" content={<TypingAnimation />} />
         )}
+        <div ref={ref}></div>
       </ConversationContainer>
       <InputContainer onSubmit={(e) => handleSubmit(e)}>
         {/* <input type="text" placeholder="Type a message." /> */}
         <textarea
-          placeholder="Type a message"
+          placeholder="Ask me anything"
           value={userInput}
           onChange={(e) => dispatch(setUserInput(e.target.value))}
           disabled={isResponding}
