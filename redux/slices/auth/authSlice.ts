@@ -12,6 +12,10 @@ import {
 
 export interface AuthStateTypes {
   user: any;
+  isResendingOtp: boolean;
+  isResendOtpSuccess: boolean;
+  isResendOtpError: boolean;
+  resendOtpError: null | string;
   isVerifying: boolean;
   isVerified: boolean;
   isVerificationError: boolean;
@@ -39,6 +43,10 @@ export interface AuthStateTypes {
 
 const initialState: AuthStateTypes = {
   user: null,
+  isResendingOtp: false,
+  isResendOtpSuccess: false,
+  isResendOtpError: false,
+  resendOtpError: null,
   isVerifying: false,
   isVerified: false,
   isVerificationError: false,
@@ -78,6 +86,11 @@ const authSlice = createSlice({
       state.isVerifying = false;
       state.isVerificationError = false;
       state.verificationError = null;
+
+      state.isResendingOtp = false;
+      state.isResendOtpSuccess = false;
+      state.isResendOtpError = false;
+      state.resendOtpError = null;
 
       state.authError = null;
       state.isAuthError = false;
@@ -158,9 +171,21 @@ const authSlice = createSlice({
         // @ts-ignore
         state.verificationError = action.payload;
       })
-      .addCase(resendOtp.pending, (state: AuthStateTypes) => {})
-      .addCase(resendOtp.fulfilled, (state: AuthStateTypes) => {})
-      .addCase(resendOtp.rejected, (state: AuthStateTypes) => {})
+      .addCase(resendOtp.pending, (state: AuthStateTypes) => {
+        state.isResendingOtp = true;
+      })
+      .addCase(resendOtp.fulfilled, (state: AuthStateTypes) => {
+        state.isResendingOtp = false;
+        state.isResendOtpSuccess = true;
+      })
+      .addCase(
+        resendOtp.rejected,
+        (state: AuthStateTypes, action: { payload: any }) => {
+          state.isResendingOtp = false;
+          state.isResendOtpError = true;
+          state.isResendOtpError = action.payload;
+        }
+      )
       .addCase(logOutUser.pending, (state: AuthStateTypes) => {
         state.isLoggingOut = true;
       })

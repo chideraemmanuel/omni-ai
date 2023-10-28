@@ -16,6 +16,7 @@ import Button from '@/components/ui/button/Button';
 import { useVerifyOtp } from '@/lib/hooks/useVerifyOtp';
 import FullScreenLoader from '@/components/ui/fullScreenLoader/FullScreenLoader';
 import { toast } from 'react-toastify';
+import { useResendOtp } from '@/lib/hooks/useResendOtp';
 
 interface Props {}
 
@@ -27,6 +28,7 @@ const EmailVerificationPage: FC<Props> = () => {
     authError,
     user,
     isVerifying,
+    isResendingOtp,
   } = useSelector((store: StoreTypes) => store.auth);
   const { otpInput } = useSelector((store: StoreTypes) => store.formInputs);
 
@@ -48,6 +50,7 @@ const EmailVerificationPage: FC<Props> = () => {
     }
   }, [isAuthError, authError, user]);
 
+  const { mutate: resendOtp } = useResendOtp();
   const { mutate: verifyOtp } = useVerifyOtp();
 
   const handleOtpVerification = (e: FormEvent<HTMLFormElement>) => {
@@ -93,7 +96,13 @@ const EmailVerificationPage: FC<Props> = () => {
         </form>
 
         <p>
-          Didn't receive OTP? <span>Resend</span>
+          Didn't receive OTP?{' '}
+          <span
+            onClick={async () => await resendOtp(user?.email)}
+            style={isResendingOtp ? { opacity: 0.7 } : undefined}
+          >
+            {isResendingOtp ? 'Resending OTP...' : 'Resend'}
+          </span>
         </p>
       </VerificationFormContainer>
     </VerificationPageContainer>
