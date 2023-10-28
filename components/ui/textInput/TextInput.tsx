@@ -27,7 +27,7 @@ const TextInput: FC<Props> = ({
   const dispatch = useDispatch();
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    dispatch(clearError());
+    clearError && dispatch(clearError());
     dispatch(setValue(e.target.value));
   };
 

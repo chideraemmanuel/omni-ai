@@ -21,42 +21,45 @@ export async function GET(request: NextRequest) {
     );
   } else {
     //
-    jwt.verify(token, process.env.JWT_SECRET!, async (error, decoded) => {
-      if (error) {
-        console.log('[TOKEN_VERIFICATION_ERROR]', error);
-        return NextResponse.json({ message: error.message }, { status: 403 });
-      }
+    const decoded = jwt.verify(token, process.env.JWT_SECRET!);
 
-      try {
-        await connectToDatabase();
+    if (!decoded) {
+      console.log('[TOKEN_VERIFICATION_ERROR]');
+      return NextResponse.json(
+        { message: 'An error occured during token verifiation' },
+        { status: 403 }
+      );
+    }
 
-        const user: UserTypes | undefined | null = await User.findById(
-          // @ts-ignore
-          decoded?.id
+    try {
+      await connectToDatabase();
+
+      const user: UserTypes | undefined | null = await User.findById(
+        // @ts-ignore
+        decoded?.id
+      );
+
+      if (!user) {
+        return NextResponse.json(
+          { message: 'Not authorized' },
+          { status: 401 }
         );
-
-        if (!user) {
-          return NextResponse.json(
-            { message: 'Not authorized' },
-            { status: 401 }
-          );
-        }
-
-        // if (!user.verified) {
-        //   return NextResponse.json({ message: 'Email not verified' }, { status: 401 });
-        // }
-
-        return NextResponse.json({
-          id: user._id,
-          name: user.name,
-          email: user.email,
-          verified: user.verified,
-        });
-      } catch (error: any) {
-        console.log(error);
-        return NextResponse.json({ message: 'Server error' }, { status: 500 });
       }
-    });
+
+      // if (!user.verified) {
+      //   return NextResponse.json({ message: 'Email not verified' }, { status: 401 });
+      // }
+
+      return NextResponse.json({
+        id: user._id,
+        name: user.name,
+        email: user.email,
+        verified: user.verified,
+      });
+    } catch (error: any) {
+      console.log(error);
+      return NextResponse.json({ message: 'Server error' }, { status: 500 });
+    }
   }
   // if (!decoded) {
   //   return NextResponse.redirect(new URL('/login', request.url));

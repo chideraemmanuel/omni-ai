@@ -74,7 +74,7 @@ export const FullScreenLoaderContainer = styled.div`
 // `;
 
 export const StyledLoader = styled.div`
-  /* --c: radial-gradient(farthest-side, #b5cff8 90%, #0000);
+  --c: radial-gradient(farthest-side, #b5cff8 90%, #0000);
   width: 32px;
   height: 32px;
   background: var(--c) 0 0, var(--c) 100% 0, var(--c) 100% 100%, var(--c) 0 100%;
@@ -86,8 +86,8 @@ export const StyledLoader = styled.div`
     100% {
       background-position: 100% 0, 100% 100%, 0 100%, 0 0;
     }
-  } */
-  --c: radial-gradient(farthest-side, #b5cff8 90%, #0000);
+  }
+  /* --c: radial-gradient(farthest-side, #b5cff8 90%, #0000);
   width: 64px;
   height: 64px;
   background: var(--c) 0 0, var(--c) 100% 0, var(--c) 100% 100%, var(--c) 0 100%;
@@ -99,7 +99,7 @@ export const StyledLoader = styled.div`
     100% {
       background-position: 100% 0, 100% 100%, 0 100%, 0 0;
     }
-  }
+  } */
 `;
 
 // NORMAL SIZE ***************

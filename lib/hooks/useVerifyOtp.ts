@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { verifyOtp } from '@/redux/slices/auth/authService';
+import { getCurrentUser, verifyOtp } from '@/redux/slices/auth/authService';
 import { StoreTypes } from '@/redux/store';
 import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
@@ -16,6 +16,9 @@ export const useVerifyOtp = () => {
   useEffect(() => {
     if (isVerified) {
       toast.success('Email Verified Successfully');
+      // get current user again to update state
+      // @ts-ignore
+      dispatch(getCurrentUser());
       router.replace('/dashboard');
     }
 
