@@ -49,12 +49,7 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     return <AuthErrorPage />;
   }
 
-  //   if (!isAuthenticated) {
-  //     router.push('/login');
-  //     return <></>;
-  //   }
-
-  return <>{children}</>;
+  return <>{isAuthenticated && user && children}</>;
 };
 
 export default AuthProvider;

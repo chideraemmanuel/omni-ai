@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 export const DashboardMobileMenuOverlay = styled.div`
-  z-index: 5;
+  z-index: 9;
   display: none;
   position: fixed;
   inset: 0;
@@ -18,7 +18,7 @@ interface ContainerProps {
 }
 
 export const DashboardMobileMenuContainer = styled.div<ContainerProps>`
-  z-index: 7;
+  z-index: 10;
   background-color: ${({ theme }) => theme.colors['secondary-color']};
   display: none;
   position: fixed;

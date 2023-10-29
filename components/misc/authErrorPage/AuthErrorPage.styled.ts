@@ -2,7 +2,9 @@ import styled from 'styled-components';
 
 export const PageContainer = styled.div`
   position: fixed;
-  inset: 0;
+  /* inset: 0; */
+  width: 100vw;
+  min-height: 100vh;
   background-color: #fff;
   z-index: 15;
   //   background-color: red;
@@ -26,7 +28,17 @@ export const LogoContainer = styled.div`
 export const ContentContainer = styled.div`
   text-align: center;
   max-height: 80vh;
-  padding: ${({ theme }) => `0 ${theme.space['fluid-inline-space-7']}`};
+  margin: 0 auto;
+  padding: ${({ theme }) =>
+    `${theme.space['fluid-block-space-7']} ${theme.space['fluid-inline-space-7']}`};
+  overflow: scroll;
+
+  &::-webkit-scrollbar {
+    /* width: 5px;
+    opacity: 0;
+    transition: 0.5s ease; */
+    display: none;
+  }
 
   .image {
     width: min(80vw, 500px);

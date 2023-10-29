@@ -8,6 +8,7 @@ export const DashboardSideMenuContainer = styled.aside`
   bottom: 0;
   left: 0;
   width: min(270px, 30vw);
+  z-index: 10;
 
   @media screen and (max-width: 820px) {
     display: none;

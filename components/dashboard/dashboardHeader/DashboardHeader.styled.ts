@@ -4,14 +4,20 @@ export const DashboardHeaderContainer = styled.div`
   background-color: #fff;
   border-bottom: 1px solid ${({ theme }) => theme.colors.light['gray-200']};
   height: ${({ theme }) => theme.space['fluid-block-space-17']};
-  /* position: sticky;
-  top: 0; */
+  position: fixed;
+  /* position: sticky; */
+  top: 0;
+  left: 0;
   display: flex;
   align-items: center;
   justify-content: flex-end;
   padding: ${({ theme }) => `0 ${theme.space['fluid-inline-space-3']}`};
+  width: 100%;
+  z-index: 6;
+  padding-left: min(270px, 30vw);
 
   @media screen and (max-width: 820px) {
+    padding-left: ${({ theme }) => theme.space['fluid-inline-space-3']};
     justify-content: space-between;
   }
 `;
@@ -26,11 +32,19 @@ export const DashboardHeaderUserButton = styled.div<HeaderLinkProps>`
 
   > button {
     width: ${({ theme }) => theme.space['fluid-inline-space-9']};
-    aspect-ratio: 1 / 1;
+    height: ${({ theme }) => theme.space['fluid-block-space-9']};
+    /* aspect-ratio: 1 / 1; */
     background-color: transparent;
     border-radius: 50%;
     border: none;
     cursor: pointer;
+
+    ${({ $active }) =>
+      $active &&
+      css`
+        position: relative;
+        z-index: 7;
+      `}
 
     > * {
       border-radius: inherit;
