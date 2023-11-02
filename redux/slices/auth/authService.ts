@@ -150,7 +150,7 @@ export const initiatePasswordReset = createAsyncThunk(
         '/api/auth/user/reset-password/initiate',
         JSON.stringify({
           email,
-          redirectUrl: 'http://localhost:3000/password-reset',
+          redirectUrl: 'http://localhost:3000/user/password-reset',
         })
       );
 

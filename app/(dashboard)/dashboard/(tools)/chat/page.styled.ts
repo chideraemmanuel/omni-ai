@@ -62,7 +62,7 @@ export const InputContainer = styled.form`
   bottom: 0;
   left: 0;
   right: 0;
-  background-color: yellow;
+  /* background-color: yellow; */
   /* width: 100%; */
   display: flex;
 

@@ -75,7 +75,7 @@ const LoginPage: FC<Props> = () => {
               />
               <FormInput
                 type="password"
-                placeholder="Pick a password"
+                placeholder="Enter your password"
                 label="Password"
                 value={password.value}
                 setValue={setLoginPassword}
