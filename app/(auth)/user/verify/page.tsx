@@ -17,6 +17,7 @@ import { useVerifyOtp } from '@/lib/hooks/useVerifyOtp';
 import FullScreenLoader from '@/components/ui/fullScreenLoader/FullScreenLoader';
 import { toast } from 'react-toastify';
 import { useResendOtp } from '@/lib/hooks/useResendOtp';
+import { useLogout } from '@/lib/hooks/useLogout';
 
 interface Props {}
 
@@ -52,6 +53,7 @@ const EmailVerificationPage: FC<Props> = () => {
 
   const { mutate: resendOtp } = useResendOtp();
   const { mutate: verifyOtp } = useVerifyOtp();
+  const { mutate: logout } = useLogout();
 
   const handleOtpVerification = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -92,6 +94,18 @@ const EmailVerificationPage: FC<Props> = () => {
             disabled={otpInput.length < 6 || isVerifying}
           >
             {isVerifying ? 'Verifying...' : 'Verify'}
+          </Button>
+
+          <Button
+            tagType="a"
+            onClick={() => logout()}
+            // href="/login"
+            width="100%"
+            background="transparent"
+            border="1px solid #1b1b1b"
+            color="#171717"
+          >
+            Return to Login
           </Button>
         </form>
 

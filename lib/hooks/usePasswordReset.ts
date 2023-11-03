@@ -15,6 +15,7 @@ import {
   setPasswordResetInitiationInput,
   setPasswordResetInitiationInputError,
 } from '@/redux/slices/formInputSlice';
+import { resetAuthState } from '@/redux/slices/auth/authSlice';
 
 interface PasswordResetCredentials {
   email: string;
@@ -45,6 +46,7 @@ export const usePasswordReset = () => {
     if (isInitatedPasswordReset) {
       dispatch(setPasswordResetInitiationInput(''));
       toast.success('Reset email sent successfully');
+      dispatch(resetAuthState());
       return;
     }
 
@@ -53,6 +55,7 @@ export const usePasswordReset = () => {
         PasswordResetInitiationError ||
           'An error occured while sending reset email.'
       );
+      dispatch(resetAuthState());
       return;
     }
   }, [
@@ -62,6 +65,13 @@ export const usePasswordReset = () => {
   ]);
 
   const sendResetEmail = async (email: string) => {
+    if (email.length === 0) {
+      dispatch(
+        setPasswordResetInitiationInputError('Please fill out this field')
+      );
+      return;
+    }
+
     if (!emailRegex.test(email)) {
       dispatch(
         setPasswordResetInitiationInputError(

@@ -25,10 +25,7 @@ export async function GET(request: NextRequest) {
 
     if (!decoded) {
       console.log('[TOKEN_VERIFICATION_ERROR]');
-      return NextResponse.json(
-        { message: 'An error occured during token verifiation' },
-        { status: 403 }
-      );
+      return NextResponse.json({ message: 'Not authorized' }, { status: 401 });
     }
 
     try {
@@ -42,7 +39,7 @@ export async function GET(request: NextRequest) {
       if (!user) {
         return NextResponse.json(
           { message: 'Not authorized' },
-          { status: 401 }
+          { status: 404 }
         );
       }
 

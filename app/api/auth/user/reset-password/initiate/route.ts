@@ -52,7 +52,9 @@ export const POST = async (request: NextRequest) => {
     from: process.env.AUTH_EMAIL!,
     to: email,
     subject: 'Password Reset',
-    html: `<p>We heard you forgot your password. Please click <a href=${`${redirectUrl}?email=${email}&reset_string=${resetString}`}>here</a> to reset.</p>`,
+    html: `<p>We heard you forgot your password. Please click <a href=${`${redirectUrl}?email=${encodeURIComponent(
+      email
+    )}&reset_string=${resetString}`}>here</a> to reset.</p>`,
   };
 
   try {

@@ -18,6 +18,7 @@ import {
 } from '@/redux/slices/formInputSlice';
 import Button from '@/components/ui/button/Button';
 import { usePasswordReset } from '@/lib/hooks/usePasswordReset';
+import FormInput from '@/components/ui/FormInput/FormInput';
 
 interface Props {}
 
@@ -25,6 +26,9 @@ const PasswordResetPage: FC<Props> = () => {
   const { newPassword, confirmNewPassword } = useSelector(
     (store: StoreTypes) => store.formInputs.resetPassword
   );
+
+  const { isResettingPassword, isPasswordResetError, isPasswordResetSuccess } =
+    useSelector((store: StoreTypes) => store.auth);
 
   const searchParams = useSearchParams();
 
@@ -40,7 +44,7 @@ const PasswordResetPage: FC<Props> = () => {
     e.preventDefault();
 
     resetUserPassword({
-      email,
+      email: decodeURIComponent(email as string),
       resetString,
       password: newPassword.value,
       confirmPassword: confirmNewPassword.value,
@@ -63,29 +67,33 @@ const PasswordResetPage: FC<Props> = () => {
         </PasswordResetFormHeader>
 
         <form onSubmit={(e) => handlePasswordReset(e)}>
-          <input type="text" value={searchParams.get('email')!} disabled />
-          <TextInput
+          <input
+            type="text"
+            value={decodeURIComponent(searchParams.get('email')!)}
+            disabled
+          />
+          <FormInput
+            type="password"
+            label="New password"
             placeholder="Enter your new password"
             value={newPassword.value}
             setValue={setNewPassword}
             error={newPassword.error}
             clearError={clearNewPasswordError}
           />
-          <TextInput
-            placeholder="Confirm new password"
+
+          <FormInput
+            type="password"
+            label="Confirm password"
+            placeholder="Confirm your new password"
             value={confirmNewPassword.value}
             setValue={setConfirmNewPassword}
             error={confirmNewPassword.error}
             clearError={clearConfirmNewPasswordError}
           />
 
-          <Button
-            tagType="button"
-            width="100%"
-            // disabled={}
-          >
-            {/* {isVerifying ? 'Verifying...' : 'Verify'} */}
-            Reset password
+          <Button tagType="button" width="100%" disabled={isResettingPassword}>
+            {isResettingPassword ? 'Resetting password...' : 'Reset password'}
           </Button>
         </form>
       </PasswordResetFormContainer>
