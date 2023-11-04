@@ -3,7 +3,11 @@
 import ImageCard from '@/components/ui/imageCard/ImageCard';
 import SelectField from '@/components/ui/selectField/SelectField';
 import { FC, FormEvent } from 'react';
-import styles from './page.module.scss';
+import {
+  GenerationConfig,
+  GenerationOutput,
+  ImageGenerationContainer,
+} from './page.styled';
 import TextInput from '@/components/ui/textInput/TextInput';
 import { useSelector } from 'react-redux';
 import { StoreTypes } from '@/redux/store';
@@ -42,11 +46,8 @@ const ImageGenerationPage: FC<Props> = () => {
   };
 
   return (
-    <div className={styles.page_container}>
-      <form
-        className={styles.generation_config}
-        onSubmit={(e) => handleSubmit(e)}
-      >
+    <ImageGenerationContainer>
+      <GenerationConfig onSubmit={(e) => handleSubmit(e)}>
         <div>
           <TextInput
             placeholder="Enter a prompt"
@@ -76,9 +77,9 @@ const ImageGenerationPage: FC<Props> = () => {
             Generate
           </Button>
         </div>
-      </form>
+      </GenerationConfig>
 
-      <div className={styles.generation_output}>
+      <GenerationOutput>
         {isGenerating && (
           <div className="generating">
             <div className="loader"></div>
@@ -101,8 +102,8 @@ const ImageGenerationPage: FC<Props> = () => {
             <span>No generated images</span>
           </div>
         )}
-      </div>
-    </div>
+      </GenerationOutput>
+    </ImageGenerationContainer>
   );
 };
 

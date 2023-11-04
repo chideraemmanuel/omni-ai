@@ -23,12 +23,10 @@
   }
 }
 
-.container.light {
+.light {
   background-image: linear-gradient(180deg, #fff, #adadad);
 }
 
-.container.dark {
-  span {
-    background-image: linear-gradient(180deg, #555, #000);
-  }
+.dark {
+  background-image: linear-gradient(180deg, #555, #000);
 }

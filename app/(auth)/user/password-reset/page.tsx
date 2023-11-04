@@ -2,7 +2,11 @@
 
 import { notFound, useSearchParams } from 'next/navigation';
 import { FC, FormEvent } from 'react';
-import styles from './page.module.scss';
+import {
+  PasswordResetFormContainer,
+  PasswordResetFormHeader,
+  PasswordResetPageContainer,
+} from './page.styled';
 import { useSelector } from 'react-redux';
 import { StoreTypes } from '@/redux/store';
 import {
@@ -31,8 +35,8 @@ const PasswordResetPage: FC<Props> = () => {
   const email = searchParams.get('email');
   const resetString = searchParams.get('reset_string');
 
-  // console.log(searchParams.get('email'));
-  // console.log(searchParams.get('reset_string'));
+  console.log(searchParams.get('email'));
+  console.log(searchParams.get('reset_string'));
 
   const { resetUserPassword } = usePasswordReset();
 
@@ -52,15 +56,15 @@ const PasswordResetPage: FC<Props> = () => {
   }
 
   return (
-    <section className={styles.page_container}>
-      <div className={styles.form_container}>
-        <div className={styles.form_header}>
+    <PasswordResetPageContainer>
+      <PasswordResetFormContainer>
+        <PasswordResetFormHeader>
           <h2>Reset your password</h2>
           {/* <p>
             Please enter the email address associated with your account. We wil
             send you an email with instructions on how to recover your password.
           </p> */}
-        </div>
+        </PasswordResetFormHeader>
 
         <form onSubmit={(e) => handlePasswordReset(e)}>
           <input
@@ -92,8 +96,8 @@ const PasswordResetPage: FC<Props> = () => {
             {isResettingPassword ? 'Resetting password...' : 'Reset password'}
           </Button>
         </form>
-      </div>
-    </section>
+      </PasswordResetFormContainer>
+    </PasswordResetPageContainer>
   );
 };
 

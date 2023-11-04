@@ -2,7 +2,13 @@
 
 import FormInput from '@/components/ui/FormInput/FormInput';
 import { FC, FormEvent } from 'react';
-import styles from './page.module.scss';
+import {
+  LoginForm,
+  LoginFormBreak,
+  LoginFormHeader,
+  LoginPageContainer,
+  LoginPageFormContainer,
+} from './page.styled';
 import Link from 'next/link';
 import Button from '@/components/ui/button/Button';
 import { FcGoogle } from 'react-icons/fc';
@@ -44,16 +50,16 @@ const LoginPage: FC<Props> = () => {
 
   return (
     <>
-      <section className={styles.page_container}>
-        <div className={styles.form_container}>
-          <div className={styles.form_header}>
+      <LoginPageContainer>
+        <LoginPageFormContainer>
+          <LoginFormHeader>
             <h2>Login to use OmniAI</h2>
             <p>
               Don't have an account? <Link href={'/register'}>Register</Link>
             </p>
-          </div>
+          </LoginFormHeader>
 
-          <div className={styles.login_form}>
+          <LoginForm>
             <form onSubmit={(e) => handleSubmit(e)}>
               <FormInput
                 type="email"
@@ -62,7 +68,6 @@ const LoginPage: FC<Props> = () => {
                 value={email.value}
                 setValue={setLoginEmail}
                 error={email.error}
-                // error={'this is an error'}
                 clearError={clearLoginEmailError}
               />
               <FormInput
@@ -72,7 +77,6 @@ const LoginPage: FC<Props> = () => {
                 value={password.value}
                 setValue={setLoginPassword}
                 error={password.error}
-                // error={'this is an error'}
                 clearError={clearLoginPasswordError}
                 forgotPassword={true}
                 forgotPasswordAction={() =>
@@ -84,11 +88,11 @@ const LoginPage: FC<Props> = () => {
               </Button>
             </form>
 
-            <div className={styles.login_form_break}>
+            <LoginFormBreak>
               <div></div>
               <span>or</span>
               <div></div>
-            </div>
+            </LoginFormBreak>
 
             <Button
               width="100%"
@@ -98,9 +102,9 @@ const LoginPage: FC<Props> = () => {
               <FcGoogle />
               <span>Continue with google</span>
             </Button>
-          </div>
-        </div>
-      </section>
+          </LoginForm>
+        </LoginPageFormContainer>
+      </LoginPageContainer>
     </>
   );
 };

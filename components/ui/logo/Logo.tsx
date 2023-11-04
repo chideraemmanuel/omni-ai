@@ -1,8 +1,10 @@
+'use client';
+
 import { FC } from 'react';
+import { StyledLogo } from './Logo.styled';
 import Image from 'next/image';
 // import logo from '../../../public/react.svg';
 import logo from '@/public/OmniAI Favicon.png';
-import styles from './Logo.module.scss';
 
 interface Props {
   variant?: 'dark' | 'light';
@@ -10,10 +12,10 @@ interface Props {
 
 const Logo: FC<Props> = ({ variant = 'dark' }) => {
   return (
-    <a href="/" className={`${styles.container} ${variant}`}>
+    <StyledLogo $variant={variant} href="/">
       <Image src={logo} alt="Logo" />
       <span>OmniAI</span>
-    </a>
+    </StyledLogo>
   );
 };
 

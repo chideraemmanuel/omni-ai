@@ -1,7 +1,11 @@
 'use client';
 
 import { FC, FormEvent, useRef, useEffect } from 'react';
-import styles from './page.module.scss';
+import {
+  ChatContainer,
+  ConversationContainer,
+  InputContainer,
+} from './page.styled';
 import ChatBubble from '@/components/ui/chatBubble/ChatBubble';
 import { useDispatch, useSelector } from 'react-redux';
 import { StoreTypes } from '@/redux/store';
@@ -31,11 +35,12 @@ const ChatPage: FC<Props> = () => {
   const ref = useRef(null);
 
   useEffect(() => {
+    // @ts-ignore
     ref.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages]);
 
   return (
-    <div className={styles.page_container}>
+    <ChatContainer>
       {messages.length === 0 && (
         <p className="notice">
           Please note that conversations aren't being saved, and will be wiped
@@ -43,7 +48,7 @@ const ChatPage: FC<Props> = () => {
           get them.
         </p>
       )}
-      <div className={styles.conversation_container}>
+      <ConversationContainer>
         {/* <ChatBubble content="Hi there!" role="user" />
         <ChatBubble
           content="Hello, how can i assist you today?"
@@ -61,12 +66,8 @@ const ChatPage: FC<Props> = () => {
           <ChatBubble role="assistant" content={<TypingAnimation />} />
         )}
         <div ref={ref}></div>
-      </div>
-
-      <form
-        className={styles.input_container}
-        onSubmit={(e) => handleSubmit(e)}
-      >
+      </ConversationContainer>
+      <InputContainer onSubmit={(e) => handleSubmit(e)}>
         <textarea
           placeholder="Ask me anything"
           value={userInput}
@@ -74,8 +75,8 @@ const ChatPage: FC<Props> = () => {
           disabled={isResponding}
         />
         <button disabled={userInput.length === 0 || isResponding}>Send</button>
-      </form>
-    </div>
+      </InputContainer>
+    </ChatContainer>
   );
 };
 

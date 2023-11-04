@@ -1,6 +1,8 @@
+'use client';
+
 import { FC } from 'react';
 import { FiArrowRight } from 'react-icons/fi';
-import styles from './DashboardHomeLink.module.scss';
+import { LinkContainer } from './DashboardHomeLink.styled';
 
 interface Props {
   href: string;
@@ -10,14 +12,14 @@ interface Props {
 
 const DashboardHomeLink: FC<Props> = ({ href, title, description }) => {
   return (
-    <a href={href} className={styles.link_container}>
+    <LinkContainer>
       <div>
         <h3>{title}</h3>
         <p>{description}</p>
       </div>
 
       <FiArrowRight />
-    </a>
+    </LinkContainer>
   );
 };
 

@@ -1,13 +1,20 @@
 'use client';
 
 import { FC, FormEvent } from 'react';
-import styles from './page.module.scss';
+import {
+  RegistrationForm,
+  RegistrationFormBreak,
+  RegistrationFormHeader,
+  RegistrationPageContainer,
+  RegistrationPageFormContainer,
+} from './page.styled';
 import {
   clearRegistrationConfirmPasswordError,
   clearRegistrationEmailError,
   clearRegistrationNameError,
   clearRegistrationPasswordError,
   setRegistrationConfirmPassword,
+  setRegistrationConfirmPasswordError,
   setRegistrationEmail,
   setRegistrationName,
   setRegistrationPassword,
@@ -48,16 +55,16 @@ const RegistrationPage: FC<Props> = () => {
 
   return (
     <>
-      <div className={styles.page_container}>
-        <div className={styles.form_container}>
-          <div className={styles.form_header}>
+      <RegistrationPageContainer>
+        <RegistrationPageFormContainer>
+          <RegistrationFormHeader>
             <h2>Create an account to use OmniAI</h2>
             <p>
               Have an account? <Link href={'/login'}>Login</Link>
             </p>
-          </div>
+          </RegistrationFormHeader>
 
-          <div className={styles.registration_form}>
+          <RegistrationForm>
             <form onSubmit={(e) => handleSubmit(e)}>
               <FormInput
                 type="text"
@@ -66,7 +73,6 @@ const RegistrationPage: FC<Props> = () => {
                 value={name.value}
                 setValue={setRegistrationName}
                 error={name.error}
-                // error={'this is an error'}
                 clearError={clearRegistrationNameError}
               />
               <FormInput
@@ -76,7 +82,6 @@ const RegistrationPage: FC<Props> = () => {
                 value={email.value}
                 setValue={setRegistrationEmail}
                 error={email.error}
-                // error={'this is an error'}
                 clearError={clearRegistrationEmailError}
               />
               <FormInput
@@ -86,7 +91,6 @@ const RegistrationPage: FC<Props> = () => {
                 value={password.value}
                 setValue={setRegistrationPassword}
                 error={password.error}
-                // error={'this is an error'}
                 clearError={clearRegistrationPasswordError}
               />
               <FormInput
@@ -96,7 +100,6 @@ const RegistrationPage: FC<Props> = () => {
                 value={confirmPassword.value}
                 setValue={setRegistrationConfirmPassword}
                 error={confirmPassword.error}
-                // error={'this is an error'}
                 clearError={clearRegistrationConfirmPasswordError}
               />
               <Button tagType="button" disabled={isSigningUp}>
@@ -104,11 +107,11 @@ const RegistrationPage: FC<Props> = () => {
               </Button>
             </form>
 
-            <div className={styles.registration_form_break}>
+            <RegistrationFormBreak>
               <div></div>
               <span>or</span>
               <div></div>
-            </div>
+            </RegistrationFormBreak>
 
             <Button
               width="100%"
@@ -118,9 +121,9 @@ const RegistrationPage: FC<Props> = () => {
               <FcGoogle />
               <span>Sign in with google</span>
             </Button>
-          </div>
-        </div>
-      </div>
+          </RegistrationForm>
+        </RegistrationPageFormContainer>
+      </RegistrationPageContainer>
     </>
   );
 };

@@ -1,7 +1,11 @@
 'use client';
 
 import { FC } from 'react';
-import styles from './page.module.scss';
+import {
+  DashboardContainer,
+  DashboardHeader,
+  DashboardLinks,
+} from './page.styled';
 import DashboardHomeLink from '@/components/dashboard/dashboardHomeLink/DashboardHomeLink';
 import { tools } from '@/constants';
 import { useSelector } from 'react-redux';
@@ -13,13 +17,13 @@ const DashboardPage: FC<Props> = () => {
   const { user } = useSelector((store: StoreTypes) => store.auth);
 
   return (
-    <div className={styles.container}>
-      <div className={styles.header}>
+    <DashboardContainer>
+      <DashboardHeader>
         <h2>Welcome, {user?.name.split(' ')[0]}</h2>
         <p>Which AI tool would you like to use?</p>
-      </div>
+      </DashboardHeader>
 
-      <div className={styles.links}>
+      <DashboardLinks>
         {tools.map((tool, index) => (
           <DashboardHomeLink
             title={tool.name}
@@ -28,8 +32,8 @@ const DashboardPage: FC<Props> = () => {
             key={index}
           />
         ))}
-      </div>
-    </div>
+      </DashboardLinks>
+    </DashboardContainer>
   );
 };
 

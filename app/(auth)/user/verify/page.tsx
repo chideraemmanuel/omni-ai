@@ -1,7 +1,11 @@
 'use client';
 
 import { FC, FormEvent, useEffect } from 'react';
-import styles from './page.module.scss';
+import {
+  VerificationFormContainer,
+  VerificationFormHeader,
+  VerificationPageContainer,
+} from './page.styled';
 import { useDispatch, useSelector } from 'react-redux';
 import { getCurrentUser } from '@/redux/slices/auth/authService';
 import { StoreTypes } from '@/redux/store';
@@ -64,15 +68,15 @@ const EmailVerificationPage: FC<Props> = () => {
   }
 
   return (
-    <section className={styles.page_container}>
-      <div className={styles.form_container}>
-        <div className={styles.form_header}>
+    <VerificationPageContainer>
+      <VerificationFormContainer>
+        <VerificationFormHeader>
           <h2>Verify your Email.</h2>
           <p>
             We sent a One-Time Password to your registered email: {user?.email}.
             Please enter the code below.
           </p>
-        </div>
+        </VerificationFormHeader>
 
         <form onSubmit={(e) => handleOtpVerification(e)}>
           <TextInput
@@ -111,8 +115,8 @@ const EmailVerificationPage: FC<Props> = () => {
             {isResendingOtp ? 'Resending OTP...' : 'Resend'}
           </span>
         </p>
-      </div>
-    </section>
+      </VerificationFormContainer>
+    </VerificationPageContainer>
   );
 };
 

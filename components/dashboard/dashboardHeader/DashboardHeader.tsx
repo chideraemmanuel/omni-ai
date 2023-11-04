@@ -1,7 +1,12 @@
 'use client';
 
 import { FC } from 'react';
-import styles from './DashboardHeader.module.scss';
+import {
+  DashboardHeaderContainer,
+  DashboardHeaderLogo,
+  DashboardHeaderMobileToggle,
+  DashboardHeaderUserButton,
+} from './DashboardHeader.styled';
 import Link from 'next/link';
 import Logo from '../../ui/logo/Logo';
 import { FiMenu } from 'react-icons/fi';
@@ -27,23 +32,17 @@ const DashboardHeader: FC<Props> = () => {
   const { mutate: logout } = useLogout();
 
   return (
-    <div className={styles.container}>
-      <div
-        className={styles.mobile_menu_toggle}
+    <DashboardHeaderContainer>
+      <DashboardHeaderMobileToggle
         onClick={() => dispatch(openDashboardMobileMenu())}
       >
         <FiMenu />
-      </div>
+      </DashboardHeaderMobileToggle>
 
-      <div className={styles.logo}>
+      <DashboardHeaderLogo>
         <Logo variant="dark" />
-      </div>
-
-      <div
-        className={`${styles.user_button} ${
-          dashboardHeaderLinksActive && `active`
-        }`}
-      >
+      </DashboardHeaderLogo>
+      <DashboardHeaderUserButton $active={dashboardHeaderLinksActive}>
         {dashboardHeaderLinksActive && (
           <div
             className="overlay"
@@ -51,11 +50,10 @@ const DashboardHeader: FC<Props> = () => {
           ></div>
         )}
         <button onClick={() => dispatch(toggleDashboardHeaderLinks())}>
-          {/* <Image src={image} alt="" /> */}
           <ProfileImage />
         </button>
 
-        <div className={`links ${dashboardHeaderLinksActive && 'active'}`}>
+        <div className="links">
           <li onClick={() => dispatch(closeDashboardHeaderLinks())}>
             <Link href={'/'}>View profile</Link>
           </li>
@@ -67,8 +65,8 @@ const DashboardHeader: FC<Props> = () => {
             <button onClick={() => logout()}>Logout</button>
           </li>
         </div>
-      </div>
-    </div>
+      </DashboardHeaderUserButton>
+    </DashboardHeaderContainer>
   );
 };
 

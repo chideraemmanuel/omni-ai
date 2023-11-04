@@ -1,5 +1,10 @@
 import { FC } from 'react';
-import styles from './DashboardMobileMenu.module.scss';
+import {
+  DashboardMobileMenuContainer,
+  DashboardMobileMenuHeader,
+  DashboardMobileMenuOverlay,
+  MobileMenuLinks,
+} from './DashboardMobileMenu.styled';
 import { DashboardNavigationLinks } from '@/constants';
 import Logo from '../../ui/logo/Logo';
 import { FiX } from 'react-icons/fi';
@@ -20,25 +25,20 @@ const DashboardMobileMenu: FC<Props> = () => {
   return (
     <>
       {dashboardMobileMenuActive && (
-        <div
-          className={styles.overlay}
+        <DashboardMobileMenuOverlay
           onClick={() => dispatch(closeDashboardMobileMenu())}
-        ></div>
+        />
       )}
-      <div
-        className={`${styles.menu_container} ${
-          dashboardMobileMenuActive && 'active'
-        }`}
-      >
-        <div className={styles.menu_header}>
+      <DashboardMobileMenuContainer $menuActive={dashboardMobileMenuActive}>
+        <DashboardMobileMenuHeader>
           <Logo variant="light" />
 
           <button onClick={() => dispatch(closeDashboardMobileMenu())}>
             <FiX />
           </button>
-        </div>
+        </DashboardMobileMenuHeader>
 
-        <div className={styles.menu_links}>
+        <MobileMenuLinks>
           {DashboardNavigationLinks.map((item, index) => (
             <div key={index}>
               <span>{item.label}</span>
@@ -57,8 +57,8 @@ const DashboardMobileMenu: FC<Props> = () => {
               </ul>
             </div>
           ))}
-        </div>
-      </div>
+        </MobileMenuLinks>
+      </DashboardMobileMenuContainer>
     </>
   );
 };
