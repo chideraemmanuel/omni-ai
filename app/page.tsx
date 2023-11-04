@@ -1,5 +1,3 @@
-'use client';
-
 import { FC } from 'react';
 import styles from './page.module.scss';
 import bg from '@/assets/sign_in_showcase.jpg';

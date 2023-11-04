@@ -75,11 +75,5 @@ export const PasswordResetFormHeader = styled.div`
     color: ${({ theme }) => theme.colors.light['gray-700']};
     font-size: ${({ theme }) =>
       theme.font['sm-font'] || 'clamp(0.875rem, 0.831rem + 0.1878vw, 1rem)'};
-
-    a {
-      /* color: var(--primary-color); */
-      color: inherit;
-      text-decoration: underline;
-    }
   }
 `;

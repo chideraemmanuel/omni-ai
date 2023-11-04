@@ -1,20 +1,13 @@
 'use client';
 
 import { FC, FormEvent } from 'react';
-import {
-  RegistrationForm,
-  RegistrationFormBreak,
-  RegistrationFormHeader,
-  RegistrationPageContainer,
-  RegistrationPageFormContainer,
-} from './page.styled';
+import styles from './page.module.scss';
 import {
   clearRegistrationConfirmPasswordError,
   clearRegistrationEmailError,
   clearRegistrationNameError,
   clearRegistrationPasswordError,
   setRegistrationConfirmPassword,
-  setRegistrationConfirmPasswordError,
   setRegistrationEmail,
   setRegistrationName,
   setRegistrationPassword,
@@ -24,10 +17,9 @@ import FormInput from '@/components/ui/FormInput/FormInput';
 import { useSelector } from 'react-redux';
 import { StoreTypes } from '@/redux/store';
 import Button from '@/components/ui/button/Button';
-import { FaGoogle } from 'react-icons/fa';
+import { FcGoogle } from 'react-icons/fc';
 import { useRegister } from '@/lib/hooks/useRegister';
 import { generateGoogleOauthUrl } from '@/lib/utils/oauth';
-import FullScreenLoader from '@/components/ui/fullScreenLoader/FullScreenLoader';
 
 interface Props {}
 
@@ -56,17 +48,16 @@ const RegistrationPage: FC<Props> = () => {
 
   return (
     <>
-      {/* {isSigningUp && <FullScreenLoader />} */}
-      <RegistrationPageContainer>
-        <RegistrationPageFormContainer>
-          <RegistrationFormHeader>
+      <div className={styles.page_container}>
+        <div className={styles.form_container}>
+          <div className={styles.form_header}>
             <h2>Create an account to use OmniAI</h2>
             <p>
               Have an account? <Link href={'/login'}>Login</Link>
             </p>
-          </RegistrationFormHeader>
+          </div>
 
-          <RegistrationForm>
+          <div className={styles.registration_form}>
             <form onSubmit={(e) => handleSubmit(e)}>
               <FormInput
                 type="text"
@@ -113,23 +104,23 @@ const RegistrationPage: FC<Props> = () => {
               </Button>
             </form>
 
-            <RegistrationFormBreak>
+            <div className={styles.registration_form_break}>
               <div></div>
               <span>or</span>
               <div></div>
-            </RegistrationFormBreak>
+            </div>
 
             <Button
               width="100%"
               variant="google"
               href={generateGoogleOauthUrl()}
             >
-              <FaGoogle />
+              <FcGoogle />
               <span>Sign in with google</span>
             </Button>
-          </RegistrationForm>
-        </RegistrationPageFormContainer>
-      </RegistrationPageContainer>
+          </div>
+        </div>
+      </div>
     </>
   );
 };

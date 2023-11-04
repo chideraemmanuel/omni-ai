@@ -1,11 +1,7 @@
 'use client';
 
 import { FC, FormEvent } from 'react';
-import {
-  PasswordResetInitiationFormContainer,
-  PasswordResetInitiationFormHeader,
-  PasswordResetInitiationPageContainer,
-} from './page.styled';
+import styles from './page.module.scss';
 import TextInput from '@/components/ui/textInput/TextInput';
 import Button from '@/components/ui/button/Button';
 import { useSelector } from 'react-redux';
@@ -38,19 +34,17 @@ const PasswordResetInitiationPage: FC<Props> = () => {
   };
 
   return (
-    <PasswordResetInitiationPageContainer>
-      <PasswordResetInitiationFormContainer>
-        <PasswordResetInitiationFormHeader>
+    <section className={styles.page_container}>
+      <div className={styles.form_container}>
+        <div className={styles.form_header}>
           <h2>Reset your password</h2>
           <p>
             Please enter the email address associated with your account. We wil
             send you an email with instructions on how to recover your password.
           </p>
-        </PasswordResetInitiationFormHeader>
+        </div>
 
         <form onSubmit={(e) => handlePasswordResetInitiation(e)}>
-          {/* <input type="text" maxLength={6} placeholder="Enter OTP" />
-          <button>Verify</button> */}
           <TextInput
             placeholder="Enter your email address"
             value={passwordResetInitiationInput.value}
@@ -80,8 +74,8 @@ const PasswordResetInitiationPage: FC<Props> = () => {
             Return to Login
           </Button>
         </form>
-      </PasswordResetInitiationFormContainer>
-    </PasswordResetInitiationPageContainer>
+      </div>
+    </section>
   );
 };
 

@@ -2,16 +2,10 @@
 
 import FormInput from '@/components/ui/FormInput/FormInput';
 import { FC, FormEvent } from 'react';
-import {
-  LoginForm,
-  LoginFormBreak,
-  LoginFormHeader,
-  LoginPageContainer,
-  LoginPageFormContainer,
-} from './page.styled';
+import styles from './page.module.scss';
 import Link from 'next/link';
 import Button from '@/components/ui/button/Button';
-import { FaGoogle } from 'react-icons/fa';
+import { FcGoogle } from 'react-icons/fc';
 import { StoreTypes } from '@/redux/store';
 import { useSelector } from 'react-redux';
 import {
@@ -21,7 +15,6 @@ import {
   setLoginPassword,
 } from '@/redux/slices/formInputSlice';
 import { useLogin } from '@/lib/hooks/useLogin';
-import FullScreenLoader from '@/components/ui/fullScreenLoader/FullScreenLoader';
 import { generateGoogleOauthUrl } from '@/lib/utils/oauth';
 import { useRouter } from 'next/navigation';
 
@@ -51,17 +44,16 @@ const LoginPage: FC<Props> = () => {
 
   return (
     <>
-      {/* {isLoggingIn && <FullScreenLoader />} */}
-      <LoginPageContainer>
-        <LoginPageFormContainer>
-          <LoginFormHeader>
+      <section className={styles.page_container}>
+        <div className={styles.form_container}>
+          <div className={styles.form_header}>
             <h2>Login to use OmniAI</h2>
             <p>
               Don't have an account? <Link href={'/register'}>Register</Link>
             </p>
-          </LoginFormHeader>
+          </div>
 
-          <LoginForm>
+          <div className={styles.login_form}>
             <form onSubmit={(e) => handleSubmit(e)}>
               <FormInput
                 type="email"
@@ -92,23 +84,23 @@ const LoginPage: FC<Props> = () => {
               </Button>
             </form>
 
-            <LoginFormBreak>
+            <div className={styles.login_form_break}>
               <div></div>
               <span>or</span>
               <div></div>
-            </LoginFormBreak>
+            </div>
 
             <Button
               width="100%"
               variant="google"
               href={generateGoogleOauthUrl()}
             >
-              <FaGoogle />
+              <FcGoogle />
               <span>Continue with google</span>
             </Button>
-          </LoginForm>
-        </LoginPageFormContainer>
-      </LoginPageContainer>
+          </div>
+        </div>
+      </section>
     </>
   );
 };

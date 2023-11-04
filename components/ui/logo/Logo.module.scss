@@ -1,0 +1,34 @@
+.container {
+  display: flex;
+  align-items: center;
+  gap: var(--fluid-inline-space-1);
+
+  img {
+    width: var(--fluid-inline-space-7);
+    height: var(--fluid-block-space-7);
+    border-radius: 0.5rem;
+  }
+
+  span {
+    font-size: var(--md-font);
+    font-weight: bolder;
+    // background-image: ${({ theme, $variant }) =>
+    //   $variant === 'dark'
+    //     ? theme.colors.dark['text-gradient']
+    //     : theme.colors.light['text-gradient']};
+    background-clip: text;
+    color: transparent;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+}
+
+.container.light {
+  background-image: linear-gradient(180deg, #fff, #adadad);
+}
+
+.container.dark {
+  span {
+    background-image: linear-gradient(180deg, #555, #000);
+  }
+}

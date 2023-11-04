@@ -55,7 +55,7 @@ export const RegistrationFormHeader = styled.div`
 export const RegistrationForm = styled.div`
   /* background-color: red; */
   padding: ${({ theme }) =>
-    `${theme.space['fluid-block-space-5']} ${theme.space['fluid-block-space-5']}`};
+    `${theme.space['fluid-block-space-5']} ${theme.space['fluid-inline-space-5']}`};
   border-radius: 10px;
   /* width: min(90%, 600px); */
   width: 100%;

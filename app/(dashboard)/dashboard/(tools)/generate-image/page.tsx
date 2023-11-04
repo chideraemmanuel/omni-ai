@@ -3,14 +3,9 @@
 import ImageCard from '@/components/ui/imageCard/ImageCard';
 import SelectField from '@/components/ui/selectField/SelectField';
 import { FC, FormEvent } from 'react';
-import { FiUser, FiUserPlus } from 'react-icons/fi';
-import {
-  GenerationConfig,
-  GenerationOutput,
-  ImageGenerationContainer,
-} from './page.styled';
+import styles from './page.module.scss';
 import TextInput from '@/components/ui/textInput/TextInput';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { StoreTypes } from '@/redux/store';
 import {
   setAmount,
@@ -20,7 +15,6 @@ import {
 import Button from '@/components/ui/button/Button';
 import Image from 'next/image';
 import empty from '@/assets/empty.svg';
-import { generateImage } from '@/redux/slices/image-generation/imageGenerationService';
 import { imageNumberList, sizeList } from '@/constants';
 import { useGenerateImage } from '@/lib/hooks/useGenerateImage';
 
@@ -32,13 +26,8 @@ const ImageGenerationPage: FC<Props> = () => {
     size,
     amount,
     isLoading: isGenerating,
-    isSuccess,
-    isError,
-    error,
     images,
   } = useSelector((store: StoreTypes) => store.imageGeneration);
-
-  const dispatch = useDispatch();
 
   const { mutate: generateImage } = useGenerateImage();
 
@@ -47,17 +36,17 @@ const ImageGenerationPage: FC<Props> = () => {
 
     generateImage({
       prompt,
-      size: size?.value,
-      amount: amount?.value,
+      size: size?.value as string,
+      amount: amount?.value as string,
     });
   };
 
   return (
-    <ImageGenerationContainer>
-      {/* <span>Image generation!</span> */}
-      {/* <ImageCard /> */}
-
-      <GenerationConfig onSubmit={(e) => handleSubmit(e)}>
+    <div className={styles.page_container}>
+      <form
+        className={styles.generation_config}
+        onSubmit={(e) => handleSubmit(e)}
+      >
         <div>
           <TextInput
             placeholder="Enter a prompt"
@@ -87,18 +76,14 @@ const ImageGenerationPage: FC<Props> = () => {
             Generate
           </Button>
         </div>
-      </GenerationConfig>
+      </form>
 
-      <GenerationOutput>
+      <div className={styles.generation_output}>
         {isGenerating && (
           <div className="generating">
             <div className="loader"></div>
           </div>
         )}
-
-        {/* <div className="generating">
-          <div className="loader"></div>
-        </div> */}
 
         {images?.length > 0 && !isGenerating && (
           <div className="image-grid">
@@ -116,8 +101,8 @@ const ImageGenerationPage: FC<Props> = () => {
             <span>No generated images</span>
           </div>
         )}
-      </GenerationOutput>
-    </ImageGenerationContainer>
+      </div>
+    </div>
   );
 };
 

@@ -1,35 +1,28 @@
-import styled from 'styled-components';
-
-export const ImageGenerationContainer = styled.div`
+.page_container {
   width: 100%;
-  padding: ${({ theme }) =>
-    `${theme.space['fluid-block-space-5']} ${theme.space['fluid-inline-space-5']}`};
+  padding: var(--fluid-block-space-5) var(--fluid-inline-space-5);
   display: flex;
   flex-direction: column;
-  gap: ${({ theme }) => theme.space['fluid-block-space-2']};
-`;
+  gap: var(--fluid-block-space-2);
+}
 
-export const GenerationConfig = styled.form`
+.generation_config {
   background-color: #fff;
-  border: 1px solid ${({ theme }) => theme.colors.light['gray-500']};
+  border: 1px solid var(--gray-500);
   border-radius: 0.5rem;
-  padding: ${({ theme }) =>
-    `${theme.space['fluid-block-space-5']} ${theme.space['fluid-inline-space-3']}`};
+  padding: var(--fluid-block-space-5) var(--fluid-inline-space-3);
   display: flex;
   align-items: center;
-  gap: ${({ theme }) => theme.space['fluid-inline-space-2']};
+  gap: var(--fluid-inline-space-3);
 
   > *:first-child {
     flex: 1;
   }
 
   > *:nth-child(2) {
-    /* background-color: red; */
     display: flex;
     align-items: center;
-    /* display: grid;
-    grid-template-columns: 1fr 1fr auto; */
-    gap: ${({ theme }) => theme.space['fluid-inline-space-2']};
+    gap: var(--fluid-inline-space-2);
 
     @media screen and (max-width: 1024px) {
       flex-direction: column;
@@ -47,7 +40,7 @@ export const GenerationConfig = styled.form`
     > div {
       display: flex;
       align-items: center;
-      gap: ${({ theme }) => theme.space['fluid-inline-space-2']};
+      gap: var(--fluid-inline-space-2);
       width: 100%;
 
       @media screen and (max-width: 1024px) {
@@ -65,9 +58,9 @@ export const GenerationConfig = styled.form`
     flex-direction: column;
     align-items: stretch;
   }
-`;
+}
 
-export const GenerationOutput = styled.section`
+.generation_output {
   flex: 1;
   overflow: scroll;
   overflow-x: hidden;
@@ -89,7 +82,7 @@ export const GenerationOutput = styled.section`
     }
 
     &::-webkit-scrollbar-thumb {
-      background-color: ${({ theme }) => theme.colors.light['gray-700']};
+      background-color: var(--gray-700);
     }
   }
 
@@ -122,26 +115,23 @@ export const GenerationOutput = styled.section`
   }
 
   .image-grid {
-    /* background-color: red; */
     min-height: 60vh;
     padding: 30px 20px;
 
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
     align-items: flex-start;
-    gap: ${({ theme }) => theme.space['fluid-inline-space-4']};
+    gap: var(--fluid-inline-space-4);
   }
 
   .no-output {
-    /* background-color: red; */
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     gap: 10px;
     min-height: 60vh;
-    padding: ${({ theme }) =>
-      `${theme.space['fluid-block-space-5']} ${theme.space['fluid-inline-space-3']}`};
+    padding: var(--fluid-block-space-5) var(--fluid-inline-space-3);
 
     > div {
       width: min(80%, 300px);
@@ -154,8 +144,8 @@ export const GenerationOutput = styled.section`
     }
 
     > span {
-      color: ${({ theme }) => theme.colors.light['gray-800']};
-      font-size: ${({ theme }) => theme.font['sm-font']};
+      color: var(--gray-800);
+      font-size: var(--sm-font);
     }
   }
-`;
+}

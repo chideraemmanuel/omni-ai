@@ -2,12 +2,7 @@
 
 import { notFound, useSearchParams } from 'next/navigation';
 import { FC, FormEvent } from 'react';
-import {
-  PasswordResetFormContainer,
-  PasswordResetFormHeader,
-  PasswordResetPageContainer,
-} from './page.styled';
-import TextInput from '@/components/ui/textInput/TextInput';
+import styles from './page.module.scss';
 import { useSelector } from 'react-redux';
 import { StoreTypes } from '@/redux/store';
 import {
@@ -27,16 +22,17 @@ const PasswordResetPage: FC<Props> = () => {
     (store: StoreTypes) => store.formInputs.resetPassword
   );
 
-  const { isResettingPassword, isPasswordResetError, isPasswordResetSuccess } =
-    useSelector((store: StoreTypes) => store.auth);
+  const { isResettingPassword } = useSelector(
+    (store: StoreTypes) => store.auth
+  );
 
   const searchParams = useSearchParams();
 
   const email = searchParams.get('email');
   const resetString = searchParams.get('reset_string');
 
-  console.log(searchParams.get('email'));
-  console.log(searchParams.get('reset_string'));
+  // console.log(searchParams.get('email'));
+  // console.log(searchParams.get('reset_string'));
 
   const { resetUserPassword } = usePasswordReset();
 
@@ -45,7 +41,7 @@ const PasswordResetPage: FC<Props> = () => {
 
     resetUserPassword({
       email: decodeURIComponent(email as string),
-      resetString,
+      resetString: resetString as string,
       password: newPassword.value,
       confirmPassword: confirmNewPassword.value,
     });
@@ -56,15 +52,15 @@ const PasswordResetPage: FC<Props> = () => {
   }
 
   return (
-    <PasswordResetPageContainer>
-      <PasswordResetFormContainer>
-        <PasswordResetFormHeader>
+    <section className={styles.page_container}>
+      <div className={styles.form_container}>
+        <div className={styles.form_header}>
           <h2>Reset your password</h2>
           {/* <p>
             Please enter the email address associated with your account. We wil
             send you an email with instructions on how to recover your password.
           </p> */}
-        </PasswordResetFormHeader>
+        </div>
 
         <form onSubmit={(e) => handlePasswordReset(e)}>
           <input
@@ -96,8 +92,8 @@ const PasswordResetPage: FC<Props> = () => {
             {isResettingPassword ? 'Resetting password...' : 'Reset password'}
           </Button>
         </form>
-      </PasswordResetFormContainer>
-    </PasswordResetPageContainer>
+      </div>
+    </section>
   );
 };
 

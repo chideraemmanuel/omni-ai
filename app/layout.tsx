@@ -1,6 +1,5 @@
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
-import theme from './theme';
 import ReduxProvider from '@/redux/ReduxProvider';
 import StyledComponentsRegistry from '@/lib/decorators/registry';
 import StyledComponentsThemeProvider from '@/lib/decorators/StyledComponentsThemeProvider';

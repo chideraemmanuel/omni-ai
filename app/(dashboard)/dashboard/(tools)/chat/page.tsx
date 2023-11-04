@@ -1,18 +1,11 @@
 'use client';
 
 import { FC, FormEvent, useRef, useEffect } from 'react';
-import {
-  ChatContainer,
-  ConversationContainer,
-  InputContainer,
-} from './page.styled';
+import styles from './page.module.scss';
 import ChatBubble from '@/components/ui/chatBubble/ChatBubble';
 import { useDispatch, useSelector } from 'react-redux';
 import { StoreTypes } from '@/redux/store';
-import { addUserMessage, setUserInput } from '@/redux/slices/chat/chatSlice';
-import { sendMessage } from '@/redux/slices/chat/chatService';
-import RelativeLoader from '@/components/ui/relativeLoader/RelativeLoader';
-import { toast } from 'react-toastify';
+import { setUserInput } from '@/redux/slices/chat/chatSlice';
 import { useSendMessage } from '@/lib/hooks/useSendMessage';
 import TypingAnimation from '@/components/misc/typingAnimation/TypingAnimation';
 
@@ -42,7 +35,7 @@ const ChatPage: FC<Props> = () => {
   }, [messages]);
 
   return (
-    <ChatContainer>
+    <div className={styles.page_container}>
       {messages.length === 0 && (
         <p className="notice">
           Please note that conversations aren't being saved, and will be wiped
@@ -50,7 +43,7 @@ const ChatPage: FC<Props> = () => {
           get them.
         </p>
       )}
-      <ConversationContainer>
+      <div className={styles.conversation_container}>
         {/* <ChatBubble content="Hi there!" role="user" />
         <ChatBubble
           content="Hello, how can i assist you today?"
@@ -68,9 +61,12 @@ const ChatPage: FC<Props> = () => {
           <ChatBubble role="assistant" content={<TypingAnimation />} />
         )}
         <div ref={ref}></div>
-      </ConversationContainer>
-      <InputContainer onSubmit={(e) => handleSubmit(e)}>
-        {/* <input type="text" placeholder="Type a message." /> */}
+      </div>
+
+      <form
+        className={styles.input_container}
+        onSubmit={(e) => handleSubmit(e)}
+      >
         <textarea
           placeholder="Ask me anything"
           value={userInput}
@@ -78,8 +74,8 @@ const ChatPage: FC<Props> = () => {
           disabled={isResponding}
         />
         <button disabled={userInput.length === 0 || isResponding}>Send</button>
-      </InputContainer>
-    </ChatContainer>
+      </form>
+    </div>
   );
 };
 
