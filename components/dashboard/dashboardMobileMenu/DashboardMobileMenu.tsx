@@ -1,13 +1,6 @@
 import { FC } from 'react';
-import {
-  DashboardMobileMenuContainer,
-  DashboardMobileMenuHeader,
-  DashboardMobileMenuOverlay,
-  MobileMenuLinks,
-} from './DashboardMobileMenu.styled';
+import styles from './DashboardMobileMenu.module.scss';
 import { DashboardNavigationLinks } from '@/constants';
-import Link from 'next/link';
-import { usePathname } from 'next/navigation';
 import Logo from '../../ui/logo/Logo';
 import { FiX } from 'react-icons/fi';
 import { useDispatch, useSelector } from 'react-redux';
@@ -27,20 +20,25 @@ const DashboardMobileMenu: FC<Props> = () => {
   return (
     <>
       {dashboardMobileMenuActive && (
-        <DashboardMobileMenuOverlay
+        <div
+          className={styles.overlay}
           onClick={() => dispatch(closeDashboardMobileMenu())}
-        />
+        ></div>
       )}
-      <DashboardMobileMenuContainer $menuActive={dashboardMobileMenuActive}>
-        <DashboardMobileMenuHeader>
+      <div
+        className={`${styles.menu_container} ${
+          dashboardMobileMenuActive && 'active'
+        }`}
+      >
+        <div className={styles.menu_header}>
           <Logo variant="light" />
 
           <button onClick={() => dispatch(closeDashboardMobileMenu())}>
             <FiX />
           </button>
-        </DashboardMobileMenuHeader>
+        </div>
 
-        <MobileMenuLinks>
+        <div className={styles.menu_links}>
           {DashboardNavigationLinks.map((item, index) => (
             <div key={index}>
               <span>{item.label}</span>
@@ -59,8 +57,8 @@ const DashboardMobileMenu: FC<Props> = () => {
               </ul>
             </div>
           ))}
-        </MobileMenuLinks>
-      </DashboardMobileMenuContainer>
+        </div>
+      </div>
     </>
   );
 };

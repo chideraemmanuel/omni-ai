@@ -1,26 +1,21 @@
-'use client';
-
 import React from 'react';
-import {
-  AuthShowcaseContainer,
-  AuthShowcaseLogo,
-  AuthShowcaseText,
-} from './AuthPageShowcase.styled';
+import styles from './AuthPageShowcase.module.scss';
 import Logo from '../ui/logo/Logo';
 import bg from '@/assets/sign_in_showcase.jpg';
 import bg2 from '@/assets/sign_in_showcase_2.jpg';
 
 const AuthPageShowcase: React.FC = () => {
   return (
-    <AuthShowcaseContainer
+    <div
+      className={styles.container}
       style={{ background: `url(${bg2.src}) center center / cover ` }}
     >
       <div className="overlay"></div>
-      <AuthShowcaseLogo>
+      <div className={styles.logo}>
         <Logo variant="light" />
-      </AuthShowcaseLogo>
+      </div>
 
-      <AuthShowcaseText>
+      <div className={styles.text}>
         <h3>AI tools for creativity and productivity.</h3>
         <p>
           OmniAI is easy to use and accessible to everyone, regardless of your
@@ -28,8 +23,8 @@ const AuthPageShowcase: React.FC = () => {
           care of the rest. Bask is the perfect tool for students,
           professionals, and creatives alike.
         </p>
-      </AuthShowcaseText>
-    </AuthShowcaseContainer>
+      </div>
+    </div>
   );
 };
 

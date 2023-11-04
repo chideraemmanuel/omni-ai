@@ -1,15 +1,7 @@
 'use client';
 
 import { FC } from 'react';
-import {
-  DashboardHeaderContainer,
-  DashboardHeaderLogo,
-  DashboardHeaderMobileToggle,
-  DashboardHeaderUserButton,
-  //   UserButtonOverlay,
-} from './DashboardHeader.styled';
-import Image from 'next/image';
-import image from '@/assets/profile.jpg';
+import styles from './DashboardHeader.module.scss';
 import Link from 'next/link';
 import Logo from '../../ui/logo/Logo';
 import { FiMenu } from 'react-icons/fi';
@@ -19,7 +11,6 @@ import {
   openDashboardMobileMenu,
   toggleDashboardHeaderLinks,
 } from '@/redux/slices/navigationSlice';
-import { logOutUser } from '@/redux/slices/auth/authService';
 import { StoreTypes } from '@/redux/store';
 import { useLogout } from '@/lib/hooks/useLogout';
 import ProfileImage from '@/components/misc/profileImage/ProfileImage';
@@ -36,18 +27,23 @@ const DashboardHeader: FC<Props> = () => {
   const { mutate: logout } = useLogout();
 
   return (
-    <DashboardHeaderContainer>
-      <DashboardHeaderMobileToggle
+    <div className={styles.container}>
+      <div
+        className={styles.mobile_menu_toggle}
         onClick={() => dispatch(openDashboardMobileMenu())}
       >
         <FiMenu />
-      </DashboardHeaderMobileToggle>
+      </div>
 
-      <DashboardHeaderLogo>
+      <div className={styles.logo}>
         <Logo variant="dark" />
-      </DashboardHeaderLogo>
-      {/* <UserButtonOverlay /> */}
-      <DashboardHeaderUserButton $active={dashboardHeaderLinksActive}>
+      </div>
+
+      <div
+        className={`${styles.user_button} ${
+          dashboardHeaderLinksActive && `active`
+        }`}
+      >
         {dashboardHeaderLinksActive && (
           <div
             className="overlay"
@@ -59,7 +55,7 @@ const DashboardHeader: FC<Props> = () => {
           <ProfileImage />
         </button>
 
-        <div className="links">
+        <div className={`links ${dashboardHeaderLinksActive && 'active'}`}>
           <li onClick={() => dispatch(closeDashboardHeaderLinks())}>
             <Link href={'/'}>View profile</Link>
           </li>
@@ -71,8 +67,8 @@ const DashboardHeader: FC<Props> = () => {
             <button onClick={() => logout()}>Logout</button>
           </li>
         </div>
-      </DashboardHeaderUserButton>
-    </DashboardHeaderContainer>
+      </div>
+    </div>
   );
 };
 

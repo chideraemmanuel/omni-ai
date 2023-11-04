@@ -1,9 +1,11 @@
-import { getCurrentUser } from '@/lib/getCurrentUser';
+'use client';
+
+// import { getCurrentUser } from '@/lib/getCurrentUser';
 import { StoreTypes } from '@/redux/store';
 import Image from 'next/image';
 import { FC, useEffect, useState } from 'react';
+import styles from './ProfileImage.module.scss';
 import { useSelector } from 'react-redux';
-import { StyledProfileImage } from './ProfileImage.styled';
 import { profileColors } from '@/constants';
 
 interface Props {}
@@ -27,11 +29,12 @@ const ProfileImage: FC<Props> = () => {
       {user?.profileImage ? (
         <Image src={user.profileImage} alt="" />
       ) : (
-        <StyledProfileImage
+        <div
+          className={styles.container}
           style={{ background: profileColors[color], color: '#fff' }}
         >
           {user?.name?.charAt(0)}
-        </StyledProfileImage>
+        </div>
       )}
     </>
   );
