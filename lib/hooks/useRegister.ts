@@ -91,8 +91,8 @@ export const useRegister = () => {
     dispatch(
       // @ts-ignore
       registerUser({
-        firstName,
-        lastName,
+        first_name: firstName,
+        last_name: lastName,
         email,
         password,
       })

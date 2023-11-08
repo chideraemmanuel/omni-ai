@@ -7,9 +7,10 @@ import jwt from 'jsonwebtoken';
 
 interface GoogleUserTypes {
   _id: string;
-  name: string;
+  first_name: string;
+  last_name: string;
   email: string;
-  password: string;
+  profile_image: string;
 }
 
 export const POST = async (request: NextRequest) => {
@@ -29,106 +30,88 @@ export const POST = async (request: NextRequest) => {
     return NextResponse.json({ message: 'Request failed' }, { status: 400 });
   }
 
-  console.log(response);
-  console.log('passed!');
-
   const userData = jwt.decode(response?.data?.id_token);
 
-  // console.log(userData);
+  console.log(userData);
 
-  const { email, name } = userData;
-
-  //  CONNECT TO DATABASE
-  console.log('connecting to database...');
-  await connectToDatabase();
-  console.log('connected to database!');
+  // @ts-ignore
+  const { email, given_name, family_name, picture } = userData;
 
   try {
-    // CHECK IF EMAIL IS IN USE
-    const userExists = await User.findOne({ email });
-    // const { auth_type } = userExists;
+    console.log('connecting to database...');
+    await connectToDatabase();
+    console.log('connected to database!');
 
-    console.log('user esixts', userExists);
+    try {
+      const userExists = await User.findOne({ email });
+      console.log('user esixts', userExists);
 
-    // if (!userExists) {
-    //   // USER DOESN'T EXIST IN DATABASE
-    //   //   ADD USER TO DATABASE
-    //   console.log('in if');
-    //   const createdUser: GoogleUserTypes = await User.create({
-    //     name,
-    //     email,
-    //     verified: true,
-    //   });
-
-    //   //   GENERATE SESSION TOKEN
-    //   const token = generateToken(createdUser._id);
-    //   //   console.log(token);
-
-    //   return NextResponse.json(
-    //     {
-    //       message: 'Registration successful',
-    //     },
-    //     {
-    //       status: 201,
-    //       headers: {
-    //         'Set-Cookie': `token=${token}; httpOnly; path=/`,
-    //       },
-    //     }
-    //   );
-    // }
-
-    if (userExists && userExists?.auth_type !== 'GOOGLE_AUTH_SERVICE') {
-      return NextResponse.json(
-        { message: 'Email is already in use' },
-        { status: 400 }
-      );
-    }
-
-    if (userExists && userExists?.auth_type === 'GOOGLE_AUTH_SERVICE') {
-      //   GENERATE SESSION TOKEN
-      const token = generateToken(userExists._id);
-      //   console.log(token);
-
-      return NextResponse.json(
-        {
-          message: 'Login successful',
-        },
-        {
-          status: 200,
-          headers: {
-            'Set-Cookie': `token=${token}; httpOnly; path=/`,
-          },
-        }
-      );
-    }
-
-    // USER DOESN'T EXIST IN DATABASE
-    //   ADD USER TO DATABASE
-    const createdUser: GoogleUserTypes = await User.create({
-      name,
-      email,
-      auth_type: 'GOOGLE_AUTH_SERVICE',
-      verified: true,
-    });
-
-    //   GENERATE SESSION TOKEN
-    const token = generateToken(createdUser._id);
-    //   console.log(token);
-
-    return NextResponse.json(
-      {
-        message: 'Registration successful',
-      },
-      {
-        status: 201,
-        headers: {
-          'Set-Cookie': `token=${token}; httpOnly; path=/`,
-        },
+      if (userExists && userExists?.auth_type !== 'GOOGLE_AUTH_SERVICE') {
+        return NextResponse.json(
+          { message: 'Email is already in use' },
+          { status: 400 }
+        );
       }
+
+      if (userExists && userExists?.auth_type === 'GOOGLE_AUTH_SERVICE') {
+        const token = generateToken(userExists._id);
+
+        return NextResponse.json(
+          {
+            message: 'Login successful',
+          },
+          {
+            status: 200,
+            headers: {
+              'Set-Cookie': `token=${token}; httpOnly; path=/`,
+            },
+          }
+        );
+      }
+
+      try {
+        const createdUser: GoogleUserTypes = await User.create({
+          first_name: given_name,
+          last_name: family_name,
+          email,
+          auth_type: 'GOOGLE_AUTH_SERVICE',
+          profile_image: picture,
+          verified: true,
+        });
+
+        const token = generateToken(createdUser._id);
+
+        return NextResponse.json(
+          {
+            message: 'Registration successful',
+          },
+          {
+            status: 201,
+            headers: {
+              'Set-Cookie': `token=${token}; httpOnly; path=/`,
+            },
+          }
+        );
+      } catch (error: any) {
+        console.log('[USER_CREATION_ERROR]', error);
+        return NextResponse.json(
+          { message: 'Internal Server Error' },
+          { status: 500 }
+        );
+      }
+    } catch (error: any) {
+      console.log('[USER_FETCH_ERROR]', error);
+      return NextResponse.json(
+        { message: 'Internal Server Error' },
+        { status: 500 }
+      );
+    }
+  } catch (error: any) {
+    console.log('[DATABASE_CONNECTION_ERROR]', error);
+    return NextResponse.json(
+      { message: 'Internal Server Error' },
+      { status: 500 }
     );
-  } catch (error) {
-    console.log(error);
-    return NextResponse.json({ message: 'Server error' }, { status: 500 });
   }
 };
 

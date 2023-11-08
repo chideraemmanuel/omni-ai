@@ -21,67 +21,58 @@ export async function POST(request: NextRequest) {
     );
   }
 
-  //  CONNECT TO DATABASE
-  console.log('connecting to database...');
-  await connectToDatabase();
-  console.log('connected to database!');
-
-  // CHECK IF EMAIL IS IN USE
-  const userExists = await User.findOne({ email });
-
-  if (!userExists) {
-    return NextResponse.json(
-      { message: 'No user with the provided email' },
-      { status: 400 }
-    );
-  } else {
-    const {
-      password: hashedPassword,
-      _id: id,
-      name,
-      email,
-      auth_type,
-    } = userExists;
-
-    if (auth_type === 'GOOGLE_AUTH_SERVICE') {
-      return NextResponse.json(
-        {
-          message:
-            'Account already verified with Google. Sign in with Google instead.',
-        },
-        { status: 400 }
-      );
-    }
+  try {
+    console.log('connecting to database...');
+    await connectToDatabase();
+    console.log('connected to database!');
 
     try {
-      // CHECK IF PASSWORD MATCHES
-      const passwordMatches = await bcrypt.compare(password, hashedPassword);
+      const userExists = await User.findOne({ email });
 
-      if (!passwordMatches) {
+      if (!userExists) {
         return NextResponse.json(
-          { message: 'Incorrect password' },
+          { message: 'No user with the provided email' },
           { status: 400 }
         );
-      } else {
-        //   GENERATE SESSION TOKEN
+      }
+
+      const {
+        password: hashedPassword,
+        _id: id,
+        first_name,
+        last_name,
+        email: userEmail,
+        auth_type,
+      } = userExists;
+
+      if (auth_type === 'GOOGLE_AUTH_SERVICE') {
+        return NextResponse.json(
+          {
+            message:
+              'Account already verified with Google. Sign in with Google instead.',
+          },
+          { status: 400 }
+        );
+      }
+
+      try {
+        const passwordMatches = await bcrypt.compare(password, hashedPassword);
+
+        if (!passwordMatches) {
+          return NextResponse.json(
+            { message: 'Incorrect password' },
+            { status: 400 }
+          );
+        }
+
         const token = generateToken(id);
-        //   console.log(token);
-
-        // set cookie
-        // const response = NextResponse.next();
-        // const cookie = response.cookies.set('token', token, {
-        //   maxAge: 60 * 60 * 24 * 7, // 1 week
-        //   // httpOnly: true,
-        //   secure: process.env.NODE_ENV === 'production', // Secure in production
-        // });
-
-        // console.log(cookie);
 
         const response = NextResponse.json(
           {
             id,
-            name,
-            email,
+            first_name,
+            last_name,
+            email: userEmail,
           },
           {
             status: 200,
@@ -97,12 +88,27 @@ export async function POST(request: NextRequest) {
         });
 
         return response;
+      } catch (error: any) {
+        console.log('[PASSWORD_VERIFICATION_ERROR]', error);
+        return NextResponse.json(
+          { error: 'Internal Server Error' },
+          { status: 500 }
+        );
       }
-    } catch (error) {
-      console.log(error);
-      return NextResponse.json({ error: 'Server error' }, { status: 500 });
+    } catch (error: any) {
+      console.log('[USER_FETCH_ERROR]', error);
+      return NextResponse.json(
+        { message: 'Internal Server Error' },
+        { status: 500 }
+      );
     }
-  }
 
-  //   return NextResponse.json({ message: 'Login user' });
+    // return NextResponse.json({ message: 'Login user' });
+  } catch (error: any) {
+    console.log('[DATABASE_CONNECTION_ERROR]', error);
+    return NextResponse.json(
+      { message: 'Internal Server Error' },
+      { status: 500 }
+    );
+  }
 }

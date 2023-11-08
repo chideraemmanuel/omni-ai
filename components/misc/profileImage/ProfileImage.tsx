@@ -26,14 +26,15 @@ const ProfileImage: FC<Props> = () => {
 
   return (
     <>
-      {user?.profileImage ? (
-        <Image src={user.profileImage} alt="" />
+      {user?.profile_image ? (
+        <Image src={user.profile_image} alt="" />
       ) : (
         <div
           className={styles.container}
           style={{ background: profileColors[color], color: '#fff' }}
         >
-          {user?.name?.charAt(0)}
+          {/* {user?.name?.charAt(0)} */}
+          {user?.first_name?.charAt(0)}
         </div>
       )}
     </>

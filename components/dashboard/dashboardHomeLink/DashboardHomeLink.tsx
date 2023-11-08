@@ -12,7 +12,7 @@ interface Props {
 
 const DashboardHomeLink: FC<Props> = ({ href, title, description }) => {
   return (
-    <LinkContainer>
+    <LinkContainer href={href}>
       <div>
         <h3>{title}</h3>
         <p>{description}</p>

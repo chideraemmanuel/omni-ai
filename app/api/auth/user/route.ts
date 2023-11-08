@@ -5,7 +5,8 @@ import User from '@/models/user';
 
 interface UserTypes {
   _id: string;
-  name: string;
+  first_name: string;
+  last_name: string;
   email: string;
   password: string;
   verified: boolean;
@@ -19,18 +20,21 @@ export async function GET(request: NextRequest) {
       { message: 'Not authorized, no token' },
       { status: 401 }
     );
-  } else {
-    //
-    const decoded = jwt.verify(token, process.env.JWT_SECRET!);
+  }
 
-    if (!decoded) {
-      console.log('[TOKEN_VERIFICATION_ERROR]');
-      return NextResponse.json({ message: 'Not authorized' }, { status: 401 });
-    }
+  const decoded = jwt.verify(token, process.env.JWT_SECRET!);
+
+  if (!decoded) {
+    console.log('[TOKEN_VERIFICATION_ERROR]');
+    return NextResponse.json({ message: 'Not authorized' }, { status: 401 });
+  }
+
+  try {
+    console.log('connecting to database...');
+    await connectToDatabase();
+    console.log('connected to database!');
 
     try {
-      await connectToDatabase();
-
       const user: UserTypes | undefined | null = await User.findById(
         // @ts-ignore
         decoded?.id
@@ -43,22 +47,25 @@ export async function GET(request: NextRequest) {
         );
       }
 
-      // if (!user.verified) {
-      //   return NextResponse.json({ message: 'Email not verified' }, { status: 401 });
-      // }
-
       return NextResponse.json({
         id: user._id,
-        name: user.name,
+        first_name: user.first_name,
+        last_name: user.last_name,
         email: user.email,
         verified: user.verified,
       });
     } catch (error: any) {
-      console.log(error);
-      return NextResponse.json({ message: 'Server error' }, { status: 500 });
+      console.log('[USER_FETCH_ERROR]', error);
+      return NextResponse.json(
+        { message: 'Internal Server Error' },
+        { status: 500 }
+      );
     }
+  } catch (error: any) {
+    console.log('[DATABASE_CONNECTION_ERROR]', error);
+    return NextResponse.json(
+      { message: 'Internal Server Error' },
+      { status: 500 }
+    );
   }
-  // if (!decoded) {
-  //   return NextResponse.redirect(new URL('/login', request.url));
-  // }
 }

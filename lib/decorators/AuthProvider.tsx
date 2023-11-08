@@ -27,7 +27,7 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   }, []);
 
   useEffect(() => {
-    if (isAuthError && authError !== 'Server error') {
+    if (isAuthError && authError !== 'Internal Server Error') {
       router.replace('/login');
     }
 
@@ -45,11 +45,12 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   }
 
   // handles network error
-  if (authError === 'Server error') {
+  if (authError === 'Internal Server Error') {
     return <AuthErrorPage />;
   }
 
-  return <>{isAuthenticated && user && children}</>;
+  return <>{children}</>;
+  // return <>{isAuthenticated && user && children}</>;
 };
 
 export default AuthProvider;

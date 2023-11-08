@@ -1,4 +1,5 @@
 import { logOutUser } from '@/redux/slices/auth/authService';
+import { resetAuthState } from '@/redux/slices/auth/authSlice';
 import { StoreTypes } from '@/redux/store';
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
@@ -15,11 +16,14 @@ export const useLogout = () => {
 
   useEffect(() => {
     if (isLoggedOut) {
+      dispatch(resetAuthState());
       toast.success('Logout successful');
+      console.log('hereeeee!');
       router.replace('/login');
     }
 
     if (logOutError) {
+      dispatch(resetAuthState());
       toast.error('Logout failed');
     }
   }, [isLoggedOut, logOutError]);
