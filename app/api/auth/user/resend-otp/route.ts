@@ -25,71 +25,79 @@ export const POST = async (request: NextRequest) => {
     );
   }
 
-  //  CONNECT TO DATABASE
-  console.log('connecting to database...');
-  await connectToDatabase();
-  console.log('connected to database!');
-
-  const OtpRecord: OtpRecord | null = await OTP.findOne({ email });
-
-  if (OtpRecord) {
-    await OTP.deleteOne({ email });
-  }
-
   try {
-    // GENERATE OTP
-    const otp = generateOtp();
+    console.log('connecting to database...');
+    await connectToDatabase();
+    console.log('connected to database!');
 
-    // HASH OTP
-    // const otpSalt = 10;
-    // const hashedOtp = await bcrypt.hash(otp, otpSalt);
-    const hashedOtp = await hashData(otp);
+    try {
+      const OtpRecord: OtpRecord | null = await OTP.findOne({ email });
 
-    // STORE OTP
-    await OTP.create({
-      email,
-      otp: hashedOtp,
-      createdAt: Date.now(),
-      expiresAt: Date.now() + 3600000,
-    });
-
-    // SEND OTP
-    const mailOptions = {
-      from: 'omni-ai@outlook.com',
-      to: email,
-      subject: 'Email Verification',
-      html: `<p>Thank you for joining OmniAI. Please enter the code <b>${otp}</b> to verify your account.</p>`,
-    };
-
-    transporter.sendMail(mailOptions, (error, info) => {
-      if (error) {
-        console.log('NODEMAILER_ERROR', error);
-        // return NextResponse.json(
-        //   { message: 'Error sending email' },
-        //   { status: 500 }
-        // );
-      } else {
-        console.log('Mail sent!', info.messageId);
-        // return NextResponse.json(
-        //   {
-        //     message: `OTP sent to ${email}`,
-        //   },
-        //   {
-        //     status: 201,
-        //   }
-        // );
+      if (OtpRecord) {
+        try {
+          await OTP.deleteOne({ email });
+        } catch (error: any) {
+          console.log('[OTP_RECORD_DELETION_ERROR]', error);
+          return NextResponse.json(
+            { message: 'Internal Server Error' },
+            { status: 500 }
+          );
+        }
       }
-    });
 
+      const otp = generateOtp();
+      const hashedOtp = await hashData(otp);
+
+      try {
+        await OTP.create({
+          email,
+          otp: hashedOtp,
+          createdAt: Date.now(),
+          expiresAt: Date.now() + 3600000,
+        });
+
+        const mailOptions = {
+          from: 'omni-ai@outlook.com',
+          to: email,
+          subject: 'Email Verification',
+          html: `<p>Thank you for joining OmniAI. Please enter the code <b>${otp}</b> to verify your account.</p>`,
+        };
+
+        transporter.sendMail(mailOptions, (error, info) => {
+          if (error) {
+            console.log('NODEMAILER_ERROR', error);
+          } else {
+            console.log('Mail sent!', info.messageId);
+          }
+        });
+
+        return NextResponse.json(
+          {
+            message: `OTP sent to ${email}`,
+          },
+          {
+            status: 201,
+          }
+        );
+      } catch (error: any) {
+        console.log('[OTP_RECORD_CREATION_ERROR]', error);
+        return NextResponse.json(
+          { message: 'Internal Server Error' },
+          { status: 500 }
+        );
+      }
+    } catch (error: any) {
+      console.log('[OTP_RECORD_FETCH_ERROR]', error);
+      return NextResponse.json(
+        { message: 'Internal Server Error' },
+        { status: 500 }
+      );
+    }
+  } catch (error: any) {
+    console.log('[DATABASE_CONNECTION_ERROR]', error);
     return NextResponse.json(
-      {
-        message: `OTP sent to ${email}`,
-      },
-      {
-        status: 201,
-      }
+      { message: 'Internal Server Error' },
+      { status: 500 }
     );
-  } catch (error) {
-    return NextResponse.json({ message: 'Server error' }, { status: 500 });
   }
 };

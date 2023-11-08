@@ -25,73 +25,84 @@ export const POST = async (request: NextRequest) => {
     );
   }
 
-  //  CONNECT TO DATABASE
-  console.log('connecting to database...');
-  await connectToDatabase();
-  console.log('connected to database!');
-
-  const OtpRecord: OtpRecord | null = await OTP.findOne({ email });
-
-  if (!OtpRecord) {
-    return NextResponse.json(
-      { message: 'No otp record found' },
-      { status: 404 }
-    );
-  }
-
-  const {
-    email: storedEmail,
-    otp: storedOtp,
-    createdAt,
-    expiresAt,
-  } = OtpRecord;
-
-  // if (expiresAt < Date.now()) {
-  //   await OTP.deleteOne({ email });
-
-  //   return NextResponse.json(
-  //     { message: 'otp has already expired' },
-  //     { status: 400 }
-  //   );
-  // }
-
-  // const otpValid = await bcrypt.compare(otp, storedOtp);
-  const otpValid = await compareHash(otp, storedOtp);
-  // console.log(otpValid);
-
-  if (!otpValid) {
-    return NextResponse.json({ message: 'Invalid otp' }, { status: 400 });
-  }
-
   try {
-    // const updatedUser = await User.findOneAndUpdate(
-    //   { email },
-    //   { verified: true }
-    // );
-    await User.updateOne({ email }, { verified: true });
+    console.log('connecting to database...');
+    await connectToDatabase();
+    console.log('connected to database!');
 
-    await OTP.deleteOne({ email });
+    try {
+      const OtpRecord: OtpRecord | null = await OTP.findOne({ email });
 
-    return NextResponse.json(
-      // {
-      //   id: updatedUser._id,
-      //   name: updatedUser.name,
-      //   email: updatedUser.email,
-      // },
-      {
-        message: 'Email verified successfully!',
-      },
-      {
-        status: 200,
+      if (!OtpRecord) {
+        return NextResponse.json(
+          { message: 'No otp record found' },
+          { status: 404 }
+        );
       }
-    );
-  } catch (error) {
-    console.log('VERIFICATION_ERROR', error);
+
+      const {
+        email: storedEmail,
+        otp: storedOtp,
+        createdAt,
+        expiresAt,
+      } = OtpRecord;
+
+      //  CHECK EXPIRATION
+      // if (expiresAt < Date.now()) {
+      //   await OTP.deleteOne({ email });
+
+      //   return NextResponse.json(
+      //     { message: 'otp has already expired' },
+      //     { status: 400 }
+      //   );
+      // }
+
+      const otpValid = await compareHash(otp, storedOtp);
+
+      if (!otpValid) {
+        return NextResponse.json({ message: 'Invalid otp' }, { status: 400 });
+      }
+
+      try {
+        await User.updateOne({ email }, { verified: true });
+
+        try {
+          await OTP.deleteOne({ email });
+
+          return NextResponse.json(
+            {
+              message: 'Email verified successfully!',
+            },
+            {
+              status: 200,
+            }
+          );
+        } catch (error: any) {
+          console.log('[OTP_RECORD_DELETION_ERROR]', error);
+          return NextResponse.json(
+            { message: 'Internal Server Error' },
+            { status: 500 }
+          );
+        }
+      } catch (error: any) {
+        console.log('[USER_UPDATE_ERROR]', error);
+        return NextResponse.json(
+          { message: 'Internal Server Error' },
+          { status: 500 }
+        );
+      }
+    } catch (error: any) {
+      console.log('[OTP_RECORD_FETCH_ERROR]', error);
+      return NextResponse.json(
+        { message: 'Internal Server Error' },
+        { status: 500 }
+      );
+    }
+  } catch (error: any) {
+    console.log('[DATABASE_CONNECTION_ERROR]', error);
     return NextResponse.json(
-      { message: 'An error occured during verification' },
+      { message: 'Internal Server Error' },
       { status: 500 }
     );
   }
-
-  // NextResponse.json({}, { status: 200 });
 };
