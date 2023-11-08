@@ -1,9 +1,7 @@
-import { registerUser } from '@/controllers/user';
 import { connectToDatabase } from '@/lib/utils/database';
 import { generateToken } from '@/lib/utils/generateToken';
 import User from '@/models/user';
 import { NextRequest, NextResponse } from 'next/server';
-import bcrypt from 'bcrypt';
 import generateOtp from '@/lib/utils/generateOtp';
 import OTP from '@/models/otp';
 import { transporter } from '@/config/nodemailer';
@@ -13,14 +11,16 @@ import { hashData } from '@/lib/utils/hashData';
 const resend = new Resend(process.env.RESEND_API_KEY);
 
 interface RequestBodyTypes {
-  name: string;
+  first_name: string;
+  last_name: string;
   email: string;
   password: string;
 }
 
 interface UserTypes {
   _id: string;
-  name: string;
+  first_name: string;
+  last_name: string;
   email: string;
   password: string;
   auth_type: 'OMNIAI_AUTH_SERVICE' | 'GOOGLE_AUTH_SERVICE';
@@ -28,9 +28,9 @@ interface UserTypes {
 
 export async function POST(request: NextRequest) {
   const requestBody: RequestBodyTypes = await request.json();
-  const { name, email, password } = requestBody;
+  const { first_name, last_name, email, password } = requestBody;
 
-  if (!name || !email || !password) {
+  if (!first_name || !last_name || !email || !password) {
     return NextResponse.json(
       { message: 'Please supply the required credentials' },
       { status: 400 }
@@ -41,121 +41,103 @@ export async function POST(request: NextRequest) {
   await connectToDatabase();
   console.log('connected to database!');
 
-  // CHECK IF EMAIL IS IN USE
-  const userExists = await User.findOne({ email });
+  try {
+    const userExists = await User.findOne({ email });
 
-  if (userExists) {
-    return NextResponse.json(
-      { message: 'Email is already in use' },
-      { status: 400 }
-    );
-  } else {
+    if (userExists) {
+      return NextResponse.json(
+        { message: 'Email is already in use' },
+        { status: 400 }
+      );
+    }
+
     try {
-      // HASH PASSWORD
-      // const salt = await bcrypt.genSalt(10);
-      // const hashedPassword = await bcrypt.hash(password, salt);
       const hashedPassword = await hashData(password);
-
-      // ADD USER TO DATABASE
       const createdUser: UserTypes = await User.create({
-        name,
+        first_name,
+        last_name,
         email,
         password: hashedPassword,
         auth_type: 'OMNIAI_AUTH_SERVICE',
       });
 
-      //   GENERATE SESSION TOKEN
       const token = generateToken(createdUser._id);
-
-      // GENERATE OTP
       const otp = generateOtp();
 
-      // HASH OTP
-      // const otpSalt = 10;
-      // const hashedOtp = await bcrypt.hash(otp, otpSalt);
       const hashedOtp = await hashData(otp);
 
-      // STORE OTP
-      await OTP.create({
-        email,
-        otp: hashedOtp,
-        createdAt: Date.now(),
-        expiresAt: Date.now() + 3600000,
-      });
+      try {
+        await OTP.create({
+          email,
+          otp: hashedOtp,
+          createdAt: Date.now(),
+          expiresAt: Date.now() + 3600000,
+        });
 
-      // SEND OTP
-      const mailOptions = {
-        from: process.env.AUTH_EMAIL!,
-        to: email,
-        subject: 'Email Verification',
-        html: `<p>Thank you for joining OmniAI. Please enter the code <b>${otp}</b> to complete registration</p>`,
-      };
+        const mailOptions = {
+          from: process.env.AUTH_EMAIL!,
+          to: email,
+          subject: 'Email Verification',
+          html: `<p>Thank you for joining OmniAI. Please enter the code <b>${otp}</b> to complete registration</p>`,
+        };
 
-      transporter.sendMail(mailOptions, (error, info) => {
-        if (error) {
-          console.log('NODEMAILER_ERROR', error);
-          // return NextResponse.json(
-          //   { error: 'Error sending email' },
-          //   { status: 500 }
-          // );
-        } else {
-          console.log('Mail sent!', info.messageId);
-          // const response = NextResponse.json(
-          //   {
-          //     status: 'PENDING',
-          //     message: `OTP has been sent to ${createdUser.email}`,
-          //   },
-          //   {
-          //     status: 201,
-          //     // headers: {
-          //     //   'Set-Cookie': `token=${token}; httpOnly; path=/`,
-          //     // },
-          //   }
-          // );
+        transporter.sendMail(mailOptions, (error, info) => {
+          if (error) {
+            console.log('NODEMAILER_ERROR', error);
+          } else {
+            console.log('Mail sent!', info.messageId);
+          }
+        });
 
-          // response.cookies.set('token', token, {
-          //   maxAge: 60 * 60 * 24 * 7, // 1 week
-          //   httpOnly: true,
-          // });
+        const response = NextResponse.json(
+          {
+            status: 'PENDING',
+            message: `OTP has been sent to ${createdUser.email}`,
+          },
+          {
+            status: 201,
+            // headers: {
+            //   'Set-Cookie': `token=${token}; httpOnly; path=/`,
+            // },
+          }
+        );
 
-          // return response;
-        }
-      });
+        response.cookies.set('token', token, {
+          maxAge: 60 * 60 * 24 * 7, // 1 week
+          httpOnly: true,
+          // secure: process.env.NODE_ENV === 'production', // Secure in production
+        });
 
-      const response = NextResponse.json(
-        {
-          status: 'PENDING',
-          message: `OTP has been sent to ${createdUser.email}`,
-        },
-        {
-          status: 201,
-          // headers: {
-          //   'Set-Cookie': `token=${token}; httpOnly; path=/`,
-          // },
-        }
+        return response;
+      } catch (error: any) {
+        console.log('[OTP_RECORD_CREATION_ERROR]', error);
+        return NextResponse.json(
+          { message: 'Internal Server Error' },
+          { status: 500 }
+        );
+      }
+    } catch (error: any) {
+      console.log('[USER_CREATION_ERROR]', error);
+      return NextResponse.json(
+        { message: 'Internal Server Error' },
+        { status: 500 }
       );
-
-      response.cookies.set('token', token, {
-        maxAge: 60 * 60 * 24 * 7, // 1 week
-        httpOnly: true,
-        // secure: process.env.NODE_ENV === 'production', // Secure in production
-      });
-
-      return response;
-      // const data = await resend.emails.send({
-      //   from: 'OmniAi <onboarding@resend.dev>',
-      //   to: email,
-      //   subject: 'Email Verification',
-      //   html: `<p>Thank you for joining OmniAI. Please enter the code <b>${otp}</b> to complete registration</p>`,
-      //   //  react: EmailTemplate({ firstName: 'John' }),
-      // });
-
-      // console.log('email data', data);
-    } catch (error) {
-      console.log(error);
-      return NextResponse.json({ error: 'Server error' }, { status: 500 });
     }
+  } catch (error: any) {
+    console.log('[USER_FETCH_ERROR]', error);
+    return NextResponse.json(
+      { message: 'Internal Server Error' },
+      { status: 500 }
+    );
   }
-
-  //   return NextResponse.json({ message: 'register' });
 }
+
+// const data = await resend.emails.send({
+//   from: 'OmniAi <onboarding@resend.dev>',
+//   to: email,
+//   subject: 'Email Verification',
+//   html: `<p>Thank you for joining OmniAI. Please enter the code <b>${otp}</b> to complete registration</p>`,
+//   //  react: EmailTemplate({ firstName: 'John' }),
+// });
+
+// console.log('email data', data);

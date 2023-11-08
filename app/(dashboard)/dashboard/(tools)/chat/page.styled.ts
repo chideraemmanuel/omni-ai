@@ -80,6 +80,27 @@ export const InputContainer = styled.form`
     background-color: #fff;
     color: inherit;
 
+    &::-webkit-scrollbar {
+      width: 5px;
+      /* opacity: 0; */
+      opacity: 1;
+      transition: 0.5s ease;
+    }
+
+    /* &:hover { */
+    /* &::-webkit-scrollbar {
+      opacity: 1;
+    } */
+
+    &::-webkit-scrollbar-track {
+      background-color: transparent;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background-color: ${({ theme }) => theme.colors.light['gray-700']};
+    }
+    /* } */
+
     &:disabled {
       background-color: ${({ theme }) => theme.colors.light['gray-400']};
     }

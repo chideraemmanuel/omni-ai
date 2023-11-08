@@ -17,7 +17,11 @@ export interface FormInputStateTypes {
     };
   };
   register: {
-    name: {
+    firstName: {
+      value: string;
+      error: string | null;
+    };
+    lastName: {
       value: string;
       error: string | null;
     };
@@ -63,7 +67,11 @@ const initialState: FormInputStateTypes = {
     },
   },
   register: {
-    name: {
+    firstName: {
+      value: '',
+      error: null,
+    },
+    lastName: {
       value: '',
       error: null,
     },
@@ -146,11 +154,17 @@ const signInSlice = createSlice({
     clearConfirmNewPasswordError: (state: FormInputStateTypes) => {
       state.resetPassword.confirmNewPassword.error = null;
     },
-    setRegistrationName: (
+    setRegistrationFirstName: (
       state: FormInputStateTypes,
       action: { payload: string }
     ) => {
-      state.register.name.value = action.payload;
+      state.register.firstName.value = action.payload;
+    },
+    setRegistrationLastName: (
+      state: FormInputStateTypes,
+      action: { payload: string }
+    ) => {
+      state.register.lastName.value = action.payload;
     },
     setRegistrationEmail: (
       state: FormInputStateTypes,
@@ -183,11 +197,17 @@ const signInSlice = createSlice({
       state.login.password.value = action.payload;
     },
     // ERRORS
-    setRegistrationNameError: (
+    setRegistrationFirstNameError: (
       state: FormInputStateTypes,
       action: { payload: string }
     ) => {
-      state.register.name.error = action.payload;
+      state.register.firstName.error = action.payload;
+    },
+    setRegistrationLastNameError: (
+      state: FormInputStateTypes,
+      action: { payload: string }
+    ) => {
+      state.register.lastName.error = action.payload;
     },
     setRegistrationEmailError: (
       state: FormInputStateTypes,
@@ -219,8 +239,11 @@ const signInSlice = createSlice({
     ) => {
       state.login.password.error = action.payload;
     },
-    clearRegistrationNameError: (state: FormInputStateTypes) => {
-      state.register.name.error = null;
+    clearRegistrationFirstNameError: (state: FormInputStateTypes) => {
+      state.register.firstName.error = null;
+    },
+    clearRegistrationLastNameError: (state: FormInputStateTypes) => {
+      state.register.lastName.error = null;
     },
     clearRegistrationEmailError: (state: FormInputStateTypes) => {
       state.register.email.error = null;
@@ -238,7 +261,8 @@ const signInSlice = createSlice({
       state.login.password.error = null;
     },
     resetRegistrationForm: (state: FormInputStateTypes) => {
-      state.register.name = { value: '', error: null };
+      state.register.firstName = { value: '', error: null };
+      state.register.lastName = { value: '', error: null };
       state.register.email = { value: '', error: null };
       state.register.password = { value: '', error: null };
     },
@@ -247,7 +271,8 @@ const signInSlice = createSlice({
       state.login.password = { value: '', error: null };
     },
     resetAllForms: (state: FormInputStateTypes) => {
-      state.register.name = { value: '', error: null };
+      state.register.firstName = { value: '', error: null };
+      state.register.lastName = { value: '', error: null };
       state.register.email = { value: '', error: null };
       state.register.password = { value: '', error: null };
       state.register.confirmPassword = { value: '', error: null };
@@ -256,7 +281,8 @@ const signInSlice = createSlice({
       state.login.password = { value: '', error: null };
     },
     resetErrors: (state: FormInputStateTypes) => {
-      state.register.name.error = null;
+      state.register.firstName.error = null;
+      state.register.lastName.error = null;
       state.register.email.error = null;
       state.register.password.error = null;
       state.register.confirmPassword.error = null;
@@ -278,19 +304,22 @@ export const {
   setConfirmNewPasswordError,
   clearNewPasswordError,
   clearConfirmNewPasswordError,
-  setRegistrationName,
+  setRegistrationFirstName,
+  setRegistrationLastName,
   setRegistrationEmail,
   setRegistrationPassword,
   setRegistrationConfirmPassword,
   setLoginEmail,
   setLoginPassword,
-  setRegistrationNameError,
+  setRegistrationFirstNameError,
+  setRegistrationLastNameError,
   setRegistrationEmailError,
   setRegistrationPasswordError,
   setRegistrationConfirmPasswordError,
   setLoginEmailError,
   setLoginPasswordError,
-  clearRegistrationNameError,
+  clearRegistrationFirstNameError,
+  clearRegistrationLastNameError,
   clearRegistrationEmailError,
   clearRegistrationPasswordError,
   clearRegistrationConfirmPasswordError,

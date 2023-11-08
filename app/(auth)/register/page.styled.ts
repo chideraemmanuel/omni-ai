@@ -67,6 +67,12 @@ export const RegistrationForm = styled.div`
     display: flex;
     flex-direction: column;
     gap: ${({ theme }) => theme.space['fluid-block-space-2']};
+
+    .name {
+      display: flex;
+      align-items: center;
+      gap: ${({ theme }) => theme.space['fluid-inline-space-2']};
+    }
   }
 `;
 

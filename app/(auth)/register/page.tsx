@@ -11,12 +11,14 @@ import {
 import {
   clearRegistrationConfirmPasswordError,
   clearRegistrationEmailError,
-  clearRegistrationNameError,
+  clearRegistrationFirstNameError,
+  clearRegistrationLastNameError,
   clearRegistrationPasswordError,
   setRegistrationConfirmPassword,
   setRegistrationConfirmPasswordError,
   setRegistrationEmail,
-  setRegistrationName,
+  setRegistrationFirstName,
+  setRegistrationLastName,
   setRegistrationPassword,
 } from '@/redux/slices/formInputSlice';
 import Link from 'next/link';
@@ -31,7 +33,7 @@ import { generateGoogleOauthUrl } from '@/lib/utils/oauth';
 interface Props {}
 
 const RegistrationPage: FC<Props> = () => {
-  const { name, email, password, confirmPassword } = useSelector(
+  const { firstName, lastName, email, password, confirmPassword } = useSelector(
     (store: StoreTypes) => store.formInputs.register
   );
 
@@ -46,7 +48,8 @@ const RegistrationPage: FC<Props> = () => {
     e.preventDefault();
 
     await signUp({
-      name: name.value,
+      firstName: firstName.value,
+      lastName: lastName.value,
       email: email.value,
       password: password.value,
       confirmPassword: confirmPassword.value,
@@ -66,15 +69,26 @@ const RegistrationPage: FC<Props> = () => {
 
           <RegistrationForm>
             <form onSubmit={(e) => handleSubmit(e)}>
-              <FormInput
-                type="text"
-                placeholder="Enter your full name"
-                label="Name"
-                value={name.value}
-                setValue={setRegistrationName}
-                error={name.error}
-                clearError={clearRegistrationNameError}
-              />
+              <div className="name">
+                <FormInput
+                  type="text"
+                  placeholder="Enter your first name"
+                  label="First Name"
+                  value={firstName.value}
+                  setValue={setRegistrationFirstName}
+                  error={firstName.error}
+                  clearError={clearRegistrationFirstNameError}
+                />
+                <FormInput
+                  type="text"
+                  placeholder="Enter your last name"
+                  label="Last Name"
+                  value={lastName.value}
+                  setValue={setRegistrationLastName}
+                  error={lastName.error}
+                  clearError={clearRegistrationLastNameError}
+                />
+              </div>
               <FormInput
                 type="email"
                 placeholder="Enter your email"

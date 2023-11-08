@@ -4,7 +4,8 @@ import {
   resetAllForms,
   setRegistrationConfirmPasswordError,
   setRegistrationEmailError,
-  setRegistrationNameError,
+  setRegistrationFirstNameError,
+  setRegistrationLastNameError,
   setRegistrationPasswordError,
 } from '@/redux/slices/formInputSlice';
 import { StoreTypes } from '@/redux/store';
@@ -16,7 +17,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 
 interface RegistrationCredentials {
-  name: string;
+  firstName: string;
+  lastName: string;
   email: string;
   password: string;
   confirmPassword: string;
@@ -51,10 +53,15 @@ export const useRegister = () => {
   const emailRegex = /^([a-z\d\.-]+)@([a-z\d-]+)\.([a-z]{2,5})(\.[a-z]{2,5})?$/;
 
   const mutate = async (credentials: RegistrationCredentials) => {
-    const { name, email, password, confirmPassword } = credentials;
+    const { firstName, lastName, email, password, confirmPassword } =
+      credentials;
 
-    if (name.length === 0) {
-      dispatch(setRegistrationNameError('Please fill out this field'));
+    if (firstName.length === 0) {
+      dispatch(setRegistrationFirstNameError('Please fill out this field'));
+      return;
+    }
+    if (lastName.length === 0) {
+      dispatch(setRegistrationLastNameError('Please fill out this field'));
       return;
     }
     if (email.length === 0) {
@@ -84,7 +91,8 @@ export const useRegister = () => {
     dispatch(
       // @ts-ignore
       registerUser({
-        name,
+        firstName,
+        lastName,
         email,
         password,
       })
