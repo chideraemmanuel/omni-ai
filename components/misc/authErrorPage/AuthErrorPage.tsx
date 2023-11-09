@@ -1,20 +1,24 @@
 'use client';
 
 import React from 'react';
-import styles from './AuthErrorPage.module.scss';
 import errorIllustration from '@/assets/error.svg';
+import {
+  ContentContainer,
+  LogoContainer,
+  PageContainer,
+} from './AuthErrorPage.styled';
 import Logo from '@/components/ui/logo/Logo';
 import Image from 'next/image';
 import Button from '@/components/ui/button/Button';
 
 const AuthErrorPage: React.FC = () => {
   return (
-    <div className={styles.page_container}>
-      <div className={styles.logo_container}>
+    <PageContainer>
+      <LogoContainer>
         <Logo variant="dark" />
-      </div>
+      </LogoContainer>
 
-      <div className={styles.content_container}>
+      <ContentContainer>
         <div className="image">
           <Image src={errorIllustration} alt="" />
         </div>
@@ -30,8 +34,8 @@ const AuthErrorPage: React.FC = () => {
             Refresh
           </Button>
         </div>
-      </div>
-    </div>
+      </ContentContainer>
+    </PageContainer>
   );
 };
 

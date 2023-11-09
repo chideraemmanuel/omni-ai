@@ -54,12 +54,12 @@ const DashboardHeader: FC<Props> = () => {
         </button>
 
         <div className="links">
-          <li onClick={() => dispatch(closeDashboardHeaderLinks())}>
+          {/* <li onClick={() => dispatch(closeDashboardHeaderLinks())}>
             <Link href={'/'}>View profile</Link>
           </li>
           <li onClick={() => dispatch(closeDashboardHeaderLinks())}>
             <Link href={'/'}>Settings</Link>
-          </li>
+          </li> */}
           <li onClick={() => dispatch(closeDashboardHeaderLinks())}>
             {/* @ts-ignore */}
             <button onClick={() => logout()}>Logout</button>
