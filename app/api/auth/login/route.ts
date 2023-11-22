@@ -27,12 +27,12 @@ export async function POST(request: NextRequest) {
     console.log('connected to database!');
 
     try {
-      const userExists = await User.findOne({ email });
+      const userExists = await User.findOne({ email }).select('+password');
 
       if (!userExists) {
         return NextResponse.json(
           { message: 'No user with the provided email' },
-          { status: 400 }
+          { status: 404 }
         );
       }
 

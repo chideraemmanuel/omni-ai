@@ -6,6 +6,7 @@ import { transporter } from '@/config/nodemailer';
 import { hashData } from '@/lib/utils/hashData';
 import { connectToDatabase } from '@/lib/utils/database';
 import { v4 as uuid } from 'uuid';
+import sendEmail from '@/lib/utils/sendEmail';
 
 export const POST = async (request: NextRequest) => {
   const body = await request.json();
@@ -50,15 +51,6 @@ export const POST = async (request: NextRequest) => {
 
       const resetString = uuid();
 
-      const mailOptions = {
-        from: process.env.AUTH_EMAIL!,
-        to: email,
-        subject: 'Password Reset',
-        html: `<p>We heard you forgot your password. Please click <a href=${`${redirectUrl}?email=${encodeURIComponent(
-          email
-        )}&reset_string=${resetString}`}>here</a> to reset.</p>`,
-      };
-
       try {
         const hashedResetString = await hashData(resetString);
 
@@ -69,13 +61,15 @@ export const POST = async (request: NextRequest) => {
           updatedAt: Date.now() + 3600000,
         });
 
-        transporter.sendMail(mailOptions, (error, info) => {
-          if (error) {
-            console.log('NODEMAILER_ERROR', error);
-          } else {
-            console.log('Mail sent!', info.messageId);
-          }
+        const info = await sendEmail({
+          receipent: email,
+          subject: 'Password Reset',
+          html: `<p>We heard you forgot your password. Please click <a href=${`${redirectUrl}?email=${encodeURIComponent(
+            email
+          )}&reset_string=${resetString}`}>here</a> to reset.</p>`,
         });
+
+        console.log('Mail sent!', info.messageId);
 
         return NextResponse.json(
           {

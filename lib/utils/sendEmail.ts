@@ -1,18 +1,29 @@
+import SMTPTransport from 'nodemailer/lib/smtp-transport';
 import { transporter } from '@/config/nodemailer';
 
 interface MailOptions {
-  from: string;
-  to: string;
+  receipent: string;
   subject: string;
   html: string;
 }
 
-const sendEmail = (mailOptions: MailOptions) => {
-  transporter.sendMail(mailOptions, (error, info) => {
-    if (error) {
-      console.log('failed to send mail', error);
-    } else {
-      console.log('Mail sent!', info.messageId);
-    }
+const sendEmail = async ({ receipent, subject, html }: MailOptions) => {
+  const mailOptions = {
+    from: process.env.AUTH_EMAIL!,
+    to: receipent,
+    subject,
+    html,
+  };
+
+  return new Promise<SMTPTransport.SentMessageInfo>((resolve, reject) => {
+    transporter.sendMail(mailOptions, (error: any, info) => {
+      if (error) {
+        reject(error);
+      }
+
+      resolve(info);
+    });
   });
 };
+
+export default sendEmail;

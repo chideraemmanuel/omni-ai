@@ -5,6 +5,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import bcrypt from 'bcrypt';
 import { connectToDatabase } from '@/lib/utils/database';
 import { compareHash } from '@/lib/utils/hashData';
+import mongoose from 'mongoose';
 
 interface OtpRecord {
   email: string;
@@ -31,43 +32,48 @@ export const POST = async (request: NextRequest) => {
     console.log('connected to database!');
 
     try {
-      const OtpRecord: OtpRecord | null = await OTP.findOne({ email });
-
-      if (!OtpRecord) {
-        return NextResponse.json(
-          { message: 'No otp record found' },
-          { status: 404 }
-        );
-      }
-
-      const {
-        email: storedEmail,
-        otp: storedOtp,
-        createdAt,
-        expiresAt,
-      } = OtpRecord;
-
-      //  CHECK EXPIRATION
-      // if (expiresAt < Date.now()) {
-      //   await OTP.deleteOne({ email });
-
-      //   return NextResponse.json(
-      //     { message: 'otp has already expired' },
-      //     { status: 400 }
-      //   );
-      // }
-
-      const otpValid = await compareHash(otp, storedOtp);
-
-      if (!otpValid) {
-        return NextResponse.json({ message: 'Invalid otp' }, { status: 400 });
-      }
+      const session = await mongoose.startSession();
 
       try {
-        await User.updateOne({ email }, { verified: true });
+        const transactionResult = await session.withTransaction(async () => {
+          const OtpRecord: OtpRecord | null = await OTP.findOne({ email });
 
-        try {
-          await OTP.deleteOne({ email });
+          if (!OtpRecord) {
+            return NextResponse.json(
+              { message: 'No otp record found' },
+              { status: 404 }
+            );
+          }
+
+          const {
+            email: storedEmail,
+            otp: storedOtp,
+            createdAt,
+            expiresAt,
+          } = OtpRecord;
+
+          //  CHECK EXPIRATION
+          // if (expiresAt < Date.now()) {
+          //   await OTP.deleteOne({ email });
+
+          //   return NextResponse.json(
+          //     { message: 'otp has already expired' },
+          //     { status: 400 }
+          //   );
+          // }
+
+          const otpValid = await compareHash(otp, storedOtp);
+
+          if (!otpValid) {
+            return NextResponse.json(
+              { message: 'Invalid otp' },
+              { status: 400 }
+            );
+          }
+
+          await User.updateOne({ email }, { verified: true }, { session });
+
+          await OTP.deleteOne({ email }, { session });
 
           return NextResponse.json(
             {
@@ -77,26 +83,21 @@ export const POST = async (request: NextRequest) => {
               status: 200,
             }
           );
-        } catch (error: any) {
-          console.log('[OTP_RECORD_DELETION_ERROR]', error);
-          return NextResponse.json(
-            { message: 'Internal Server Error' },
-            { status: 500 }
-          );
-        }
+        });
+
+        return transactionResult;
       } catch (error: any) {
-        console.log('[USER_UPDATE_ERROR]', error);
+        console.log('[TRANSACTION_ERROR]', error);
         return NextResponse.json(
-          { message: 'Internal Server Error' },
+          { error: 'Internal Server Error' },
           { status: 500 }
         );
+      } finally {
+        await session.endSession();
       }
     } catch (error: any) {
-      console.log('[OTP_RECORD_FETCH_ERROR]', error);
-      return NextResponse.json(
-        { message: 'Internal Server Error' },
-        { status: 500 }
-      );
+      console.log('[SESSION_START_ERROR]', error);
+      return NextResponse.json({ error: 'Internal Server Error' }, error);
     }
   } catch (error: any) {
     console.log('[DATABASE_CONNECTION_ERROR]', error);

@@ -7,6 +7,8 @@ import OTP from '@/models/otp';
 import { transporter } from '@/config/nodemailer';
 import { Resend } from 'resend';
 import { hashData } from '@/lib/utils/hashData';
+import mongoose from 'mongoose';
+import sendEmail from '@/lib/utils/sendEmail';
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
@@ -43,57 +45,68 @@ export async function POST(request: NextRequest) {
     console.log('connected to database!');
 
     try {
-      const userExists = await User.findOne({ email });
-
-      if (userExists) {
-        return NextResponse.json(
-          { message: 'Email is already in use' },
-          { status: 400 }
-        );
-      }
+      const session = await mongoose.startSession();
 
       try {
-        const hashedPassword = await hashData(password);
-        const createdUser: UserTypes = await User.create({
-          first_name,
-          last_name,
-          email,
-          password: hashedPassword,
-          auth_type: 'OMNIAI_AUTH_SERVICE',
-        });
+        const transactionResult = await session.withTransaction(async () => {
+          const userExists = await User.findOne({ email });
 
-        const token = generateToken(createdUser._id);
-        const otp = generateOtp();
+          if (userExists) {
+            return NextResponse.json(
+              { message: 'Email is already in use' },
+              { status: 400 }
+            );
+          }
 
-        const hashedOtp = await hashData(otp);
+          const hashedPassword = await hashData(password);
 
-        try {
-          await OTP.create({
-            email,
-            otp: hashedOtp,
-            createdAt: Date.now(),
-            expiresAt: Date.now() + 3600000,
-          });
+          /**
+           * USE ARRAY TO WRAP DATA PASSED TO moodel.create()
+           * TO ALLOW FOR OPTIONS ON THE METHOD I.E SESSION
+           */
 
-          const mailOptions = {
-            from: process.env.AUTH_EMAIL!,
-            to: email,
+          const createdUser: UserTypes[] = await User.create(
+            [
+              {
+                first_name,
+                last_name,
+                email,
+                password: hashedPassword,
+                auth_type: 'OMNIAI_AUTH_SERVICE',
+              },
+            ],
+            { session }
+          );
+
+          const token = generateToken(createdUser[0]._id);
+          const otp = generateOtp();
+
+          const hashedOtp = await hashData(otp);
+
+          await OTP.create(
+            [
+              {
+                email,
+                otp: hashedOtp,
+                createdAt: Date.now(),
+                expiresAt: Date.now() + 3600000,
+              },
+            ],
+            { session }
+          );
+
+          const info = await sendEmail({
+            receipent: email,
             subject: 'Email Verification',
             html: `<p>Thank you for joining OmniAI. Please enter the code <b>${otp}</b> to complete registration</p>`,
-          };
-
-          transporter.sendMail(mailOptions, (error, info) => {
-            if (error) {
-              console.log('NODEMAILER_ERROR', error);
-            } else {
-              console.log('Mail sent!', info.messageId);
-            }
           });
+
+          console.log('Mail sent!', info.messageId);
 
           const response = NextResponse.json(
             {
               status: 'PENDING',
-              message: `OTP has been sent to ${createdUser.email}`,
+              message: `OTP has been sent to ${createdUser[0].email}`,
             },
             {
               status: 201,
@@ -110,24 +123,19 @@ export async function POST(request: NextRequest) {
           });
 
           return response;
-        } catch (error: any) {
-          console.log('[OTP_RECORD_CREATION_ERROR]', error);
-          return NextResponse.json(
-            { message: 'Internal Server Error' },
-            { status: 500 }
-          );
-        }
+        });
+
+        return transactionResult;
       } catch (error: any) {
-        console.log('[USER_CREATION_ERROR]', error);
-        return NextResponse.json(
-          { message: 'Internal Server Error' },
-          { status: 500 }
-        );
+        console.log('[TRANSACTION_ERROR]', error);
+        return NextResponse.json({ error: 'Internal Server Error' });
+      } finally {
+        await session.endSession();
       }
     } catch (error: any) {
-      console.log('[USER_FETCH_ERROR]', error);
+      console.log('[SESSION_START_ERROR]', error);
       return NextResponse.json(
-        { message: 'Internal Server Error' },
+        { error: 'Internal Server Error' },
         { status: 500 }
       );
     }
