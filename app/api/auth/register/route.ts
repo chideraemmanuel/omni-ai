@@ -48,87 +48,102 @@ export async function POST(request: NextRequest) {
       const session = await mongoose.startSession();
 
       try {
-        const transactionResult = await session.withTransaction(async () => {
-          const userExists = await User.findOne({ email });
+        // const transactionResult = await session.withTransaction(async () => {
+        // });
+        // console.log(transactionResult);
+        // return transactionResult;
 
-          if (userExists) {
-            return NextResponse.json(
-              { message: 'Email is already in use' },
-              { status: 400 }
-            );
-          }
+        /**
+         * USES startTransaction() AS OPPOSED TO withTransaction()
+         * withTransaction() DOESN'T RETURN NextResponse
+         */
+        session.startTransaction();
 
-          const hashedPassword = await hashData(password);
+        const userExists = await User.findOne({ email });
 
-          /**
-           * USE ARRAY TO WRAP DATA PASSED TO moodel.create()
-           * TO ALLOW FOR OPTIONS ON THE METHOD I.E SESSION
-           */
-
-          const createdUser: UserTypes[] = await User.create(
-            [
-              {
-                first_name,
-                last_name,
-                email,
-                password: hashedPassword,
-                auth_type: 'OMNIAI_AUTH_SERVICE',
-              },
-            ],
-            { session }
+        if (userExists) {
+          console.log(userExists);
+          return NextResponse.json(
+            { message: 'Email is already in use' },
+            { status: 400 }
           );
+        }
 
-          const token = generateToken(createdUser[0]._id);
-          const otp = generateOtp();
+        console.log('passed session');
 
-          const hashedOtp = await hashData(otp);
+        const hashedPassword = await hashData(password);
 
-          await OTP.create(
-            [
-              {
-                email,
-                otp: hashedOtp,
-                createdAt: Date.now(),
-                expiresAt: Date.now() + 3600000,
-              },
-            ],
-            { session }
-          );
+        /**
+         * USE ARRAY TO WRAP DATA PASSED TO moodel.create()
+         * TO ALLOW FOR OPTIONS ON THE METHOD I.E SESSION
+         */
 
-          const info = await sendEmail({
-            receipent: email,
-            subject: 'Email Verification',
-            html: `<p>Thank you for joining OmniAI. Please enter the code <b>${otp}</b> to complete registration</p>`,
-          });
-
-          console.log('Mail sent!', info.messageId);
-
-          const response = NextResponse.json(
+        const createdUser: UserTypes[] = await User.create(
+          [
             {
-              status: 'PENDING',
-              message: `OTP has been sent to ${createdUser[0].email}`,
+              first_name,
+              last_name,
+              email,
+              password: hashedPassword,
+              auth_type: 'OMNIAI_AUTH_SERVICE',
             },
+          ],
+          { session }
+        );
+
+        const token = generateToken(createdUser[0]._id);
+        const otp = generateOtp();
+
+        const hashedOtp = await hashData(otp);
+
+        await OTP.create(
+          [
             {
-              status: 201,
-              // headers: {
-              //   'Set-Cookie': `token=${token}; httpOnly; path=/`,
-              // },
-            }
-          );
+              email,
+              otp: hashedOtp,
+              createdAt: Date.now(),
+              expiresAt: Date.now() + 3600000,
+            },
+          ],
+          { session }
+        );
 
-          response.cookies.set('token', token, {
-            maxAge: 60 * 60 * 24 * 7, // 1 week
-            httpOnly: true,
-            // secure: process.env.NODE_ENV === 'production', // Secure in production
-          });
-
-          return response;
+        const info = await sendEmail({
+          receipent: email,
+          subject: 'Email Verification',
+          html: `<p>Thank you for joining OmniAI. Please enter the code <b>${otp}</b> to complete registration</p>`,
         });
 
-        return transactionResult;
+        console.log('Mail sent!', info.messageId);
+
+        const response = NextResponse.json(
+          {
+            status: 'PENDING',
+            message: `OTP has been sent to ${createdUser[0].email}`,
+          },
+          {
+            status: 201,
+            // headers: {
+            //   'Set-Cookie': `token=${token}; httpOnly; path=/`,
+            // },
+          }
+        );
+
+        response.cookies.set('token', token, {
+          maxAge: 60 * 60 * 24 * 7, // 1 week
+          httpOnly: true,
+          // secure: process.env.NODE_ENV === 'production', // Secure in production
+        });
+
+        await session.commitTransaction();
+        return response;
       } catch (error: any) {
         console.log('[TRANSACTION_ERROR]', error);
-        return NextResponse.json({ error: 'Internal Server Error' });
+        await session.abortTransaction();
+        return NextResponse.json(
+          { error: 'Internal Server Error' },
+          { status: 500 }
+        );
       } finally {
         await session.endSession();
       }

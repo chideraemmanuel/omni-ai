@@ -36,56 +36,70 @@ export const POST = async (request: NextRequest) => {
       const session = await mongoose.startSession();
 
       try {
-        const transactionResult = await session.withTransaction(async () => {
-          const OtpRecord: OtpRecord | null = await OTP.findOne({ email });
+        // const transactionResult = await session.withTransaction(async () => {
+        // });
+        // return transactionResult;
 
-          if (OtpRecord) {
-            await OTP.deleteOne({ email }, { session });
-          }
+        /**
+         * USES startTransaction() AS OPPOSED TO withTransaction()
+         * withTransaction() DOESN'T RETURN NextResponse
+         */
 
-          const otp = generateOtp();
-          const hashedOtp = await hashData(otp);
+        session.startTransaction();
 
-          await OTP.create(
-            [
-              {
-                email,
-                otp: hashedOtp,
-                createdAt: Date.now(),
-                expiresAt: Date.now() + 3600000,
-              },
-            ],
-            { session }
-          );
+        const OtpRecord: OtpRecord | null = await OTP.findOne({ email });
 
-          const info = await sendEmail({
-            receipent: email,
-            subject: 'Email Verification',
-            html: `<p>Thank you for joining OmniAI. Please enter the code <b>${otp}</b> to verify your account.</p>`,
-          });
+        if (OtpRecord) {
+          await OTP.deleteOne({ email }, { session });
+        }
 
-          console.log('Mail sent!', info.messageId);
+        const otp = generateOtp();
+        const hashedOtp = await hashData(otp);
 
-          return NextResponse.json(
+        /**
+         * USE ARRAY TO WRAP DATA PASSED TO moodel.create()
+         * TO ALLOW FOR OPTIONS ON THE METHOD I.E SESSION
+         */
+        await OTP.create(
+          [
             {
-              message: `OTP sent to ${email}`,
+              email,
+              otp: hashedOtp,
+              createdAt: Date.now(),
+              expiresAt: Date.now() + 3600000,
             },
-            {
-              status: 201,
-            }
-          );
+          ],
+          { session }
+        );
+
+        const info = await sendEmail({
+          receipent: email,
+          subject: 'Email Verification',
+          html: `<p>Thank you for joining OmniAI. Please enter the code <b>${otp}</b> to verify your account.</p>`,
         });
 
-        return transactionResult;
+        console.log('Mail sent!', info.messageId);
+
+        await session.commitTransaction();
+
+        return NextResponse.json(
+          {
+            message: `OTP sent to ${email}`,
+          },
+          {
+            status: 201,
+          }
+        );
       } catch (error: any) {
         console.log('[TRANSACTION_ERROR]', error);
-        return NextResponse.json({ error: 'Intarnal Server Error' });
+        await session.abortTransaction();
+        return NextResponse.json({ error: 'Internal Server Error' });
       } finally {
         await session.endSession();
       }
     } catch (error: any) {
       console.log('[SESSION_START_ERROR]', error);
-      return NextResponse.json({ error: 'Intarnal Server Error' });
+      return NextResponse.json({ error: 'Internal Server Error' });
     }
   } catch (error: any) {
     console.log('[DATABASE_CONNECTION_ERROR]', error);

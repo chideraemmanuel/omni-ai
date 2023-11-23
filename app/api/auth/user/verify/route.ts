@@ -35,59 +35,61 @@ export const POST = async (request: NextRequest) => {
       const session = await mongoose.startSession();
 
       try {
-        const transactionResult = await session.withTransaction(async () => {
-          const OtpRecord: OtpRecord | null = await OTP.findOne({ email });
+        // const transactionResult = await session.withTransaction(async () => {
+        // });
+        // return transactionResult;
 
-          if (!OtpRecord) {
-            return NextResponse.json(
-              { message: 'No otp record found' },
-              { status: 404 }
-            );
-          }
+        session.startTransaction();
 
-          const {
-            email: storedEmail,
-            otp: storedOtp,
-            createdAt,
-            expiresAt,
-          } = OtpRecord;
+        const OtpRecord: OtpRecord | null = await OTP.findOne({ email });
 
-          //  CHECK EXPIRATION
-          // if (expiresAt < Date.now()) {
-          //   await OTP.deleteOne({ email });
-
-          //   return NextResponse.json(
-          //     { message: 'otp has already expired' },
-          //     { status: 400 }
-          //   );
-          // }
-
-          const otpValid = await compareHash(otp, storedOtp);
-
-          if (!otpValid) {
-            return NextResponse.json(
-              { message: 'Invalid otp' },
-              { status: 400 }
-            );
-          }
-
-          await User.updateOne({ email }, { verified: true }, { session });
-
-          await OTP.deleteOne({ email }, { session });
-
+        if (!OtpRecord) {
           return NextResponse.json(
-            {
-              message: 'Email verified successfully!',
-            },
-            {
-              status: 200,
-            }
+            { message: 'No otp record found' },
+            { status: 404 }
           );
-        });
+        }
 
-        return transactionResult;
+        const {
+          email: storedEmail,
+          otp: storedOtp,
+          createdAt,
+          expiresAt,
+        } = OtpRecord;
+
+        //  CHECK EXPIRATION
+        // if (expiresAt < Date.now()) {
+        //   await OTP.deleteOne({ email });
+
+        //   return NextResponse.json(
+        //     { message: 'otp has already expired' },
+        //     { status: 400 }
+        //   );
+        // }
+
+        const otpValid = await compareHash(otp, storedOtp);
+
+        if (!otpValid) {
+          return NextResponse.json({ message: 'Invalid otp' }, { status: 400 });
+        }
+
+        await User.updateOne({ email }, { verified: true }, { session });
+
+        await OTP.deleteOne({ email }, { session });
+
+        await session.commitTransaction();
+
+        return NextResponse.json(
+          {
+            message: 'Email verified successfully!',
+          },
+          {
+            status: 200,
+          }
+        );
       } catch (error: any) {
         console.log('[TRANSACTION_ERROR]', error);
+        await session.abortTransaction();
         return NextResponse.json(
           { error: 'Internal Server Error' },
           { status: 500 }

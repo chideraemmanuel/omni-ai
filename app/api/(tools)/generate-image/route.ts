@@ -1,5 +1,6 @@
 import { openai } from '@/config/openai';
 import { connectToDatabase } from '@/lib/utils/database';
+import User from '@/models/user';
 import jwt from 'jsonwebtoken';
 import { NextRequest, NextResponse } from 'next/server';
 
