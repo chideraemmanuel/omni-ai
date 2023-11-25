@@ -27,7 +27,11 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   }, []);
 
   useEffect(() => {
+    console.log('it ran');
+    console.log(isAuthError);
+    console.log(authError);
     if (isAuthError && authError !== 'Internal Server Error') {
+      console.log('router should run');
       router.replace('/login');
     }
 

@@ -41,10 +41,14 @@ export async function GET(request: NextRequest) {
       );
 
       if (!user) {
-        return NextResponse.json(
+        const response = NextResponse.json(
           { message: 'Not authorized' },
           { status: 404 }
         );
+
+        response.cookies.set('token', '', { maxAge: 1 });
+
+        return response;
       }
 
       return NextResponse.json({
